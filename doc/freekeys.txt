@@ -1,0 +1,300 @@
+*freekeys* Find free key sequences to map functions/commands
+
+FREEKEYS - TABLE OF CONTENTS                                      *freekeys-toc*
+
+    Command                                                   |freekeys-1|
+    Colors meaning                                            |freekeys-2|
+    Mappings                                                  |freekeys-3|
+    Warnings                                                  |freekeys-4|
+
+
+COMMAND                                                      *freekeys-commands*
+                                                                    *freekeys-1*
+==============================================================================
+
+The `:FK` command can be passed one or several arguments:
+
+ ------------+--------------------------------------------------------
+ Argument    | Meaning~
+ ------------+--------------------------------------------------------
+ -noleader   |  don't use the Leader key
+             |
+ -nomapcheck |  don't check whether the key sequences are overriding
+             |  or shadowing current existing custom mappings
+             |
+ -nospecial  |  don't use special characters (punctuation)
+             |
+ -mode       |  pass the mode you're interested in;
+             |  the value of this argument can be:
+             |  normal, visual, insert, operator-pending, command-line
+ ------------+--------------------------------------------------------
+
+
+COLORS MEANING                                                 *freekeys-colors*
+                                                                    *freekeys-2*
+==============================================================================
+
+ -----------+---------------------------
+ Color name | Meaning~
+ -----------+---------------------------
+ none       | prefix
+ green      | motion
+ yellow     | command
+ orange     | operator
+            |
+ red        | problematic;
+            | hit Enter to get more info
+ -----------+---------------------------
+
+
+MAPPINGS                                                     *freekeys-mappings*
+                                                                    *freekeys-3*
+==============================================================================
+
+Buffer-local (filetype=freekeys) ~
+
+ --------+----------------------------------------------------
+ Mapping | Description~
+ --------+----------------------------------------------------
+ g?      | Show this help
+         |
+ gc      | Get the tags beginning with the same key sequences
+         | Useful to check whether the keys are really free
+         | It's slow. Take some time
+         | Not reliable (lots of false positive)
+         |
+ gl      | Toggle the visibility of the Leader key
+         |
+ q       | Quit; return to the original file
+         |
+ <CR>    | Get info about a sequence colored in red
+ --------+----------------------------------------------------
+
+
+WARNINGS                                                           *fk_warnings*
+                                                                    *freekeys-4*
+==============================================================================
+
+
+< g CTRL- >___________________________________________________________________~
+                                                                    *fk_g_CTRL-*
+
+The next key should be different than:    ]
+                                          A
+                                          G
+                                          H
+
+ ------------+--------------------------------------------------------
+ Mapping     | Function~
+ ------------+--------------------------------------------------------
+ `g_CTRL-]`    | jump to a tag
+             |
+ `g_CTRL-G`    | prints the current position of the cursor in five ways:
+             |     Column, Line, Word, Character and Byte
+             |
+ `g_CTRL-A`    |  prints memory usage statistics
+             |
+ `g_CTRL-H`    |  starts Select mode, blockwise
+ ------------+--------------------------------------------------------
+
+
+< [ CTRL-    ] CTRL- >_________________________________________________________~
+                                                                   *fk_[]_CTRL-*
+
+The next key should be different than:    D
+                                          I
+
+ ------------+------------------------------------------------------
+ Mapping     | Function~
+ ------------+------------------------------------------------------
+ `[_CTRL-D`    | Jump to the first macro definition that contains the
+             | keyword under the cursor
+             |
+ `]_CTRL-D`    | like "[ CTRL-D", but start at the current cursor
+             | position
+             |
+ `[_CTRL-I`    | Jump to the first line that contains the keyword
+             | under the cursor.  The search starts at the beginning
+             | of the file
+             |
+ `]_CTRL-I`    | like "[ CTRL-I", but start at the current cursor
+             | position
+ ------------+------------------------------------------------------
+
+
+< ["    ]" >___________________________________________________________________~
+                                                            *fk_[]_double_quote*
+
+In a Vim buffer `["` and `]"`, allows you to move by comments.
+These motions are defined here:
+>
+    $VIMRUNTIME/ftplugin/vim.vim
+
+    " Move around comments
+    nnoremap <silent><buffer> ]" :call search('^\(\s*".*\n\)\@<!\(\s*"\)', "W")<CR>
+    vnoremap <silent><buffer> ]" :<C-U>exe "normal! gv"<Bar>call search('^\(\s*".*\n\)\@<!\(\s*"\)', "W")<CR>
+    nnoremap <silent><buffer> [" :call search('\%(^\s*".*\n\)\%(^\s*"\)\@!', "bW")<CR>
+    vnoremap <silent><buffer> [" :<C-U>exe "normal! gv"<Bar>call search('\%(^\s*".*\n\)\%(^\s*"\)\@!', "bW")<CR>
+<
+Maybe the idea could be expanded to other filetypes?
+By replacing the double quotes in the {rhs} of the mappings with the comment
+character for the current buffer:
+>
+    nno <silent> [" :<C-U>call <SID>search_comment(1)<CR>
+    nno <silent> ]" :<C-U>call <SID>search_comment(0)<CR>
+
+    xno <silent> [" :<C-U>call <SID>search_comment(1, 1)<CR>
+    xno <silent> ]" :<C-U>call <SID>search_comment(0, 1)<CR>
+
+    ono <silent> [" :norm V["j<CR>
+    ono <silent> ]" :norm V]"k<CR>
+
+    fu! s:search_comment(back, ...) abort
+        if empty(&cms)
+            return
+        endif
+
+        let cms = '\V'.escape(matchstr(split(&cms, '%s')[0], '\S\+'), '\')
+
+        if a:0
+            norm! gv
+        endif
+
+        let pattern = a:back
+                    \? '\v%(^\s*'.cms.'\v.*\n)%(^\s*'.cms.'\v)@!'
+                    \: '\v^%(\s*'.cms.'\v.*\n)@<!%(\s*'.cms.'\v)'
+
+        call search(pattern, 'W'.(a:back ? 'b' : ''))
+    endfu
+
+<< CTRL-\ >____________________________________________________________________~
+                                                                     *fk_CTRL-\*
+
+The next key should be different than:    CTRL-G
+                                          CTRL-N
+
+ ------------------------------------------------------------------
+ Mapping       | Function~
+ --------------+---------------------------------------------------
+ `CTRL-\_CTRL-G` | used to go to Normal mode from any other mode
+               |
+ `CTRL-\_CTRL-N` | can be used to go to Insert mode when 'insertmode'
+               | is set
+ --------------+---------------------------------------------------
+
+
+< CTRL-s >_____________________________________________________________________~
+                                                                     *fk_CTRL-s*
+
+Used for terminal flow control.
+
+By default, `CTRL-S` freezes the terminal. `CTRL-Q` unblocks it.
+To use `CTRL-S` or `CTRL-Q`, add the following code in a file sourced by the shell:
+>
+                                    stty -ixon
+<
+For more info see: http://unix.stackexchange.com/a/12108/125618
+
+                   http://unix.stackexchange.com/a/12146/125618
+                   http://unix.stackexchange.com/a/72092/125618
+                   https://en.wikipedia.org/wiki/Software_flow_control
+
+
+< CTRL-q >____________________________________________________________________~
+                                                                     *fk_CTRL-q*
+
+Used for terminal flow control. See *fk_C-s*
+
+
+< CTRL-Space >________________________________________________________________~
+                                                                 *fk_CTRL-Space*
+                                                                     *fk_CTRL-@*
+
+Some terminals may produce the same keycodes (^@) when hitting `CTRL-@` and 
+`CTRL-Space`?
+
+http://stackoverflow.com/a/23190040
+
+
+< do >________________________________________________________________________~
+                                                                         *fk_do*
+
+Same as ":diffget" without range.  The "o" stands for "obtain".
+Only useful in a buffer where the 'diff' option is set on.
+Could be mapped to something else when 'diff' is off.
+
+>
+              nnoremap <expr> do &l:diff ? 'do' : ":echo 'hi'<CR>"
+<
+
+< dp >________________________________________________________________________~
+                                                                         *fk_dp*
+
+Same as ":diffput" without range.
+Only useful in a buffer where the 'diff' option is set on.
+Could be mapped to something else when 'diff' is off.
+
+
+< gw >________________________________________________________________________~
+                                                                         *fk_gw*
+
+By default, |gw| is a formatting operator. |gq| could be used instead.
+
+
+< U >_________________________________________________________________________~
+                                                                          *fk_U*
+
+By default, |U| is a command to undo all latest changes on one line, the line
+where the latest change was made.
+If you rely more on |u| and |CTRL-R|, it could be used as a prefix.
+Maybe a good prefix for VCS commands?
+
+     https://www.reddit.com/r/vim/comments/1x31ng/follow_my_leader/cf7obe5/
+
+
+< zu >________________________________________________________________________~
+                                                                         *fk_zu*
+
+There should be a next key and it should be different than:    g
+                                                               w
+                                                               G
+                                                               W
+
+ ------------------------------------------------------------
+ Mapping | Function~
+ --------+---------------------------------------------------
+ `zuw` `zug` | Undo |zw| and |zg|, remove the word from the entry in
+         | 'spellfile'
+         |
+ `zuW` `zuG` | Undo |zW| and |zG|, remove the word from the internal
+         | word list
+ --------+---------------------------------------------------
+
+
+< Bar >_______________________________________________________________________~
+                                                                        *fk_Bar*
+
+By default, <Bar> moves the cursor on the first column.
+|0| could be used instead.
+
+<Bar> could be used for filtering commands.
+It can still be used to move the cursor on an arbitrary column when
+prefixed with a count.
+
+     https://www.reddit.com/r/vim/comments/1x31ng/follow_my_leader/cf7obe5/
+
+
+< operator and CTRL-V >_______________________________________________________~
+                                                        *fk_operator_and_CTRL-V*
+
+The next key should be different than V.
+CTRL-V after an operator, and before the motion/text-object, forces
+the operator to work blockwise. See: |o_CTRL-V|
+
+
+< operator and prefix g >_____________________________________________________~
+                                                      *fk_operator_and_prefix_g*
+
+There should be a next key and it should be different than `n` and `N`.
+`gn` and `gN` are valid text-objects on which an operator may act.
+They search and select the last used search pattern.
