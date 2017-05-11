@@ -1,5 +1,5 @@
 if exists('g:loaded_freekeys')
-  finish
+    finish
 endif
 let g:loaded_freekeys = 1
 " TODO: "{{{
@@ -202,6 +202,11 @@ fu! s:categories() abort
                      \ 'operators_linewise' : ['!', '<', '=', '>'],
                      \ }
 
+    " we add `U` as a prefix in normal mode
+    " `u` and `C-r` could be used to handle undo operations
+    "
+    " we also add `Leader` as a prefix, unless the `-noleader` argument was
+    " passed to `:FK`
     let categories.prefixes +=     (mode ==?    'normal' ? ['U'] : [])
                                \ + (!noleader ? ['Leader']       : [])
 
@@ -271,28 +276,28 @@ fu! s:categories() abort
     "
     " "}}}
 
-    let categories.motions_stay_on_line = [
-                                          \ '$',
-                                          \ 'F',
-                                          \ 'T',
-                                          \ '^',
-                                          \ 'f',
-                                          \ 't',
-                                          \ '|',
-                                          \ 'w',
-                                          \ 'B',
-                                          \ 'E',
-                                          \ 'W',
-                                          \ 'b',
-                                          \ 'e',
-                                          \ 'h',
-                                          \ 'l',
-                                          \ ' ',
-                                          \ 'BS',
-                                          \ 'CR',
-                                          \ ]
+    let categories.motions_limited = [
+                                     \ '$',
+                                     \ 'F',
+                                     \ 'T',
+                                     \ '^',
+                                     \ 'f',
+                                     \ 't',
+                                     \ '|',
+                                     \ 'w',
+                                     \ 'B',
+                                     \ 'E',
+                                     \ 'W',
+                                     \ 'b',
+                                     \ 'e',
+                                     \ 'h',
+                                     \ 'l',
+                                     \ ' ',
+                                     \ 'BS',
+                                     \ 'CR',
+                                     \ ]
 
-    " We don't consider Tab as a motion, because even though `C-I` jumps forward
+    " We don't consider Tab as a motion, because even though `C-i` jumps forward
     " in the jumplist, by default, `operator + Tab` doesn't do anything.
     " So, we could consider it as a command, which gives us the free key sequences:
     "
@@ -360,7 +365,7 @@ endfu
 
 fu! freekeys#complete(lead, line, _pos) abort
 
-    if a:lead =~ '^-'
+    if a:lead[0] ==# '-'
 
         let flags = [
                     \ '-noleader ',
@@ -369,175 +374,27 @@ fu! freekeys#complete(lead, line, _pos) abort
                     \ '-mode',
                     \ ]
 
+        " filter the list `flags` so that only the item matching the current
+        " text being completed (`a:lead`) remains
         return filter(flags, 'v:val[:strlen(a:lead)-1] ==# a:lead')
 
     elseif a:line =~# '-mode \w*$'
 
-        let modes = ['normal', 'visual', 'operator-pending', 'insert', 'command-line']
-        return filter(modes, 'empty(a:lead) || v:val[:strlen(a:lead)-1] ==# a:lead')
+        let modes = [
+                    \ 'normal',
+                    \ 'visual',
+                    \ 'operator-pending',
+                    \ 'insert',
+                    \ 'command-line',
+                    \ ]
+
+        return empty(a:lead)
+                    \ ? modes
+                    \ : filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
 
     endif
 
     return ''
-endfu
-
-"}}}
-" display "{{{
-
-fu! s:display(free) abort
-
-    " Get the unique id of the window we're coming from.
-    " Necessary to restore the focus correctly when we'll close the FK window.
-
-    let id_orig_window = win_getid()
-
-    tabnew
-
-    let b:_fk = extend(s:flags, {
-                                \ 'id_orig_window' : id_orig_window,
-                                \ 'leader_key'     : 'shown',
-                                \ })
-
-    setl bh=wipe nobl bt=nofile noswf nowrap
-    setf freekeys
-    if !bufexists('free keys') | sil file free\ keys | endif
-
-    sil 0put =a:free
-    sil $d_
-    sort
-
-    " Make the space key more visible.
-
-    sil! keepj keepp %s/ /Space/
-
-    " Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
-    " to make them more readable
-
-    sil! keepj keepp %s/^Leader\zs\ze\S/ /
-    sil! keepj keepp %s/\v%(CTRL-)@<!%(BS|CR|CTRL-|Leader|Space|Tab)$/ &/
-    sil! keepj keepp %s/  / /
-
-    " If there're double sequences, like `operator + space`:
-    "
-    "         Leader = Space
-    "         op_l + motion_s
-    "         op   + leader
-    "
-    " … remove them.
-
-    sil! keepj keepp %s/\v^(.*)\n\1$/\1/
-
-    " Trim whitespace. There shouldn't be any, but better be safe than sorry.
-
-    sil! keepj keepp %s/\s*$//
-
-    call append(0, substitute(s:flags.mode, '.', '\U&', 'g').' MODE')
-    1center
-    call cursor(1,1)
-
-    nno <silent> <buffer> <nowait> <CR>    :<C-U>call <SID>show_help()<CR>
-    nno <silent> <buffer> <nowait> q       :<C-U>call <SID>close_window()<CR>
-    nno <silent> <buffer> <nowait> g?      :<C-U>help freekeys-mappings<CR>
-    nno <silent> <buffer> <nowait> gc      :<C-U>call <SID>similar_tags()<CR>
-
-    exe 'nno <silent> <buffer> <nowait> gl    :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
-
-endfu
-
-"}}}
-" double_prefixes "{{{
-
-fu! s:double_prefix(prefixes) abort
-    let double_prefix = []
-
-    for prefix in a:prefixes
-        let double_prefix += [prefix.prefix]
-    endfor
-
-    return double_prefix
-endfu
-
-"}}}
-" is_unmapped "{{{
-
-fu! s:is_unmapped(candidates, default_mappings) abort
-
-    let candidates       = a:candidates
-    let default_mappings = a:default_mappings
-    let nomapcheck       = s:flags.nomapcheck
-    let nospecial        = s:flags.nospecial
-    let mode             = s:flags.mode
-
-    " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,"{{{
-    " because contrary to the other ones, they wait for an argument.
-    " This creates a new free key sequence, each time they don't understand an
-    " argument.
-    " That's why we put them in the prefixes category.
-    "
-    " This choice of categorization has a consequence: we'll have to REMOVE
-    " all the "mapped_to_sth" key sequences generated by our algorithm.
-    " If instead we had chosen to categorize them as motions or commands, we
-    " would have to do the opposite: ADD the unmapped key sequences forgotten by
-    " the algorithm.
-    "
-    " Why this choice?
-    " The "mapped_to_sth" sequences seem to be more structured than the unmapped
-    " ones. You can express a large chunk of them with a simple syntax:
-    "
-    "         prefix + letter
-    "
-    " So, it's easier to REMOVE MAPPED sequences, than to ADD UNMAPPED sequences.
-    "
-    " "}}}
-
-    " If a sequence shadows another one, or it overrides a default action,
-    " remove it.
-
-    let condition_to_be_free = '!count(default_mappings, key)'
-
-    if nospecial
-        let condition_to_be_free .= ' && key !~ "[[:punct:]]"'
-    endif
-
-    if !nomapcheck
-        let condition_to_be_free .= '&& empty(mapcheck(substitute(key, "Leader", g:mapleader, "g"), "n"))'
-    endif
-
-    for key in candidates
-        if !eval(condition_to_be_free)
-            call remove(candidates, index(candidates, key))
-        endif
-    endfor
-
-    " Now, we can be sure everything in `candidates` is free.
-
-    return candidates
-
-endfu
-
-"}}}
-" main "{{{
-
-fu! freekeys#main(...) abort
-
-    let cmd_args = split(a:1)
-    let s:flags  = {
-                   \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-                   \ 'nospecial'  : count(cmd_args, '-nospecial') ? 1 : 0,
-                   \ 'nomapcheck' : count(cmd_args, '-nomapcheck') ? 1 : 0,
-                   \ 'noleader'   : count(cmd_args, '-noleader') ? 1 : 0,
-                   \ }
-
-    if empty(s:flags.mode)
-        let s:flags.mode = 'normal'
-    endif
-
-    let categories       = s:categories()
-    let candidates       = s:candidates(categories)
-    let default_mappings = s:default_mappings(categories)
-    let free             = s:is_unmapped(candidates, default_mappings)
-
-    call s:display(free)
 endfu
 
 "}}}
@@ -793,6 +650,165 @@ fu! s:default_mappings(categories) abort
 endfu
 
 "}}}
+" display "{{{
+
+fu! s:display(free) abort
+
+    " Get the unique id of the window we're coming from.
+    " Necessary to restore the focus correctly when we'll close the FK window.
+
+    let id_orig_window = win_getid()
+
+    tabnew
+
+    let b:_fk = extend(s:flags, {
+                                \ 'id_orig_window' : id_orig_window,
+                                \ 'leader_key'     : 'shown',
+                                \ })
+
+    setl bh=wipe nobl bt=nofile noswf nowrap
+    setf freekeys
+    if !bufexists('free keys') | sil file free\ keys | endif
+
+    sil 0put =a:free
+    sil $d_
+    sort
+
+    " Make the space key more visible.
+
+    sil! keepj keepp %s/ /Space/
+
+    " Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
+    " to make them more readable
+
+    sil! keepj keepp %s/^Leader\zs\ze\S/ /
+    sil! keepj keepp %s/\v%(CTRL-)@<!%(BS|CR|CTRL-|Leader|Space|Tab)$/ &/
+    sil! keepj keepp %s/  / /
+
+    " If there're double sequences, like `operator + space`:
+    "
+    "         Leader = Space
+    "         op_l + motion_s
+    "         op   + leader
+    "
+    " … remove them.
+
+    sil! keepj keepp %s/\v^(.*)\n\1$/\1/
+
+    " Trim whitespace. There shouldn't be any, but better be safe than sorry.
+
+    sil! keepj keepp %s/\s*$//
+
+    call append(0, substitute(s:flags.mode, '.', '\U&', 'g').' MODE')
+    1center
+    call cursor(1,1)
+
+    nno <silent> <buffer> <nowait> <CR>    :<C-U>call <SID>show_help()<CR>
+    nno <silent> <buffer> <nowait> q       :<C-U>call <SID>close_window()<CR>
+    nno <silent> <buffer> <nowait> g?      :<C-U>help freekeys-mappings<CR>
+    nno <silent> <buffer> <nowait> gc      :<C-U>call <SID>similar_tags()<CR>
+
+    exe 'nno <silent> <buffer> <nowait> gl    :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
+
+endfu
+
+"}}}
+" double_prefixes "{{{
+
+fu! s:double_prefix(prefixes) abort
+    let double_prefix = []
+
+    for prefix in a:prefixes
+        let double_prefix += [prefix.prefix]
+    endfor
+
+    return double_prefix
+endfu
+
+"}}}
+" is_unmapped "{{{
+
+fu! s:is_unmapped(candidates, default_mappings) abort
+
+    let candidates       = a:candidates
+    let default_mappings = a:default_mappings
+    let nomapcheck       = s:flags.nomapcheck
+    let nospecial        = s:flags.nospecial
+    let mode             = s:flags.mode
+
+    " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,"{{{
+    " because contrary to the other ones, they wait for an argument.
+    " This creates a new free key sequence, each time they don't understand an
+    " argument.
+    " That's why we put them in the prefixes category.
+    "
+    " This choice of categorization has a consequence: we'll have to REMOVE
+    " all the "mapped_to_sth" key sequences generated by our algorithm.
+    " If instead we had chosen to categorize them as motions or commands, we
+    " would have to do the opposite: ADD the unmapped key sequences forgotten by
+    " the algorithm.
+    "
+    " Why this choice?
+    " The "mapped_to_sth" sequences seem to be more structured than the unmapped
+    " ones. You can express a large chunk of them with a simple syntax:
+    "
+    "         prefix + letter
+    "
+    " So, it's easier to REMOVE MAPPED sequences, than to ADD UNMAPPED sequences.
+    "
+    " "}}}
+
+    " If a sequence shadows another one, or it overrides a default action,
+    " remove it.
+
+    let condition_to_be_free = '!count(default_mappings, key)'
+
+    if nospecial
+        let condition_to_be_free .= ' && key !~ "[[:punct:]]"'
+    endif
+
+    if !nomapcheck
+        let condition_to_be_free .= '&& empty(mapcheck(substitute(key, "Leader", g:mapleader, "g"), "n"))'
+    endif
+
+    for key in candidates
+        if !eval(condition_to_be_free)
+            call remove(candidates, index(candidates, key))
+        endif
+    endfor
+
+    " Now, we can be sure everything in `candidates` is free.
+
+    return candidates
+
+endfu
+
+"}}}
+" main "{{{
+
+fu! freekeys#main(...) abort
+
+    let cmd_args = split(a:1)
+    let s:flags  = {
+                   \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
+                   \ 'nospecial'  : count(cmd_args, '-nospecial'),
+                   \ 'nomapcheck' : count(cmd_args, '-nomapcheck'),
+                   \ 'noleader'   : count(cmd_args, '-noleader'),
+                   \ }
+
+    if empty(s:flags.mode)
+        let s:flags.mode = 'normal'
+    endif
+
+    let categories       = s:categories()
+    let candidates       = s:candidates(categories)
+    let default_mappings = s:default_mappings(categories)
+    let free             = s:is_unmapped(candidates, default_mappings)
+
+    call s:display(free)
+endfu
+
+"}}}
 " op_plus_forbidden_cmd "{{{
 
 fu! s:op_plus_forbidden_cmd(operators) abort
@@ -897,14 +913,14 @@ fu! s:syntaxes(categories) abort
     let mode       = s:flags.mode
     let categories = a:categories
 
-    let prefixes             = categories.prefixes
-    let motions              = categories.motions
-    let motions_stay_on_line = categories.motions_stay_on_line
-    let commands             = categories.commands
-    let operators            = categories.operators
-    let operators_linewise   = categories.operators_linewise
+    let prefixes           = categories.prefixes
+    let motions            = categories.motions
+    let motions_limited    = categories.motions_limited
+    let commands           = categories.commands
+    let operators          = categories.operators
+    let operators_linewise = categories.operators_linewise
 
-    let chars                = prefixes+motions+commands+operators
+    let chars              = prefixes+motions+commands+operators
 
     let syntaxes = {
                    \ 'insert'          : {
@@ -937,7 +953,7 @@ fu! s:syntaxes(categories) abort
                           \ 'op   + cmd'      : [operators,           commands],
                           \ 'op1  + op2'      : [operators,           operators],
                           \ 'op   + pfx'      : [operators,           prefixes],
-                          \ 'op_l + motion_s' : [operators_linewise,  motions_stay_on_line],
+                          \ 'op_l + motion_s' : [operators_linewise,  motions_limited],
                           \ 'CTRL + char'     : [['CTRL-'],           ['K', 'Space', '\', '_', '@']],
                           \ 'op   + CTRL'     : [operators,           ['CTRL-']],
                           \ 'pfx  + CTRL'     : [prefixes,            ['CTRL-']],
