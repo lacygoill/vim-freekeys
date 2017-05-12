@@ -768,7 +768,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort
     endif
 
     if !nomapcheck
-        let condition_to_be_free .= '&& empty(mapcheck(substitute(key, "Leader", g:mapleader, "g"), "n"))'
+        let condition_to_be_free .= '&& empty(mapcheck(substitute(substitute(key, "Leader", g:mapleader, "g"), "Tab", "<Tab>", "g"), "n"))'
     endif
 
     for key in candidates
