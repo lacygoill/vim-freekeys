@@ -768,7 +768,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort
     endif
 
     if !nomapcheck
-        let condition_to_be_free .= '&& empty(mapcheck(substitute(substitute(key, "Leader", g:mapleader, "g"), "Tab", "<Tab>", "g"), "n"))'
+        let condition_to_be_free .= '&& empty(mapcheck(s:translate_special_key(key), "n"))'
     endif
 
     for key in candidates
@@ -781,6 +781,15 @@ fu! s:is_unmapped(candidates, default_mappings) abort
 
     return candidates
 
+endfu
+
+fu! s:translate_special_key(key) abort
+    let key = a:key
+    let key = substitute(key, "Leader", g:mapleader, "g")
+    let key = substitute(key, "Tab", "<Tab>", "g")
+    let key = substitute(key, "CR", "<CR>", "g")
+    let key = substitute(key, "BS", "<BS>", "g")
+    return key
 endfu
 
 "}}}
