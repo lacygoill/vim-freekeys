@@ -784,12 +784,12 @@ fu! s:is_unmapped(candidates, default_mappings) abort
 endfu
 
 fu! s:translate_special_key(key) abort
-    let key = a:key
-    let key = substitute(key, "Leader", g:mapleader, "g")
-    let key = substitute(key, "Tab", "<Tab>", "g")
-    let key = substitute(key, "CR", "<CR>", "g")
-    let key = substitute(key, "BS", "<BS>", "g")
-    return key
+    let l:key = a:key
+    let l:key = substitute(l:key, "Leader", g:mapleader, "g")
+    let l:key = substitute(l:key, "Tab", "<Tab>", "g")
+    let l:key = substitute(l:key, "CR", "<CR>", "g")
+    let l:key = substitute(l:key, "BS", "<BS>", "g")
+    return l:key
 endfu
 
 "}}}
@@ -900,8 +900,8 @@ fu! s:similar_tags() abort
     sil $d_
 
     for idx in range(line('$'), 1, -1)
-        let key      = substitute(getline(idx), ' ', '_', 'g')
-        let taglist  = taglist('\C\V\^'. mode_tag .escape(key, '\'))
+        let l:key    = substitute(getline(idx), ' ', '_', 'g')
+        let taglist  = taglist('\C\V\^'. mode_tag .escape(l:key, '\'))
         let tagnames = map(taglist, '"    ".escape(v:val["name"], "/")')
 
         if empty(tagnames)
