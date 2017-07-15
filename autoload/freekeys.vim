@@ -365,8 +365,15 @@ endfu
 
 fu! freekeys#complete(lead, line, _pos) abort
 
-    if a:lead[0] ==# '-'
+    if empty(a:lead)
+        return [
+               \ '-noleader ',
+               \ '-nomapcheck ',
+               \ '-nospecial ',
+               \ '-mode',
+               \ ]
 
+    elseif a:lead[0] ==# '-'
         let flags = [
                     \ '-noleader ',
                     \ '-nomapcheck ',
@@ -379,7 +386,6 @@ fu! freekeys#complete(lead, line, _pos) abort
         return filter(flags, 'v:val[:strlen(a:lead)-1] ==# a:lead')
 
     elseif a:line =~# '-mode \w*$'
-
         let modes = [
                     \ 'normal',
                     \ 'visual',
@@ -391,7 +397,6 @@ fu! freekeys#complete(lead, line, _pos) abort
         return empty(a:lead)
                     \ ? modes
                     \ : filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
-
     endif
 
     return ''
