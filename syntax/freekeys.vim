@@ -21,8 +21,6 @@ syn match Normal     '\vCTRL-.|CTRL-$|Leader'
 
 hi link fk_warning WarningMsg
 
-let mode = b:_fk.mode
-
 let s:warning_regexes = {
                         \ 'normal'           : { 'op+g'      : '[!=<>cdy]g',
                         \                        'do dp zu'  : '%(do|dp|zu)',
@@ -38,6 +36,15 @@ let s:warning_regexes = {
                         \ 'operator-pending' : {},
                         \ }
 
-for regex in values(s:warning_regexes[mode])
+" FIXME:
+" How to pass the mode from the `autoload/` file to this syntax file?
+" We can't use this:
+"
+"         tabnew +let\ b:_fk=… freekeys
+"
+" … because it seems the `let` command is executed after the syntax file is
+" sourced.
+
+for regex in values(s:warning_regexes['normal'])
     exe 'syn match fk_warning '.string('\v^'.regex.'$')
 endfor

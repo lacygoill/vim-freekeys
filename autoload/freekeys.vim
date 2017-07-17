@@ -663,16 +663,13 @@ fu! s:display(free) abort
 
     let id_orig_window = win_getid()
 
-    tabnew
-
+    tabnew freekeys
     let b:_fk = extend(s:flags, {
                                 \ 'id_orig_window' : id_orig_window,
                                 \ 'leader_key'     : 'shown',
                                 \ })
 
     setl bh=wipe nobl bt=nofile noswf nowrap
-    if !bufexists('freekeys') | sil file freekeys | endif
-    doautocmd FileType freekeys
 
     sil 0put =a:free
     sil $d_
@@ -705,7 +702,7 @@ fu! s:display(free) abort
 
     call append(0, substitute(s:flags.mode, '.', '\U&', 'g').' MODE')
     1center
-    setl noma ro
+
     call cursor(1,1)
 
     nno <silent> <buffer> <nowait> <CR>    :<C-U>call <SID>show_help()<CR>
