@@ -25,7 +25,6 @@ let g:loaded_freekeys = 1
 "   because `*` and `#` are much more unpredictable than `2j` or `3k` for example.
 "   We don't systematically see all the text between current position and the
 "   next occurrence of the current word.
-"   Besides, aren't `op+n`, `op+N` synonym syntaxes?
 "
 "   check if there are other unpredictable `operator + motions` combinations like
 "   `c*`, `!*`, which would be rarely used; add them with warnings
@@ -672,8 +671,8 @@ fu! s:display(free) abort
                                 \ })
 
     setl bh=wipe nobl bt=nofile noswf nowrap
-    setf freekeys
-    if !bufexists('free keys') | sil file free\ keys | endif
+    if !bufexists('freekeys') | sil file freekeys | endif
+    doautocmd FileType freekeys
 
     sil 0put =a:free
     sil $d_
@@ -706,6 +705,7 @@ fu! s:display(free) abort
 
     call append(0, substitute(s:flags.mode, '.', '\U&', 'g').' MODE')
     1center
+    setl noma ro
     call cursor(1,1)
 
     nno <silent> <buffer> <nowait> <CR>    :<C-U>call <SID>show_help()<CR>
@@ -714,7 +714,6 @@ fu! s:display(free) abort
     nno <silent> <buffer> <nowait> gc      :<C-U>call <SID>similar_tags()<CR>
 
     exe 'nno <silent> <buffer> <nowait> gl    :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
-
 endfu
 
 "}}}
