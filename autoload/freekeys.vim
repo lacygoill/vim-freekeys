@@ -2,7 +2,7 @@ if exists('g:loaded_freekeys')
     finish
 endif
 let g:loaded_freekeys = 1
-" TODO: "{{{
+" TODO: {{{1
 
 " - look at all the 'default_mappings' mappings, and see if some of them
 "   are useless, or only useful with a count.
@@ -111,8 +111,8 @@ let g:loaded_freekeys = 1
 "   For example, the "red" mappings are not red when my colorscheme is dark,
 "   they are orange.
 
-"}}}
-" The algorithm deliberately omit special keys:"{{{
+
+" The algorithm deliberately omit special keys: {{{1
 "
 "         <F1> … <F9>
 "         <BS>
@@ -165,10 +165,7 @@ let g:loaded_freekeys = 1
 "
 " So, now we can use `d Space`, `y Space`, `c Space` …
 
-" "}}}
-" candidates "{{{
-
-fu! s:candidates(categories) abort
+fu! s:candidates(categories) abort "{{{1
     let categories = a:categories
     let syntaxes   = s:syntaxes(categories)
     let candidates = []
@@ -186,10 +183,7 @@ fu! s:candidates(categories) abort
     return candidates
 endfu
 
-"}}}
-" categories "{{{
-
-fu! s:categories() abort
+fu! s:categories() abort "{{{1
 
     let mode     = s:flags.mode
     let noleader = s:flags.noleader
@@ -251,7 +245,7 @@ fu! s:categories() abort
                              \ 'CR',
                              \ ]
 
-    " The 18 following motions stay on the line most of the time."{{{
+    " The 18 following motions stay on the line most of the time.{{{
     " The last 11 can move across different lines, but very limitedly.
     " So it doesn't make a lot of sense to use any of them after an operator
     " which acts upon a set of lines.
@@ -348,10 +342,7 @@ fu! s:categories() abort
     return categories
 endfu
 
-"}}}
-" close_window "{{{
-
-fu! s:close_window() abort
+fu! s:close_window() abort "{{{1
 
     let id_orig_window = b:_fk.id_orig_window
     close
@@ -359,10 +350,7 @@ fu! s:close_window() abort
 
 endfu
 
-"}}}
-" complete "{{{
-
-fu! freekeys#complete(lead, line, _pos) abort
+fu! freekeys#complete(lead, line, _pos) abort "{{{1
 
     if empty(a:lead)
         return [
@@ -401,17 +389,14 @@ fu! freekeys#complete(lead, line, _pos) abort
     return ''
 endfu
 
-"}}}
-" default_mappings "{{{
-
-fu! s:default_mappings(categories) abort
+fu! s:default_mappings(categories) abort "{{{1
 
     let mode             = s:flags.mode
     let default_mappings = []
     let prefixes         = a:categories.prefixes
     let operators        = a:categories.operators
 
-    " NOTE:"{{{
+    " NOTE:{{{
     "
     " Why can we copy something in the pseudo-register `~`?     "~yy
     " And why can't we paste it?                                "~p
@@ -653,10 +638,7 @@ fu! s:default_mappings(categories) abort
     return result
 endfu
 
-"}}}
-" display "{{{
-
-fu! s:display(free) abort
+fu! s:display(free) abort "{{{1
 
     " Get the unique id of the window we're coming from.
     " Necessary to restore the focus correctly when we'll close the FK window.
@@ -713,10 +695,7 @@ fu! s:display(free) abort
     exe 'nno <silent> <buffer> <nowait> gl    :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
 endfu
 
-"}}}
-" double_prefixes "{{{
-
-fu! s:double_prefix(prefixes) abort
+fu! s:double_prefix(prefixes) abort "{{{1
     let double_prefix = []
 
     for prefix in a:prefixes
@@ -726,10 +705,7 @@ fu! s:double_prefix(prefixes) abort
     return double_prefix
 endfu
 
-"}}}
-" is_unmapped "{{{
-
-fu! s:is_unmapped(candidates, default_mappings) abort
+fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
 
     let candidates       = a:candidates
     let default_mappings = a:default_mappings
@@ -737,7 +713,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort
     let nospecial        = s:flags.nospecial
     let mode             = s:flags.mode
 
-    " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,"{{{
+    " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,{{{
     " because contrary to the other ones, they wait for an argument.
     " This creates a new free key sequence, each time they don't understand an
     " argument.
@@ -784,19 +760,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort
 
 endfu
 
-fu! s:translate_special_key(key) abort
-    let l:key = a:key
-    let l:key = substitute(l:key, "Leader", g:mapleader, "g")
-    let l:key = substitute(l:key, "Tab", "<Tab>", "g")
-    let l:key = substitute(l:key, "CR", "<CR>", "g")
-    let l:key = substitute(l:key, "BS", "<BS>", "g")
-    return l:key
-endfu
-
-"}}}
-" main "{{{
-
-fu! freekeys#main(...) abort
+fu! freekeys#main(...) abort "{{{1
 
     let cmd_args = split(a:1)
     let s:flags  = {
@@ -818,10 +782,7 @@ fu! freekeys#main(...) abort
     call s:display(free)
 endfu
 
-"}}}
-" op_plus_forbidden_cmd "{{{
-
-fu! s:op_plus_forbidden_cmd(operators) abort
+fu! s:op_plus_forbidden_cmd(operators) abort "{{{1
 
     let op_plus_forbidden_cmd = []
 
@@ -840,10 +801,7 @@ fu! s:op_plus_forbidden_cmd(operators) abort
     return op_plus_forbidden_cmd
 endfu
 
-"}}}
-" prefix_plus_letter "{{{
-
-fu! s:prefix_plus_letter() abort
+fu! s:prefix_plus_letter() abort "{{{1
     let prefix_plus_letter = []
 
     for prefix in ['"', '@', 'm', "'", '`']
@@ -854,10 +812,7 @@ fu! s:prefix_plus_letter() abort
     return prefix_plus_letter
 endfu
 
-"}}}
-" show_help "{{{
-
-fu! s:show_help() abort
+fu! s:show_help() abort "{{{1
 
     " All tags from the plugin begin with the prefix `fk_` to avoid conflicts
     " with default ones. Add it to the key sequence under the cursor.
@@ -883,10 +838,7 @@ fu! s:show_help() abort
     endif
 endfu
 
-"}}}
-" similar_tags "{{{
-
-fu! s:similar_tags() abort
+fu! s:similar_tags() abort "{{{1
     let mode     = b:_fk.mode
     let mode_tag = mode !=# 'normal' ? mode[0].'_' : ''
     let lines    = getline(1, line('$'))
@@ -915,10 +867,7 @@ fu! s:similar_tags() abort
     nno <silent> <buffer> <nowait> q    :<C-U>close<CR>
 endfu
 
-"}}}
-" syntaxes "{{{
-
-fu! s:syntaxes(categories) abort
+fu! s:syntaxes(categories) abort "{{{1
 
     let mode       = s:flags.mode
     let categories = a:categories
@@ -992,10 +941,7 @@ fu! s:syntaxes(categories) abort
     return syntaxes[mode]
 endfu
 
-"}}}
-" toggle_leader_key "{{{
-
-fu! s:toggle_leader_key(noleader) abort
+fu! s:toggle_leader_key(noleader) abort "{{{1
 
     if a:noleader
         return ''
@@ -1013,5 +959,12 @@ fu! s:toggle_leader_key(noleader) abort
 
     let b:_fk.leader_key = filter(['shown', 'replaced'], 'v:val !=# b:_fk.leader_key')[0]
 endfu
+fu! s:translate_special_key(key) abort "{{{1
+    let l:key = a:key
+    let l:key = substitute(l:key, "Leader", g:mapleader, "g")
+    let l:key = substitute(l:key, "Tab", "<Tab>", "g")
+    let l:key = substitute(l:key, "CR", "<CR>", "g")
+    let l:key = substitute(l:key, "BS", "<BS>", "g")
+    return l:key
+endfu
 
-"}}}
