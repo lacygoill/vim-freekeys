@@ -382,8 +382,8 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
                     \ ]
 
         return empty(a:lead)
-                    \ ? modes
-                    \ : filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
+            \?     modes
+            \:     filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
     endif
 
     return ''
