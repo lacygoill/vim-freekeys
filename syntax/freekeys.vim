@@ -1,3 +1,7 @@
+if exists('b:current_syntax')
+    finish
+endif
+
 hi fk_operator ctermfg=black ctermbg=173    guifg=#000000 guibg=#d78700
 hi fk_command  ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
 hi fk_motion   ctermfg=black ctermbg=green  guifg=#000000 guibg=#00d700
@@ -48,3 +52,5 @@ let s:warning_regexes = {
 for regex in values(s:warning_regexes['normal'])
     exe 'syn match fk_warning '.string('\v^'.regex.'$')
 endfor
+
+let b:current_syntax = 'freekeys'
