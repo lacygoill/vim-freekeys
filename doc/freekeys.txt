@@ -150,11 +150,11 @@ character for the current buffer:
     ono <silent> ]" :norm V]"k<CR>
 
     fu! s:search_comment(back, ...) abort
-        if empty(&cms)
+        if empty(&l:cms)
             return
         endif
 
-        let cms = '\V'.escape(matchstr(split(&cms, '%s')[0], '\S\+'), '\')
+        let cms = '\V'.escape(matchstr(split(&l:cms, '%s')[0], '\S\+'), '\')
 
         if a:0
             norm! gv
