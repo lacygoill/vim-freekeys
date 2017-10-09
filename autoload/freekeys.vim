@@ -739,7 +739,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
     " If a sequence shadows another one, or it overrides a default action,
     " remove it.
 
-    let condition_to_be_free = '!count(default_mappings, key)'
+    let condition_to_be_free = 'index(default_mappings, key) == -1'
 
     if nospecial
         let condition_to_be_free .= ' && key !~ "[[:punct:]]"'
@@ -766,9 +766,9 @@ fu! freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
     let s:flags  = {
                    \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-                   \ 'nospecial'  : count(cmd_args, '-nospecial'),
-                   \ 'nomapcheck' : count(cmd_args, '-nomapcheck'),
-                   \ 'noleader'   : count(cmd_args, '-noleader'),
+                   \ 'nospecial'  : index(cmd_args, '-nospecial') != -1,
+                   \ 'nomapcheck' : index(cmd_args, '-nomapcheck') != -1,
+                   \ 'noleader'   : index(cmd_args, '-noleader') != -1,
                    \ }
 
     if empty(s:flags.mode)
