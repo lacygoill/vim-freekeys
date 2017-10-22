@@ -140,11 +140,11 @@ Maybe the idea could be expanded to other filetypes?
 By replacing the double quotes in the {rhs} of the mappings with the comment
 character for the current buffer:
 >
-    nno <silent> [" :<C-U>call <SID>search_comment(1)<CR>
-    nno <silent> ]" :<C-U>call <SID>search_comment(0)<CR>
+    nno <silent> [" :<C-U>call <SID>search_comment(0)<CR>
+    nno <silent> ]" :<C-U>call <SID>search_comment(1)<CR>
 
-    xno <silent> [" :<C-U>call <SID>search_comment(1, 1)<CR>
-    xno <silent> ]" :<C-U>call <SID>search_comment(0, 1)<CR>
+    xno <silent> [" :<C-U>call <SID>search_comment(0, 1)<CR>
+    xno <silent> ]" :<C-U>call <SID>search_comment(1, 1)<CR>
 
     ono <silent> [" :norm V["j<CR>
     ono <silent> ]" :norm V]"k<CR>
@@ -160,11 +160,11 @@ character for the current buffer:
             norm! gv
         endif
 
-        let pattern = a:back
-                   \?     '\v%(^\s*'.cms.'\v.*\n)%(^\s*'.cms.'\v)@!'
-                   \:     '\v^%(\s*'.cms.'\v.*\n)@<!%(\s*'.cms.'\v)'
+        let pattern = a:fwd
+                   \?     '\v^%(\s*'.cms.'\v.*\n)@<!%(\s*'.cms.'\v)'
+                   \:     '\v%(^\s*'.cms.'\v.*\n)%(^\s*'.cms.'\v)@!'
 
-        call search(pattern, 'W'.(a:back ? 'b' : ''))
+        call search(pattern, 'W'.(a:fwd ? '' : 'b'))
     endfu
 
 << CTRL-\ >____________________________________________________________________~
