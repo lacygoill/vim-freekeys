@@ -375,16 +375,16 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
 
     elseif a:line =~# '-mode \w*$'
         let modes = [
-                    \ 'normal',
-                    \ 'visual',
-                    \ 'operator-pending',
-                    \ 'insert',
-                    \ 'command-line',
-                    \ ]
+                  \   'normal',
+                  \   'visual',
+                  \   'operator-pending',
+                  \   'insert',
+                  \   'command-line',
+                  \ ]
 
         return empty(a:lead)
-            \?     modes
-            \:     filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
+        \?         modes
+        \:         filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
     endif
 
     return ''
