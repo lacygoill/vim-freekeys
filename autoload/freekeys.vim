@@ -272,11 +272,7 @@ fu! s:categories() abort "{{{1
 
     let categories.motions_limited = [
                                      \ '$',
-                                     \ 'F',
-                                     \ 'T',
                                      \ '^',
-                                     \ 'f',
-                                     \ 't',
                                      \ '|',
                                      \ 'w',
                                      \ 'B',
