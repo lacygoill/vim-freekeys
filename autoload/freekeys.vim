@@ -418,7 +418,6 @@ fu! s:default_mappings(categories) abort "{{{1
     " It doesn't seem possible to manually set those marks.
     " They match the last position where resp. a change was made, and
     " insertion mode was stopped.
-
 "}}}
 
     let default_mappings = {
