@@ -825,13 +825,11 @@ fu! s:show_help() abort "{{{1
                         \ 'op prefix' : ['[!<>=cdy]g'         , 'fk_operator_and_prefix_g'],
                         \ }
 
-    for [pattern, replacement] in values(substitutions)
-        let topic = substitute(topic, '^\\Vfk_'.pattern.'$', replacement, '')
+    for [pat, rep] in values(substitutions)
+        let topic = substitute(topic, '^\\Vfk_'.pat.'$', rep, '')
     endfor
 
-    if !empty(taglist(topic))
-        exe 'help '.topic
-    endif
+    sil! exe 'help '.topic
 endfu
 
 fu! s:similar_tags() abort "{{{1
