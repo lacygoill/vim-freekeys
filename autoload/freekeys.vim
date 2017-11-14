@@ -761,9 +761,9 @@ fu! freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
     let s:flags  = {
                    \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-                   \ 'nospecial'  : index(cmd_args, '-nospecial') != -1,
-                   \ 'nomapcheck' : index(cmd_args, '-nomapcheck') != -1,
-                   \ 'noleader'   : index(cmd_args, '-noleader') != -1,
+                   \ 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
+                   \ 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
+                   \ 'noleader'   : index(cmd_args, '-noleader') >= 0,
                    \ }
 
     if empty(s:flags.mode)
