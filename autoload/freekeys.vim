@@ -416,9 +416,9 @@ fu! s:default_mappings(categories) abort "{{{1
 "}}}
 
     let default_mappings = {
-    \                        'command-line': {},
-    \                        'insert': {},
-    \                        'operator-pending': {},
+    \                        'command-line'     : {},
+    \                        'insert'           : {},
+    \                        'operator-pending' : {},
     \                      }
 
     let default_mappings.normal = {
@@ -863,15 +863,9 @@ fu! s:syntaxes(categories) abort "{{{1
     let chars              = prefixes+motions+commands+operators
 
     let syntaxes = {
-    \                'insert'          : {
-    \                                      'ctrl + char' : [['CTRL-'], chars],
-    \                                    },
-    \                'command-line'    : {
-    \                                      'ctrl + char' : [['CTRL-'], chars],
-    \                                    },
-    \                'operator-pending': {
-    \                                      'adverb + char' : [['i', 'a'], chars],
-    \                                    },
+    \                'insert'          : { 'ctrl + char'   : [['CTRL-'],  chars]},
+    \                'command-line'    : { 'ctrl + char'   : [['CTRL-'],  chars]},
+    \                'operator-pending': { 'adverb + char' : [['i', 'a'], chars]},
     \              }
 
     " In visual mode, we don't put `i`, `a` inside the commands category
