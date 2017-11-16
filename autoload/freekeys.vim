@@ -185,7 +185,6 @@ fu! s:candidates(categories) abort "{{{1
 endfu
 
 fu! s:categories() abort "{{{1
-
     let mode     = s:flags.mode
     let noleader = s:flags.noleader
 
@@ -346,7 +345,6 @@ fu! s:close_window() abort "{{{1
 endfu
 
 fu! freekeys#complete(lead, line, _pos) abort "{{{1
-
     if empty(a:lead)
         return [
         \        '-noleader ',
@@ -932,9 +930,9 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
     let cur_pos = getcurpos()
 
     if b:_fk.leader_key ==# 'shown'
-        sil! exe 'keepj keepp %s/Leader/'.substitute(g:mapleader, ' ', 'Space', '').'/g'
+        sil! exe 'keepj keepp %s/Leader/'.substitute(g:mapleader, ' ', 'Space', '').'/'.(&gd ? '' : 'g')
     else
-        sil! exe 'keepj keepp %s/'.substitute(g:mapleader, ' ', 'Space', '').'/Leader/g'
+        sil! exe 'keepj keepp %s/'.substitute(g:mapleader, ' ', 'Space', '').'/Leader/'.(&gd ? '' : 'g')
     endif
 
     call setpos('.', cur_pos)
@@ -944,9 +942,9 @@ endfu
 
 fu! s:translate_special_key(key) abort "{{{1
     let l:key = a:key
-    let l:key = substitute(l:key, "Leader", g:mapleader, "g")
-    let l:key = substitute(l:key, "Tab", "<Tab>", "g")
-    let l:key = substitute(l:key, "CR", "<CR>", "g")
-    let l:key = substitute(l:key, "BS", "<BS>", "g")
+    let l:key = substitute(l:key, 'Leader', g:mapleader, 'g')
+    let l:key = substitute(l:key, 'Tab', '<Tab>', 'g')
+    let l:key = substitute(l:key, 'CR', '<CR>', 'g')
+    let l:key = substitute(l:key, 'BS', '<BS>', 'g')
     return l:key
 endfu
