@@ -340,11 +340,9 @@ fu! s:categories() abort "{{{1
 endfu
 
 fu! s:close_window() abort "{{{1
-
     let id_orig_window = b:_fk.id_orig_window
     close
     call win_gotoid(id_orig_window)
-
 endfu
 
 fu! freekeys#complete(lead, line, _pos) abort "{{{1
@@ -387,7 +385,6 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
 endfu
 
 fu! s:default_mappings(categories) abort "{{{1
-
     let mode             = s:flags.mode
     let default_mappings = []
     let prefixes         = a:categories.prefixes
@@ -635,7 +632,6 @@ fu! s:default_mappings(categories) abort "{{{1
 endfu
 
 fu! s:display(free) abort "{{{1
-
     " Get the unique id of the window we're coming from.
     " Necessary to restore the focus correctly when we'll close the FK window.
 
@@ -702,7 +698,6 @@ fu! s:double_prefix(prefixes) abort "{{{1
 endfu
 
 fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
-
     let candidates       = a:candidates
     let default_mappings = a:default_mappings
     let nomapcheck       = s:flags.nomapcheck
@@ -751,13 +746,10 @@ fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
     endfor
 
     " Now, we can be sure everything in `candidates` is free.
-
     return candidates
-
 endfu
 
 fu! freekeys#main(...) abort "{{{1
-
     let cmd_args = split(a:1)
     let s:flags  = {
                    \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
@@ -779,7 +771,6 @@ fu! freekeys#main(...) abort "{{{1
 endfu
 
 fu! s:op_plus_forbidden_cmd(operators) abort "{{{1
-
     let op_plus_forbidden_cmd = []
 
     for operator in a:operators
@@ -809,7 +800,6 @@ fu! s:prefix_plus_letter() abort "{{{1
 endfu
 
 fu! s:show_help() abort "{{{1
-
     " All tags from the plugin begin with the prefix `fk_` to avoid conflicts
     " with default ones. Add it to the key sequence under the cursor.
 
@@ -862,7 +852,6 @@ fu! s:similar_tags() abort "{{{1
 endfu
 
 fu! s:syntaxes(categories) abort "{{{1
-
     let mode       = s:flags.mode
     let categories = a:categories
 
@@ -936,7 +925,6 @@ fu! s:syntaxes(categories) abort "{{{1
 endfu
 
 fu! s:toggle_leader_key(noleader) abort "{{{1
-
     if a:noleader
         return ''
     endif
@@ -953,6 +941,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     let b:_fk.leader_key = filter(['shown', 'replaced'], 'v:val !=# b:_fk.leader_key')[0]
 endfu
+
 fu! s:translate_special_key(key) abort "{{{1
     let l:key = a:key
     let l:key = substitute(l:key, "Leader", g:mapleader, "g")
@@ -961,4 +950,3 @@ fu! s:translate_special_key(key) abort "{{{1
     let l:key = substitute(l:key, "BS", "<BS>", "g")
     return l:key
 endfu
-
