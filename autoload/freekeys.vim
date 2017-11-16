@@ -5,7 +5,7 @@ let g:autoloaded_freekeys = 1
 
 " TODO: {{{1
 
-" - look at all the 'default_mappings' mappings, and see if some of them
+" • look at all the 'default_mappings' mappings, and see if some of them
 "   are useless, or only useful with a count.
 "   If there are, add them as free keys (with warnings).
 "   Example:  `go`, useful with a count, useless without
@@ -13,14 +13,14 @@ let g:autoloaded_freekeys = 1
 "   I've removed `go` from the default keys (inside `s:default_mappings()`),
 "   but I haven't added a warning for it. To do.
 "
-" - improve help:
+" • improve help:
 "
-"           - readibility
-"           - sections by mode
-"           - integrate most of the comments which are in this file,
+"           • readibility
+"           • sections by mode
+"           • integrate most of the comments which are in this file,
 "             and in ~/mappings.md, and in our notes
 "
-" - add `op+*`, `op+#` but with warning.
+" • add `op+*`, `op+#` but with warning.
 "
 "   Although, these syntaxes are valid, I'm not sure one would use them often
 "   because `*` and `#` are much more unpredictable than `2j` or `3k` for example.
@@ -33,20 +33,20 @@ let g:autoloaded_freekeys = 1
 "   Also, I think, ` `, `CR`, `BS` could be used after an op.
 "   We wouldn't lose anything. There must be synonym syntaxes. To be verified.
 "
-" - add `<+char`, `>+char` in visual mode
+" • add `<+char`, `>+char` in visual mode
 "
-" - add other control characters in normal mode
+" • add other control characters in normal mode
 "   C-k is not the only one, for example C-j is a synonym for `j`
 "
-" - add tricks in the help taken from ~/mappings.md and from our notes
+" • add tricks in the help taken from ~/mappings.md and from our notes
 "   (section mapping-lhs)
 "
-" - insert / visual / Ex / operator pending syntaxes
+" • insert / visual / Ex / operator pending syntaxes
 "
-" - after executing `:FK -nomapcheck`, if we hit `gh` twice, a Leader is added
+" • after executing `:FK -nomapcheck`, if we hit `gh` twice, a Leader is added
 "   Specifically, `CTRL-Space` becomes `CTRL-Leader`.
 "
-" - Can we use the same command (x, a, i, m, o, …) as a suffix for a normal
+" • Can we use the same command (x, a, i, m, o, …) as a suffix for a normal
 "   command, and as a prefix for an object?
 "
 "   The {lhs} in normal mode can be used as an operator or not.
@@ -107,7 +107,7 @@ let g:autoloaded_freekeys = 1
 " mode. And maybe even remove `prefix + i/a` (better be safe than sorry).
 " Or not. Vim uses `zi` by default, so `prefix + i/a` should be safe to keep.
 "
-" - In the help, remove the color names, replace them with some text colored
+" • In the help, remove the color names, replace them with some text colored
 "   with the proper HG; because the names don't match what we've written.
 "   For example, the "red" mappings are not red when my colorscheme is dark,
 "   they are orange.
@@ -138,12 +138,12 @@ let g:autoloaded_freekeys = 1
 " If we wanted to add these, to find the syntaxes leading to meaningless
 " sequences, we would have to consider 2 cases:
 "
-"       - the special key is mapped by default to a command:
+"       • the special key is mapped by default to a command:
 "
 "                 prefix + special key
 "                 op     + special key
 "
-"       - it isn't mapped to anything:
+"       • it isn't mapped to anything:
 "
 "                 special key + anything (including nothing)
 "
@@ -190,61 +190,61 @@ fu! s:categories() abort "{{{1
     let noleader = s:flags.noleader
 
     let categories = {
-                     \ 'prefixes'           : ['"', '@', 'm', "'", '`', '[', ']', 'Z', '\', 'g', 'z', '|'],
-                     \ 'commands'           : !&tildeop ? ['~'] : [],
-                     \ 'operators'          : ['!', '<', '=', '>', 'c', 'd', 'y'] + (&tildeop ? ['~'] : []),
-                     \ 'operators_linewise' : ['!', '<', '=', '>'],
-                     \ }
+    \                  'prefixes'           : ['"', '@', 'm', "'", '`', '[', ']', 'Z', '\', 'g', 'z', '|'],
+    \                  'commands'           : !&tildeop ? ['~'] : [],
+    \                  'operators'          : ['!', '<', '=', '>', 'c', 'd', 'y'] + (&tildeop ? ['~'] : []),
+    \                  'operators_linewise' : ['!', '<', '=', '>'],
+    \                }
 
     " we add `U` as a prefix in normal mode
     " `u` and `C-r` could be used to handle undo operations
     "
     " we also add `Leader` as a prefix, unless the `-noleader` argument was
     " passed to `:FK`
-    let categories.prefixes +=     (mode ==?    'normal' ? ['U'] : [])
-                               \ + (!noleader ? ['Leader']       : [])
+    let categories.prefixes +=   (mode ==?    'normal' ? ['U'] : [])
+    \                          + (!noleader ? ['Leader']       : [])
 
     let categories.motions = [
-                             \ '*',
-                             \ '#',
-                             \ '$',
-                             \ '%',
-                             \ '(',
-                             \ ')',
-                             \ '+',
-                             \ '-',
-                             \ ',',
-                             \ ';',
-                             \ '/',
-                             \ '?',
-                             \ 'B',
-                             \ 'E',
-                             \ 'F',
-                             \ 'G',
-                             \ 'H',
-                             \ 'L',
-                             \ 'M',
-                             \ 'N',
-                             \ 'T',
-                             \ 'W',
-                             \ '^',
-                             \ '_',
-                             \ 'b',
-                             \ 'e',
-                             \ 'f',
-                             \ 'h',
-                             \ 'j',
-                             \ 'k',
-                             \ 'l',
-                             \ 'n',
-                             \ 't',
-                             \ 'w',
-                             \ '{',
-                             \ '}',
-                             \ ' ',
-                             \ 'BS',
-                             \ 'CR',
-                             \ ]
+    \                          '*',
+    \                          '#',
+    \                          '$',
+    \                          '%',
+    \                          '(',
+    \                          ')',
+    \                          '+',
+    \                          '-',
+    \                          ',',
+    \                          ';',
+    \                          '/',
+    \                          '?',
+    \                          'B',
+    \                          'E',
+    \                          'F',
+    \                          'G',
+    \                          'H',
+    \                          'L',
+    \                          'M',
+    \                          'N',
+    \                          'T',
+    \                          'W',
+    \                          '^',
+    \                          '_',
+    \                          'b',
+    \                          'e',
+    \                          'f',
+    \                          'h',
+    \                          'j',
+    \                          'k',
+    \                          'l',
+    \                          'n',
+    \                          't',
+    \                          'w',
+    \                          '{',
+    \                          '}',
+    \                          ' ',
+    \                          'BS',
+    \                          'CR',
+    \                        ]
 
     " The 18 following motions stay on the line most of the time.{{{
     " The last 11 can move across different lines, but very limitedly.
@@ -271,21 +271,21 @@ fu! s:categories() abort "{{{1
     " "}}}
 
     let categories.motions_limited = [
-                                     \ '$',
-                                     \ '^',
-                                     \ '|',
-                                     \ 'w',
-                                     \ 'B',
-                                     \ 'E',
-                                     \ 'W',
-                                     \ 'b',
-                                     \ 'e',
-                                     \ 'h',
-                                     \ 'l',
-                                     \ ' ',
-                                     \ 'BS',
-                                     \ 'CR',
-                                     \ ]
+    \                                  '$',
+    \                                  '^',
+    \                                  '|',
+    \                                  'w',
+    \                                  'B',
+    \                                  'E',
+    \                                  'W',
+    \                                  'b',
+    \                                  'e',
+    \                                  'h',
+    \                                  'l',
+    \                                  ' ',
+    \                                  'BS',
+    \                                  'CR',
+    \                                ]
 
     " We don't consider Tab as a motion, because even though `C-i` jumps forward
     " in the jumplist, by default, `operator + Tab` doesn't do anything.
@@ -294,35 +294,35 @@ fu! s:categories() abort "{{{1
     "         operator + Tab
 
     let categories.commands += [
-                               \ '&',
-                               \ '.',
-                               \ ':',
-                               \ 'A',
-                               \ 'C',
-                               \ 'D',
-                               \ 'I',
-                               \ 'J',
-                               \ 'K',
-                               \ 'O',
-                               \ 'P',
-                               \ 'Q',
-                               \ 'R',
-                               \ 'S',
-                               \ 'V',
-                               \ 'X',
-                               \ 'Y',
-                               \ 'a',
-                               \ 'i',
-                               \ 'o',
-                               \ 'p',
-                               \ 'q',
-                               \ 'r',
-                               \ 's',
-                               \ 'u',
-                               \ 'v',
-                               \ 'x',
-                               \ 'Tab',
-                               \ ]
+    \                            '&',
+    \                            '.',
+    \                            ':',
+    \                            'A',
+    \                            'C',
+    \                            'D',
+    \                            'I',
+    \                            'J',
+    \                            'K',
+    \                            'O',
+    \                            'P',
+    \                            'Q',
+    \                            'R',
+    \                            'S',
+    \                            'V',
+    \                            'X',
+    \                            'Y',
+    \                            'a',
+    \                            'i',
+    \                            'o',
+    \                            'p',
+    \                            'q',
+    \                            'r',
+    \                            's',
+    \                            'u',
+    \                            'v',
+    \                            'x',
+    \                            'Tab',
+    \                          ]
 
     " If the `-noleader` argument wasn't provided, it means we want the algo to
     " consider the usage of a Leader key. So, we remove `g:mapleader` from all
@@ -349,19 +349,19 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
 
     if empty(a:lead)
         return [
-               \ '-noleader ',
-               \ '-nomapcheck ',
-               \ '-nospecial ',
-               \ '-mode',
-               \ ]
+        \        '-noleader ',
+        \        '-nomapcheck ',
+        \        '-nospecial ',
+        \        '-mode',
+        \      ]
 
     elseif a:lead[0] ==# '-'
         let flags = [
-                    \ '-noleader ',
-                    \ '-nomapcheck ',
-                    \ '-nospecial ',
-                    \ '-mode',
-                    \ ]
+        \             '-noleader ',
+        \             '-nomapcheck ',
+        \             '-nospecial ',
+        \             '-mode',
+        \           ]
 
         " filter the list `flags` so that only the item matching the current
         " text being completed (`a:lead`) remains
@@ -418,210 +418,210 @@ fu! s:default_mappings(categories) abort "{{{1
 "}}}
 
     let default_mappings = {
-                           \ 'command-line': {},
-                           \ 'insert': {},
-                           \ 'operator-pending': {},
-                           \ }
+    \                        'command-line': {},
+    \                        'insert': {},
+    \                        'operator-pending': {},
+    \                      }
 
     let default_mappings.normal = {
-                                  \  'prefix + letter'    : s:prefix_plus_letter(),
-                                  \  'double prefix'      : s:double_prefix(prefixes),
-                                  \  'op + forbidden cmd' : s:op_plus_forbidden_cmd(operators),
-                                  \
-                                  \  'mark'               : ['m"', "m'", 'm<', 'm>', 'm[', 'm]', 'm`'],
-                                  \  'double operator'    : ['!!', '==', '<<', '>>', 'cc', 'dd', 'yy'],
-                                  \  'at'                 : ['@"', '@*', '@+', '@-', '@.', '@/', '@:', '@='],
-                                  \
-                                  \  'backtick'           : ['`"', '`.', '`(', '`)', '`<', '`>',
-                                  \                           '`[', '`]', '`^', '``', '`{', '`}'],
-                                  \
-                                  \  'double quote'       : ['"+', '"-', '"*', '"/', '"=', '"%', '"#',
-                                  \                           '":', '".', '"_'],
-                                  \
-                                  \  'single quote'       : ['''"', "'.", "'(", "')", "'<", "'>",
-                                  \                           "'[", "']", "'^", "'`", "'{", "'}"],
-                                  \ }
+    \                               'prefix + letter'    : s:prefix_plus_letter(),
+    \                               'double prefix'      : s:double_prefix(prefixes),
+    \                               'op + forbidden cmd' : s:op_plus_forbidden_cmd(operators),
+    \
+    \                               'mark'               : ['m"', "m'", 'm<', 'm>', 'm[', 'm]', 'm`'],
+    \                               'double operator'    : ['!!', '==', '<<', '>>', 'cc', 'dd', 'yy'],
+    \                               'at'                 : ['@"', '@*', '@+', '@-', '@.', '@/', '@:', '@='],
+    \
+    \                               'backtick'           : ['`"', '`.', '`(', '`)', '`<', '`>',
+    \                                                        '`[', '`]', '`^', '``', '`{', '`}'],
+    \
+    \                               'double quote'       : ['"+', '"-', '"*', '"/', '"=', '"%', '"#',
+    \                                                        '":', '".', '"_'],
+    \
+    \                               'single quote'       : ['''"', "'.", "'(", "')", "'<", "'>",
+    \                                                        "'[", "']", "'^", "'`", "'{", "'}"],
+    \                             }
 
     let default_mappings.normal.various = [
-                                          \ '[*',
-                                          \ ']*',
-                                          \ '[#',
-                                          \ ']#',
-                                          \ '[''',
-                                          \ ']''',
-                                          \ '[(',
-                                          \ '])',
-                                          \ '[{',
-                                          \ ']}',
-                                          \ '[]',
-                                          \ '][',
-                                          \ '[`',
-                                          \ ']`',
-                                          \ '[/',
-                                          \ ']/',
-                                          \ '[D',
-                                          \ ']D',
-                                          \ '[I',
-                                          \ ']I',
-                                          \ '[M',
-                                          \ ']M',
-                                          \ '[P',
-                                          \ ']P',
-                                          \ '[S',
-                                          \ ']S',
-                                          \ '[c',
-                                          \ ']c',
-                                          \ '[d',
-                                          \ ']d',
-                                          \ '[f',
-                                          \ ']f',
-                                          \ '[i',
-                                          \ ']i',
-                                          \ '[m',
-                                          \ ']m',
-                                          \ '[p',
-                                          \ ']p',
-                                          \ '[s',
-                                          \ ']s',
-                                          \ '[z',
-                                          \ ']z',
-                                          \ 'g#',
-                                          \ 'g*',
-                                          \ 'g$',
-                                          \ 'g&',
-                                          \ 'g''',
-                                          \ 'g+',
-                                          \ 'g,',
-                                          \ 'g-',
-                                          \ 'g;',
-                                          \ 'g<',
-                                          \ 'g?',
-                                          \ 'g@',
-                                          \ 'gD',
-                                          \ 'gE',
-                                          \ 'gF',
-                                          \ 'gH',
-                                          \ 'gI',
-                                          \ 'gJ',
-                                          \ 'gN',
-                                          \ 'gP',
-                                          \ 'gQ',
-                                          \ 'gR',
-                                          \ 'gT',
-                                          \ 'gU',
-                                          \ 'g]',
-                                          \ 'g^',
-                                          \ 'g_',
-                                          \ 'g`',
-                                          \ 'gd',
-                                          \ 'ge',
-                                          \ 'gf',
-                                          \ 'gh',
-                                          \ 'gi',
-                                          \ 'gj',
-                                          \ 'gk',
-                                          \ 'gm',
-                                          \ 'gn',
-                                          \ 'gp',
-                                          \ 'gq',
-                                          \ 'gr',
-                                          \ 'gs',
-                                          \ 'gt',
-                                          \ 'gu',
-                                          \ 'gv',
-                                          \ 'g~',
-                                          \ 'ZQ',
-                                          \ 'z#',
-                                          \ 'z+',
-                                          \ 'z-',
-                                          \ 'z.',
-                                          \ 'z=',
-                                          \ 'zCR',
-                                          \ 'zA',
-                                          \ 'zC',
-                                          \ 'zD',
-                                          \ 'zE',
-                                          \ 'zF',
-                                          \ 'zG',
-                                          \ 'zH',
-                                          \ 'zL',
-                                          \ 'zM',
-                                          \ 'zN',
-                                          \ 'zO',
-                                          \ 'zR',
-                                          \ 'zW',
-                                          \ 'zX',
-                                          \ 'z^',
-                                          \ 'za',
-                                          \ 'zb',
-                                          \ 'zc',
-                                          \ 'zd',
-                                          \ 'ze',
-                                          \ 'zf',
-                                          \ 'zg',
-                                          \ 'zh',
-                                          \ 'zi',
-                                          \ 'zj',
-                                          \ 'zk',
-                                          \ 'zl',
-                                          \ 'zm',
-                                          \ 'zn',
-                                          \ 'zo',
-                                          \ 'zr',
-                                          \ 'zs',
-                                          \ 'zt',
-                                          \ 'zv',
-                                          \ 'zw',
-                                          \ 'zx',
-                                          \ ]
+    \                                       '[*',
+    \                                       ']*',
+    \                                       '[#',
+    \                                       ']#',
+    \                                       '[''',
+    \                                       ']''',
+    \                                       '[(',
+    \                                       '])',
+    \                                       '[{',
+    \                                       ']}',
+    \                                       '[]',
+    \                                       '][',
+    \                                       '[`',
+    \                                       ']`',
+    \                                       '[/',
+    \                                       ']/',
+    \                                       '[D',
+    \                                       ']D',
+    \                                       '[I',
+    \                                       ']I',
+    \                                       '[M',
+    \                                       ']M',
+    \                                       '[P',
+    \                                       ']P',
+    \                                       '[S',
+    \                                       ']S',
+    \                                       '[c',
+    \                                       ']c',
+    \                                       '[d',
+    \                                       ']d',
+    \                                       '[f',
+    \                                       ']f',
+    \                                       '[i',
+    \                                       ']i',
+    \                                       '[m',
+    \                                       ']m',
+    \                                       '[p',
+    \                                       ']p',
+    \                                       '[s',
+    \                                       ']s',
+    \                                       '[z',
+    \                                       ']z',
+    \                                       'g#',
+    \                                       'g*',
+    \                                       'g$',
+    \                                       'g&',
+    \                                       'g''',
+    \                                       'g+',
+    \                                       'g,',
+    \                                       'g-',
+    \                                       'g;',
+    \                                       'g<',
+    \                                       'g?',
+    \                                       'g@',
+    \                                       'gD',
+    \                                       'gE',
+    \                                       'gF',
+    \                                       'gH',
+    \                                       'gI',
+    \                                       'gJ',
+    \                                       'gN',
+    \                                       'gP',
+    \                                       'gQ',
+    \                                       'gR',
+    \                                       'gT',
+    \                                       'gU',
+    \                                       'g]',
+    \                                       'g^',
+    \                                       'g_',
+    \                                       'g`',
+    \                                       'gd',
+    \                                       'ge',
+    \                                       'gf',
+    \                                       'gh',
+    \                                       'gi',
+    \                                       'gj',
+    \                                       'gk',
+    \                                       'gm',
+    \                                       'gn',
+    \                                       'gp',
+    \                                       'gq',
+    \                                       'gr',
+    \                                       'gs',
+    \                                       'gt',
+    \                                       'gu',
+    \                                       'gv',
+    \                                       'g~',
+    \                                       'ZQ',
+    \                                       'z#',
+    \                                       'z+',
+    \                                       'z-',
+    \                                       'z.',
+    \                                       'z=',
+    \                                       'zCR',
+    \                                       'zA',
+    \                                       'zC',
+    \                                       'zD',
+    \                                       'zE',
+    \                                       'zF',
+    \                                       'zG',
+    \                                       'zH',
+    \                                       'zL',
+    \                                       'zM',
+    \                                       'zN',
+    \                                       'zO',
+    \                                       'zR',
+    \                                       'zW',
+    \                                       'zX',
+    \                                       'z^',
+    \                                       'za',
+    \                                       'zb',
+    \                                       'zc',
+    \                                       'zd',
+    \                                       'ze',
+    \                                       'zf',
+    \                                       'zg',
+    \                                       'zh',
+    \                                       'zi',
+    \                                       'zj',
+    \                                       'zk',
+    \                                       'zl',
+    \                                       'zm',
+    \                                       'zn',
+    \                                       'zo',
+    \                                       'zr',
+    \                                       'zs',
+    \                                       'zt',
+    \                                       'zv',
+    \                                       'zw',
+    \                                       'zx',
+    \                                     ]
 
     let default_mappings.visual = {
-                                  \ 'prefix + letter' : s:prefix_plus_letter(),
-                                  \ }
+    \                               'prefix + letter' : s:prefix_plus_letter(),
+    \                             }
 
     let default_mappings.visual.various = [
-                                          \ 'a(',
-                                          \ 'a)',
-                                          \ 'a<',
-                                          \ 'a>',
-                                          \ 'aB',
-                                          \ 'aW',
-                                          \ 'a[',
-                                          \ 'a]',
-                                          \ 'a`',
-                                          \ 'ab',
-                                          \ 'ap',
-                                          \ 'as',
-                                          \ 'at',
-                                          \ 'aw',
-                                          \ 'a{',
-                                          \ 'a}',
-                                          \ 'g?',
-                                          \ 'gF',
-                                          \ 'gN',
-                                          \ 'g]',
-                                          \ 'gf',
-                                          \ 'gn',
-                                          \ 'gv',
-                                          \ 'i(',
-                                          \ 'i)',
-                                          \ 'i<',
-                                          \ 'i>',
-                                          \ 'iB',
-                                          \ 'iW',
-                                          \ 'i[',
-                                          \ 'i]',
-                                          \ 'i`',
-                                          \ 'ib',
-                                          \ 'ip',
-                                          \ 'is',
-                                          \ 'it',
-                                          \ 'iw',
-                                          \ 'i{',
-                                          \ 'i}',
-                                          \ "i'",
-                                          \ "a'",
-                                          \ ]
+    \                                       'a(',
+    \                                       'a)',
+    \                                       'a<',
+    \                                       'a>',
+    \                                       'aB',
+    \                                       'aW',
+    \                                       'a[',
+    \                                       'a]',
+    \                                       'a`',
+    \                                       'ab',
+    \                                       'ap',
+    \                                       'as',
+    \                                       'at',
+    \                                       'aw',
+    \                                       'a{',
+    \                                       'a}',
+    \                                       'g?',
+    \                                       'gF',
+    \                                       'gN',
+    \                                       'g]',
+    \                                       'gf',
+    \                                       'gn',
+    \                                       'gv',
+    \                                       'i(',
+    \                                       'i)',
+    \                                       'i<',
+    \                                       'i>',
+    \                                       'iB',
+    \                                       'iW',
+    \                                       'i[',
+    \                                       'i]',
+    \                                       'i`',
+    \                                       'ib',
+    \                                       'ip',
+    \                                       'is',
+    \                                       'it',
+    \                                       'iw',
+    \                                       'i{',
+    \                                       'i}',
+    \                                       "i'",
+    \                                       "a'",
+    \                                     ]
 
     let result = []
     for a_list in values(default_mappings[mode])
@@ -639,9 +639,9 @@ fu! s:display(free) abort "{{{1
 
     tabnew freekeys
     let b:_fk = extend(s:flags, {
-                                \ 'id_orig_window' : id_orig_window,
-                                \ 'leader_key'     : 'shown',
-                                \ })
+    \                             'id_orig_window' : id_orig_window,
+    \                             'leader_key'     : 'shown',
+    \                           })
 
     setl bh=wipe nobl bt=nofile noswf nowrap
 
@@ -752,11 +752,11 @@ endfu
 fu! freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
     let s:flags  = {
-                   \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-                   \ 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
-                   \ 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
-                   \ 'noleader'   : index(cmd_args, '-noleader') >= 0,
-                   \ }
+    \                'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
+    \                'nospecial'  : index(cmd_args, '-nospecial') >= 0,
+    \                'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
+    \                'noleader'   : index(cmd_args, '-noleader') >= 0,
+    \              }
 
     if empty(s:flags.mode)
         let s:flags.mode = 'normal'
@@ -792,9 +792,9 @@ fu! s:prefix_plus_letter() abort "{{{1
     let prefix_plus_letter = []
 
     for prefix in ['"', '@', 'm', "'", '`']
-        let prefix_plus_letter += map(range(char2nr('a'),char2nr('z'))+
-                                  \   range(char2nr('A'),char2nr('Z')),
-                                  \ 'prefix.nr2char(v:val)')
+        let prefix_plus_letter += map(  range(char2nr('a'),char2nr('z'))
+        \                             + range(char2nr('A'),char2nr('Z')),
+        \                             'prefix.nr2char(v:val)')
     endfor
     return prefix_plus_letter
 endfu
@@ -807,13 +807,13 @@ fu! s:show_help() abort "{{{1
     let topic = substitute(topic, ' ', '_', 'g')
 
     let substitutions = {
-                        \ 'U'         : ['U\zs.*'             , ''],
-                        \ 'Bar'       : ['\zs|.*'             , 'Bar'],
-                        \ '[] ctrl-'  : ['[[\]]_CTRL-'        , 'fk_[]_CTRL-'],
-                        \ '[] "'      : ['[[\]]"'             , 'fk_[]_double_quote'],
-                        \ 'op ctrl-'  : ['\%(c\|d\|y\)_CTRL-' , 'fk_operator_and_CTRL-V'],
-                        \ 'op prefix' : ['[!<>=cdy]g'         , 'fk_operator_and_prefix_g'],
-                        \ }
+    \                     'U'         : ['U\zs.*'             , ''],
+    \                     'Bar'       : ['\zs|.*'             , 'Bar'],
+    \                     '[] ctrl-'  : ['[[\]]_CTRL-'        , 'fk_[]_CTRL-'],
+    \                     '[] "'      : ['[[\]]"'             , 'fk_[]_double_quote'],
+    \                     'op ctrl-'  : ['\%(c\|d\|y\)_CTRL-' , 'fk_operator_and_CTRL-V'],
+    \                     'op prefix' : ['[!<>=cdy]g'         , 'fk_operator_and_prefix_g'],
+    \                   }
 
     for [pat, rep] in values(substitutions)
         let topic = substitute(topic, '^\\Vfk_'.pat.'$', rep, '')
@@ -865,46 +865,46 @@ fu! s:syntaxes(categories) abort "{{{1
     let chars              = prefixes+motions+commands+operators
 
     let syntaxes = {
-                   \ 'insert'          : {
-                   \                       'ctrl + char' : [['CTRL-'], chars],
-                   \                       },
-                   \ 'command-line'    : {
-                   \                       'ctrl + char' : [['CTRL-'], chars],
-                   \                       },
-                   \ 'operator-pending': {
-                   \                       'adverb + char' : [['i', 'a'], chars],
-                   \                       },
-                   \ }
+    \                'insert'          : {
+    \                                      'ctrl + char' : [['CTRL-'], chars],
+    \                                    },
+    \                'command-line'    : {
+    \                                      'ctrl + char' : [['CTRL-'], chars],
+    \                                    },
+    \                'operator-pending': {
+    \                                      'adverb + char' : [['i', 'a'], chars],
+    \                                    },
+    \              }
 
     " In visual mode, we don't put `i`, `a` inside the commands category
     " because of the convention which uses them as prefix to build
     " text-objects.
 
     let syntaxes.visual = {
-                          \ 'pfx + char'  : [prefixes               , chars],
-                          \ 'pfx + CTRL'  : [prefixes               , ['CTRL-']],
-                          \ 'CTRL + char' : [['CTRL-']              , chars],
-                          \ 'cmd + char'  : [['&', '.', 'Q', 'Tab'] , chars],
-                          \ }
+    \                       'pfx + char'  : [prefixes               , chars],
+    \                       'pfx + CTRL'  : [prefixes               , ['CTRL-']],
+    \                       'CTRL + char' : [['CTRL-']              , chars],
+    \                       'cmd + char'  : [['&', '.', 'Q', 'Tab'] , chars],
+    \                     }
 
     " Most of the meaningless sequences need at least 2 keys.
     " But one of them need at least 3 keys:    digit + prefix + digit
 
     let syntaxes.normal = {
-                          \ 'pfx  + char'     : [prefixes,            chars],
-                          \ 'op   + cmd'      : [operators,           commands],
-                          \ 'op1  + op2'      : [operators,           operators],
-                          \ 'op   + pfx'      : [operators,           prefixes],
-                          \ 'op_l + motion_s' : [operators_linewise,  motions_limited],
-                          \ 'CTRL + char'     : [['CTRL-'],           ['K', 'Space', '\', '_', '@']],
-                          \ 'op   + CTRL'     : [operators,           ['CTRL-']],
-                          \ 'pfx  + CTRL'     : [prefixes,            ['CTRL-']],
-                          \ }
+    \                       'pfx  + char'     : [prefixes,            chars],
+    \                       'op   + cmd'      : [operators,           commands],
+    \                       'op1  + op2'      : [operators,           operators],
+    \                       'op   + pfx'      : [operators,           prefixes],
+    \                       'op_l + motion_s' : [operators_linewise,  motions_limited],
+    \                       'CTRL + char'     : [['CTRL-'],           ['K', 'Space', '\', '_', '@']],
+    \                       'op   + CTRL'     : [operators,           ['CTRL-']],
+    \                       'pfx  + CTRL'     : [prefixes,            ['CTRL-']],
+    \                     }
 
     " These 8 syntaxes should produce all 2-key meaningless sequences.
     " For n-key meaningless sequences (n>2), there's only 1 possible syntax:
     "
-    "         - meaningless + anything
+    "         • meaningless + anything
 
     " CTRL is treated as a special prefix.
     " Indeed, there are very few USABLE unmapped key sequences with `CTRL-`.
