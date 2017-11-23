@@ -22,10 +22,10 @@ let g:autoloaded_freekeys = 1
 "
 " • add `op+*`, `op+#` but with warning.
 "
-"   Although, these syntaxes are valid, I'm not sure one would use them often
-"   because `*` and `#` are much more unpredictable than `2j` or `3k` for example.
-"   We don't systematically see all the text between current position and the
-"   next occurrence of the current word.
+"   Although these  syntaxes are valid,  I'm not sure  one would use  them often
+"   because  `*` and  `#` are  much  more unpredictable  than `2j`  or `3k`  for
+"   example.  We don't systematically see  all the text between current position
+"   and the next occurrence of the current word.
 "
 "   check if there are other unpredictable `operator + motions` combinations like
 "   `c*`, `!*`, which would be rarely used; add them with warnings
@@ -792,7 +792,7 @@ fu! s:prefix_plus_letter() abort "{{{1
     for prefix in ['"', '@', 'm', "'", '`']
         let prefix_plus_letter += map(  range(char2nr('a'),char2nr('z'))
         \                             + range(char2nr('A'),char2nr('Z')),
-        \                             'prefix.nr2char(v:val)')
+        \                             'prefix.nr2char(v:val,1)')
     endfor
     return prefix_plus_letter
 endfu
@@ -896,7 +896,7 @@ fu! s:syntaxes(categories) abort "{{{1
     " These 8 syntaxes should produce all 2-key meaningless sequences.
     " For n-key meaningless sequences (n>2), there's only 1 possible syntax:
     "
-    "         • meaningless + anything
+    "         • 2-key meaningless + any (n-2)-key sequence
 
     " CTRL is treated as a special prefix.
     " Indeed, there are very few USABLE unmapped key sequences with `CTRL-`.
