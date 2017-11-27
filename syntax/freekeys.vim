@@ -29,7 +29,7 @@ let s:warning_regexes = {
                         \ 'normal'           : { 'op+g'      : '[!=<>cdy]g',
                         \                        'do dp zu'  : '%(do|dp|zu)',
                         \                        'op+ctrl-v' : '%(c|d|y) CTRL-',
-                        \                        'gw U Bar'  : '%(gw|U|\|).*',
+                        \                        'U Bar'     : '%(U|\|).*',
                         \                        'ctrl-char' : 'CTRL-%([\@]|Space)',
                         \                        'g[]+ctrl'  : '[g[\]] CTRL.*',
                         \                        '[] "'      : '[[\]]"',

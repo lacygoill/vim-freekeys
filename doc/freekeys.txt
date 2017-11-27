@@ -235,12 +235,6 @@ Only useful in a buffer where the 'diff' option is set on.
 Could be mapped to something else when 'diff' is off.
 
 
-< gw >________________________________________________________________________~
-                                                                         *fk_gw*
-
-By default, |gw| is a formatting operator. |gq| could be used instead.
-
-
 < U >_________________________________________________________________________~
                                                                           *fk_U*
 

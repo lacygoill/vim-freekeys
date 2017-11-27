@@ -527,6 +527,7 @@ fu! s:default_mappings(categories) abort "{{{1
     \                                       'gt',
     \                                       'gu',
     \                                       'gv',
+    \                                       'gw',
     \                                       'g~',
     \                                       'ZQ',
     \                                       'z#',
