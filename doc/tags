@@ -11,7 +11,6 @@ fk_[]_double_quote	freekeys.txt	/*fk_[]_double_quote*
 fk_do	freekeys.txt	/*fk_do*
 fk_dp	freekeys.txt	/*fk_dp*
 fk_g_CTRL-	freekeys.txt	/*fk_g_CTRL-*
-fk_gw	freekeys.txt	/*fk_gw*
 fk_operator_and_CTRL-V	freekeys.txt	/*fk_operator_and_CTRL-V*
 fk_operator_and_prefix_g	freekeys.txt	/*fk_operator_and_prefix_g*
 fk_warnings	freekeys.txt	/*fk_warnings*

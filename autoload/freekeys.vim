@@ -344,8 +344,8 @@ fu! s:close_window() abort "{{{1
     call win_gotoid(id_orig_window)
 endfu
 
-fu! freekeys#complete(lead, line, _pos) abort "{{{1
-    if empty(a:lead)
+fu! freekeys#complete(arglead, line, _pos) abort "{{{1
+    if empty(a:arglead)
         return [
         \        '-noleader ',
         \        '-nomapcheck ',
@@ -353,7 +353,7 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
         \        '-mode',
         \      ]
 
-    elseif a:lead[0] ==# '-'
+    elseif a:arglead[0] ==# '-'
         let flags = [
         \             '-noleader ',
         \             '-nomapcheck ',
@@ -362,8 +362,8 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
         \           ]
 
         " filter the list `flags` so that only the item matching the current
-        " text being completed (`a:lead`) remains
-        return filter(flags, 'v:val[:strlen(a:lead)-1] ==# a:lead')
+        " text being completed (`a:arglead`) remains
+        return filter(flags, 'v:val[:strlen(a:arglead)-1] ==# a:arglead')
 
     elseif a:line =~# '-mode \w*$'
         let modes = [
@@ -374,9 +374,9 @@ fu! freekeys#complete(lead, line, _pos) abort "{{{1
         \             'command-line',
         \           ]
 
-        return empty(a:lead)
+        return empty(a:arglead)
         \?         modes
-        \:         filter(modes, 'v:val[:strlen(a:lead)-1] ==# a:lead')
+        \:         filter(modes, 'v:val[:strlen(a:arglead)-1] ==# a:arglead')
     endif
 
     return ''
