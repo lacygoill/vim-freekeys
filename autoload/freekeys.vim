@@ -344,7 +344,7 @@ fu! s:close_window() abort "{{{1
     call win_gotoid(id_orig_window)
 endfu
 
-fu! freekeys#complete(arglead, line, _pos) abort "{{{1
+fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
     if empty(a:arglead)
         return [
         \        '-noleader ',
@@ -365,7 +365,7 @@ fu! freekeys#complete(arglead, line, _pos) abort "{{{1
         " text being completed (`a:arglead`) remains
         return filter(flags, 'v:val[:strlen(a:arglead)-1] ==# a:arglead')
 
-    elseif a:line =~# '-mode \w*$'
+    elseif a:cmdline =~# '-mode \w*$'
         let modes = [
         \             'normal',
         \             'visual',
