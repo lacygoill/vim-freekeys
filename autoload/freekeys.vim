@@ -331,7 +331,7 @@ fu! s:categories() abort "{{{1
 
     if !noleader
         for category in keys(categories)
-            call filter(categories[category], { k,v -> v !=# g:mapleader })
+            call filter(categories[category], { i,v -> v !=# g:mapleader })
         endfor
     endif
 
@@ -363,7 +363,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
 
         " filter the list `flags` so that only the item matching the current
         " text being completed (`a:arglead`) remains
-        return filter(flags, { k,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
+        return filter(flags, { i,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
 
     elseif a:cmdline =~# '-mode \w*$'
         let modes = [
@@ -376,7 +376,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
 
         return empty(a:arglead)
         \?         modes
-        \:         filter(modes, { k,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
+        \:         filter(modes, { i,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
     endif
 
     return ''
@@ -793,7 +793,7 @@ fu! s:prefix_plus_letter() abort "{{{1
     for prefix in ['"', '@', 'm', "'", '`']
         let prefix_plus_letter += map(  range(char2nr('a'),char2nr('z'))
         \                             + range(char2nr('A'),char2nr('Z')),
-        \                             { k,v -> prefix.nr2char(v,1) })
+        \                             { i,v -> prefix.nr2char(v,1) })
     endfor
     return prefix_plus_letter
 endfu
@@ -838,7 +838,7 @@ fu! s:similar_tags() abort "{{{1
     for idx in range(line('$'), 1, -1)
         let l:key    = substitute(getline(idx), ' ', '_', 'g')
         let taglist  = taglist('\C\V\^'. mode_tag .escape(l:key, '\'))
-        let tagnames = map(taglist, { k,v -> '    '.escape(v['name'], '/') })
+        let tagnames = map(taglist, { i,v -> '    '.escape(v['name'], '/') })
 
         if empty(tagnames)
             sil exe idx.'d_'
@@ -932,7 +932,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     call setpos('.', cur_pos)
 
-    let b:_fk.leader_key = filter(['shown', 'replaced'], { k,v -> v !=# b:_fk.leader_key })[0]
+    let b:_fk.leader_key = filter(['shown', 'replaced'], { i,v -> v !=# b:_fk.leader_key })[0]
 endfu
 
 fu! s:translate_special_key(key) abort "{{{1
