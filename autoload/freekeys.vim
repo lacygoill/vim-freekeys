@@ -678,12 +678,12 @@ fu! s:display(free) abort "{{{1
 
     call cursor(1,1)
 
-    nno <silent> <buffer> <nowait> <CR>    :<C-U>call <SID>show_help()<CR>
-    nno <silent> <buffer> <nowait> q       :<C-U>call <SID>close_window()<CR>
-    nno <silent> <buffer> <nowait> g?      :<C-U>help freekeys-mappings<CR>
-    nno <silent> <buffer> <nowait> gc      :<C-U>call <SID>similar_tags()<CR>
+    nno  <silent><buffer><nowait>  <CR>  :<C-U>call <SID>show_help()<CR>
+    nno  <silent><buffer><nowait>  q     :<C-U>call <SID>close_window()<CR>
+    nno  <silent><buffer><nowait>  g?    :<C-U>help freekeys-mappings<CR>
+    nno  <silent><buffer><nowait>  gc    :<C-U>call <SID>similar_tags()<CR>
 
-    exe 'nno <silent> <buffer> <nowait> gl    :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
+    exe 'nno  <buffer><nowait><silent>  gl  :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
 endfu
 
 fu! s:double_prefix(prefixes) abort "{{{1
@@ -847,7 +847,7 @@ fu! s:similar_tags() abort "{{{1
         endif
     endfor
 
-    nno <silent> <buffer> <nowait> q    :<C-U>close<CR>
+    nno  <buffer><nowait><silent>  q  :<C-U>close<CR>
 endfu
 
 fu! s:syntaxes(categories) abort "{{{1
