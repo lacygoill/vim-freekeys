@@ -1,8 +1,3 @@
-if exists('g:autoloaded_freekeys')
-    finish
-endif
-let g:autoloaded_freekeys = 1
-
 " TODO: {{{1
 
 " • look at all the 'default_mappings' mappings, and see if some of them
