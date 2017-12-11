@@ -358,7 +358,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
 
         " filter the list `flags` so that only the item matching the current
         " text being completed (`a:arglead`) remains
-        return filter(flags, { i,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
+        return filter(flags, { i,v -> stridx(v, a:arglead) == 0 })
 
     elseif a:cmdline =~# '-mode \w*$'
         let modes = [
@@ -371,7 +371,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
 
         return empty(a:arglead)
         \?         modes
-        \:         filter(modes, { i,v -> v[:strlen(a:arglead)-1] ==# a:arglead })
+        \:         filter(modes, { i,v -> stridx(v, a:arglead) == 0 })
     endif
 
     return ''
