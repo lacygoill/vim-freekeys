@@ -369,9 +369,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
         \             'command-line',
         \           ]
 
-        return empty(a:arglead)
-        \?         modes
-        \:         filter(modes, { i,v -> stridx(v, a:arglead) == 0 })
+        return filter(modes, { i,v -> stridx(v, a:arglead) == 0 })
     endif
 
     return ''
