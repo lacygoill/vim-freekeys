@@ -1,5 +1,7 @@
 " TODO: {{{1
 
+" • add `c-g` as a prefix with warning
+"
 " • look at all the 'default_mappings' mappings, and see if some of them
 "   are useless, or only useful with a count.
 "   If there are, add them as free keys (with warnings).
