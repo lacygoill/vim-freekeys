@@ -631,7 +631,7 @@ fu! s:display(free) abort "{{{1
 
     let id_orig_window = win_getid()
 
-    tabnew freekeys
+    20vs freekeys
     let b:_fk = extend(s:flags, {
     \                             'id_orig_window' : id_orig_window,
     \                             'leader_key'     : 'shown',
@@ -668,8 +668,7 @@ fu! s:display(free) abort "{{{1
 
     sil! keepj keepp %s/\s*$//
 
-    call append(0, substitute(s:flags.mode, '.', '\U&', 'g').' MODE')
-    1center
+    call append(0, [substitute(s:flags.mode, '.', '\U&', 'g').' MODE', ''])
 
     call cursor(1,1)
 
