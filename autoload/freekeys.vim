@@ -631,7 +631,7 @@ fu! s:display(free) abort "{{{1
 
     let id_orig_window = win_getid()
 
-    20vs freekeys
+    lefta 20vs freekeys
     let b:_fk = extend(s:flags, {
     \                             'id_orig_window' : id_orig_window,
     \                             'leader_key'     : 'shown',
