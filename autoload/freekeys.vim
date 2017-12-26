@@ -182,8 +182,8 @@ fu! s:candidates(categories) abort "{{{1
 endfu
 
 fu! s:categories() abort "{{{1
-    let mode     = s:flags.mode
-    let noleader = s:flags.noleader
+    let mode     = s:options.mode
+    let noleader = s:options.noleader
 
     let categories = {
     \                  'prefixes'           : ['"', '@', 'm', "'", '`', '[', ']', 'Z', '\', 'g', 'z', '|'],
@@ -342,25 +342,21 @@ fu! s:close_window() abort "{{{1
 endfu
 
 fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
-    if empty(a:arglead)
-        return [
-        \        '-noleader ',
-        \        '-nomapcheck ',
-        \        '-nospecial ',
-        \        '-mode',
-        \      ]
+    let options = [
+    \               '-noleader ',
+    \               '-nomapcheck ',
+    \               '-nospecial ',
+    \               '-mode',
+    \             ]
 
-    elseif a:arglead[0] ==# '-'
-        let flags = [
-        \             '-noleader ',
-        \             '-nomapcheck ',
-        \             '-nospecial ',
-        \             '-mode',
-        \           ]
-
-        " filter the list `flags` so that only the item matching the current
-        " text being completed (`a:arglead`) remains
-        return filter(flags, { i,v -> stridx(v, a:arglead) == 0 })
+    if a:arglead[0] ==# '-' || empty(a:arglead) && a:cmdline !~# '-mode \w*$'
+        " Why not filtering the options?{{{
+        "
+        " We don't need to, because the command invoking this completion function is
+        " defined with the attribute `-complete=custom`, not `-complete=customlist`,
+        " which means Vim performs a basic filtering automatically.
+        " }}}
+        return join(options, "\n")
 
     elseif a:cmdline =~# '-mode \w*$'
         let modes = [
@@ -371,14 +367,14 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
         \             'command-line',
         \           ]
 
-        return filter(modes, { i,v -> stridx(v, a:arglead) == 0 })
+        return join(modes, "\n")
     endif
 
     return ''
 endfu
 
 fu! s:default_mappings(categories) abort "{{{1
-    let mode             = s:flags.mode
+    let mode             = s:options.mode
     let default_mappings = []
     let prefixes         = a:categories.prefixes
     let operators        = a:categories.operators
@@ -634,10 +630,10 @@ fu! s:display(free) abort "{{{1
     "┌ `:topleft`: we want the window to be on the far left
     "│
     to 20vs freekeys
-    let b:_fk = extend(s:flags, {
-    \                             'id_orig_window' : id_orig_window,
-    \                             'leader_key'     : 'shown',
-    \                           })
+    let b:_fk = extend(s:options, {
+    \                               'id_orig_window' : id_orig_window,
+    \                               'leader_key'     : 'shown',
+    \                             })
 
     setl bh=wipe nobl bt=nofile noswf nowrap
 
@@ -670,7 +666,7 @@ fu! s:display(free) abort "{{{1
 
     sil! keepj keepp %s/\s*$//
 
-    call append(0, [substitute(s:flags.mode, '.', '\U&', 'g').' MODE', ''])
+    call append(0, [substitute(s:options.mode, '.', '\U&', 'g').' MODE', ''])
 
     call cursor(1,1)
 
@@ -679,7 +675,7 @@ fu! s:display(free) abort "{{{1
     nno  <silent><buffer><nowait>  g?    :<C-U>help freekeys-mappings<CR>
     nno  <silent><buffer><nowait>  gc    :<C-U>call <SID>similar_tags()<CR>
 
-    exe 'nno  <buffer><nowait><silent>  gl  :<C-U>call <SID>toggle_leader_key('.s:flags.noleader.')<CR>'
+    exe 'nno  <buffer><nowait><silent>  gl  :<C-U>call <SID>toggle_leader_key('.s:options.noleader.')<CR>'
 endfu
 
 fu! s:double_prefix(prefixes) abort "{{{1
@@ -695,9 +691,9 @@ endfu
 fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
     let candidates       = a:candidates
     let default_mappings = a:default_mappings
-    let nomapcheck       = s:flags.nomapcheck
-    let nospecial        = s:flags.nospecial
-    let mode             = s:flags.mode
+    let nomapcheck       = s:options.nomapcheck
+    let nospecial        = s:options.nospecial
+    let mode             = s:options.mode
 
     " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,{{{
     " because contrary to the other ones, they wait for an argument.
@@ -746,15 +742,15 @@ endfu
 
 fu! freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
-    let s:flags  = {
-    \                'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-    \                'nospecial'  : index(cmd_args, '-nospecial') >= 0,
-    \                'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
-    \                'noleader'   : index(cmd_args, '-noleader') >= 0,
-    \              }
+    let s:options = {
+    \                 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
+    \                 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
+    \                 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
+    \                 'noleader'   : index(cmd_args, '-noleader') >= 0,
+    \               }
 
-    if empty(s:flags.mode)
-        let s:flags.mode = 'normal'
+    if empty(s:options.mode)
+        let s:options.mode = 'normal'
     endif
 
     let categories       = s:categories()
@@ -847,7 +843,7 @@ fu! s:similar_tags() abort "{{{1
 endfu
 
 fu! s:syntaxes(categories) abort "{{{1
-    let mode       = s:flags.mode
+    let mode       = s:options.mode
     let categories = a:categories
 
     let prefixes           = categories.prefixes
