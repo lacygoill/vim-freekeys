@@ -631,7 +631,9 @@ fu! s:display(free) abort "{{{1
 
     let id_orig_window = win_getid()
 
-    lefta 20vs freekeys
+    "┌ `:topleft`: we want the window to be on the far left
+    "│
+    to 20vs freekeys
     let b:_fk = extend(s:flags, {
     \                             'id_orig_window' : id_orig_window,
     \                             'leader_key'     : 'shown',
