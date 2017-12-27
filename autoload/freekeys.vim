@@ -327,8 +327,8 @@ fu! s:categories() abort "{{{1
     " and nothing else.
 
     if !noleader
-        for category in keys(categories)
-            call filter(categories[category], { i,v -> v !=# g:mapleader })
+        for [category, keys] in items(categories)
+            call filter(keys, { i,v -> v !=# g:mapleader })
         endfor
     endif
 
