@@ -349,7 +349,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
     \               '-mode',
     \             ]
 
-    if a:arglead[0] ==# '-' || empty(a:arglead) && a:cmdline !~# '-mode \w*$'
+    if a:arglead[0] ==# '-' || empty(a:arglead) && a:cmdline !~# '-mode\s\+\w*$'
         " Why not filtering the options?{{{
         "
         " We don't need to, because the command invoking this completion function is
