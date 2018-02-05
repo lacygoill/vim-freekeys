@@ -358,7 +358,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
         " }}}
         return join(options, "\n")
 
-    elseif a:cmdline =~# '-mode \w*$'
+    elseif a:cmdline =~# '-mode\s\+\w*$'
         let modes = [
         \             'normal',
         \             'visual',
