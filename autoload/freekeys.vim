@@ -197,7 +197,7 @@ fu! s:categories() abort "{{{1
     "
     " we also add `Leader` as a prefix, unless the `-noleader` argument was
     " passed to `:FK`
-    let categories.prefixes +=   (mode ==?    'normal' ? ['U'] : [])
+    let categories.prefixes +=   (mode is#    'normal' ? ['U'] : [])
     \                          + (!noleader ? ['Leader']       : [])
 
     let categories.motions = [
@@ -349,7 +349,7 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
     \               '-mode',
     \             ]
 
-    if a:arglead[0] ==# '-' || empty(a:arglead) && a:cmdline !~# '-mode\s\+\w*$'
+    if a:arglead[0] is# '-' || empty(a:arglead) && a:cmdline !~# '-mode\s\+\w*$'
         " Why not filtering the options?{{{
         "
         " We don't need to, because the command invoking this completion function is
@@ -916,7 +916,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     let cur_pos = getcurpos()
 
-    if b:_fk.leader_key ==# 'shown'
+    if b:_fk.leader_key is# 'shown'
         sil! exe 'keepj keepp %s/Leader/'.substitute(g:mapleader, ' ', 'Space', '').'/'.(&gd ? '' : 'g')
     else
         sil! exe 'keepj keepp %s/'.substitute(g:mapleader, ' ', 'Space', '').'/Leader/'.(&gd ? '' : 'g')
