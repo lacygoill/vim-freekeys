@@ -328,7 +328,7 @@ fu! s:categories() abort "{{{1
 
     if !noleader
         for [category, keys] in items(categories)
-            call filter(keys, { i,v -> v !=# g:mapleader })
+            call filter(keys, { i,v -> v isnot# g:mapleader })
         endfor
     endif
 
@@ -815,7 +815,7 @@ endfu
 
 fu! s:similar_tags() abort "{{{1
     let mode     = b:_fk.mode
-    let mode_tag = mode !=# 'normal' ? mode[0].'_' : ''
+    let mode_tag = mode isnot# 'normal' ? mode[0].'_' : ''
     let lines    = getline(1, line('$'))
 
     call remove(lines, index(lines, 'g:'))
@@ -924,7 +924,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     call setpos('.', cur_pos)
 
-    let b:_fk.leader_key = filter(['shown', 'replaced'], { i,v -> v !=# b:_fk.leader_key })[0]
+    let b:_fk.leader_key = filter(['shown', 'replaced'], { i,v -> v isnot# b:_fk.leader_key })[0]
 endfu
 
 fu! s:translate_special_key(key) abort "{{{1
