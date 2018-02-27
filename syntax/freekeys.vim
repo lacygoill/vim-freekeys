@@ -25,7 +25,7 @@ syn match Normal     '\vCTRL-.|CTRL-$|Leader'
 
 hi link fk_warning WarningMsg
 
-let s:warning_regexes = {
+let s:WARNING_REGEXES = {
                         \ 'normal'           : { 'op+g'      : '[!=<>cdy]g',
                         \                        'do dp zu'  : '%(do|dp|zu)',
                         \                        'op+ctrl-v' : '%(c|d|y) CTRL-',
@@ -49,7 +49,7 @@ let s:warning_regexes = {
 " … because it seems the `let` command is executed after the syntax file is
 " sourced.
 
-for regex in values(s:warning_regexes['normal'])
+for regex in values(s:WARNING_REGEXES['normal'])
     exe 'syn match fk_warning '.string('\v^'.regex.'$')
 endfor
 
