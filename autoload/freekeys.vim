@@ -720,7 +720,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
     " If a sequence shadows another one, or it overrides a default action,
     " remove it.
 
-    let condition_to_be_free = 'index(default_mappings, key) == -1'
+    let condition_to_be_free = 'index(default_mappings, key) ==# -1'
 
     if nospecial
         let condition_to_be_free .= ' && key !~ "[[:punct:]]"'
