@@ -635,7 +635,7 @@ fu! s:display(free) abort "{{{1
     \                               'leader_key'     : 'shown',
     \                             })
 
-    setl bh=wipe nobl bt=nofile noswf nowrap
+    setl bh=wipe bt=nofile nobl noswf nowrap
 
     sil 0put =a:free
     sil $d_
@@ -821,7 +821,7 @@ fu! s:similar_tags() abort "{{{1
     call remove(lines, index(lines, 'g:'))
 
     vnew
-    setl bh=wipe nobl bt=nofile noswf nowrap
+    setl bh=wipe bt=nofile nobl noswf nowrap
     if !bufexists('similar tags') | sil file similar\ tags | endif
 
     sil 0put =lines
