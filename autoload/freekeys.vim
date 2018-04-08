@@ -627,9 +627,10 @@ fu! s:display(free) abort "{{{1
 
     let id_orig_window = win_getid()
 
-    "┌ `:topleft`: we want the window to be on the far left
-    "│
-    to 20vs freekeys
+    let tempfile = tempname().'/freekeys'
+    "    ┌ `:topleft`: we want the window to be on the far left
+    "    │
+    exe 'to '.(&columns/6).'vnew '.tempfile
     let b:_fk = extend(s:options, {
     \                               'id_orig_window' : id_orig_window,
     \                               'leader_key'     : 'shown',
