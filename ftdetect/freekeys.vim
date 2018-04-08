@@ -1,1 +1,1 @@
-au BufRead,BufNewFile freekeys set filetype=freekeys
+au BufRead,BufNewFile FreeKeys set filetype=freekeys

@@ -627,7 +627,7 @@ fu! s:display(free) abort "{{{1
 
     let id_orig_window = win_getid()
 
-    let tempfile = tempname().'/freekeys'
+    let tempfile = tempname().'/FreeKeys'
     "    ┌ `:topleft`: we want the window to be on the far left
     "    │
     exe 'to '.(&columns/6).'vnew '.tempfile
@@ -821,9 +821,9 @@ fu! s:similar_tags() abort "{{{1
 
     call remove(lines, index(lines, 'g:'))
 
-    vnew
+    let tempfile = tempname().'/similar tags'
+    exe 'to '.(&columns/6).'vnew '.tempfile
     setl bh=wipe bt=nofile nobl noswf nowrap
-    if !bufexists('similar tags') | sil file similar\ tags | endif
 
     sil 0put =lines
     sil $d_
