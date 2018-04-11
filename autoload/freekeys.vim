@@ -795,7 +795,7 @@ fu! s:show_help() abort "{{{1
     " All tags from the plugin begin with the prefix `fk_` to avoid conflicts
     " with default ones. Add it to the key sequence under the cursor.
 
-    let topic = '\Vfk_'.escape(matchstr(getline('.'), '\S.*\S'), '\')
+    let topic = '\C\Vfk_'.escape(matchstr(getline('.'), '\S.*\S'), '\')
     let topic = substitute(topic, ' ', '_', 'g')
 
     let substitutions = {
@@ -808,7 +808,7 @@ fu! s:show_help() abort "{{{1
     \                   }
 
     for [pat, rep] in values(substitutions)
-        let topic = substitute(topic, '^\\Vfk_'.pat.'$', rep, '')
+        let topic = substitute(topic, '^\C\Vfk_'.pat.'$', rep, '')
     endfor
 
     sil! exe 'help '.topic
