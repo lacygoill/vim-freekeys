@@ -795,20 +795,20 @@ fu! s:show_help() abort "{{{1
     " All tags from the plugin begin with the prefix `fk_` to avoid conflicts
     " with default ones. Add it to the key sequence under the cursor.
 
-    let topic = '\C\Vfk_'.escape(matchstr(getline('.'), '\S.*\S'), '\')
+    let topic = 'fk_'.escape(matchstr(getline('.'), '\S.*\S'), '\')
     let topic = substitute(topic, ' ', '_', 'g')
 
     let substitutions = {
-    \                     'U'         : ['U\zs.*'             , ''],
-    \                     'Bar'       : ['\zs|.*'             , 'Bar'],
-    \                     '[] ctrl-'  : ['[[\]]_CTRL-'        , 'fk_[]_CTRL-'],
-    \                     '[] "'      : ['[[\]]"'             , 'fk_[]_double_quote'],
-    \                     'op ctrl-'  : ['\%(c\|d\|y\)_CTRL-' , 'fk_operator_and_CTRL-V'],
-    \                     'op prefix' : ['[!<>=cdy]g'         , 'fk_operator_and_prefix_g'],
+    \                     'U'         : ['U\zs.*'      , ''],
+    \                     'Bar'       : ['\zs|.*'      , 'Bar'],
+    \                     '[] ctrl-'  : ['[[\]]_CTRL-' , 'fk_[]_CTRL-'],
+    \                     '[] "'      : ['[[\]]"'      , 'fk_[]_double_quote'],
+    \                     'op ctrl-'  : ['[cdy]_CTRL-' , 'fk_operator_and_CTRL-V'],
+    \                     'op prefix' : ['[!<>=cdy]g'  , 'fk_operator_and_prefix_g'],
     \                   }
 
     for [pat, rep] in values(substitutions)
-        let topic = substitute(topic, '^\C\Vfk_'.pat.'$', rep, '')
+        let topic = substitute(topic, '^\C\Vfk_\m'.pat.'$', rep, '')
     endfor
 
     sil! exe 'help '.topic
