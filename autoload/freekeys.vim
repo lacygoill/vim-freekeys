@@ -108,6 +108,12 @@
 "   with the proper HG; because the names don't match what we've written.
 "   For example, the "red" mappings are not red when my colorscheme is dark,
 "   they are orange.
+"
+" • We've omitted one syntax:
+"
+"       command which expects an argument (like `q`, `r`, ...) + invalid argument
+"
+"   For example, `q C-a` is an invalid key sequence, thus free.
 
 
 " The algorithm deliberately omit special keys: {{{1
