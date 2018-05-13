@@ -642,7 +642,7 @@ fu! s:display(free) abort "{{{1
     \                               'leader_key'     : 'shown',
     \                             })
 
-    setl bh=wipe bt=nofile nobl noswf nowrap
+    setl bt=nofile nobl noswf nowrap
 
     sil 0put =a:free
     sil $d_
@@ -829,7 +829,7 @@ fu! s:similar_tags() abort "{{{1
 
     let tempfile = tempname().'/similar tags'
     exe 'to '.(&columns/6).'vnew '.tempfile
-    setl bh=wipe bt=nofile nobl noswf nowrap
+    setl bt=nofile nobl noswf nowrap
 
     sil 0put =lines
     sil $d_
