@@ -831,8 +831,7 @@ fu! s:similar_tags() abort "{{{1
     exe 'to '.(&columns/6).'vnew '.tempfile
     setl bh=delete bt=nofile nobl noswf nowrap
 
-    sil 0put =lines
-    sil $d_
+    call setline(1, lines)
 
     for idx in range(line('$'), 1, -1)
         let l:key    = substitute(getline(idx), ' ', '_', 'g')
