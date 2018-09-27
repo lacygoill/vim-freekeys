@@ -348,7 +348,8 @@ fu! s:close_window() abort "{{{1
 endfu
 
 fu! freekeys#complete(arglead, cmdline, pos) abort "{{{1
-    let word_before_cursor = matchstr(a:cmdline, '-\S\{-}\s*[^ -]*\%'.a:pos.'c')
+    let word_before_cursor = matchstr(a:cmdline, '.*\s\zs-\S.*\%'.a:pos.'c')
+    let word_before_cursor = matchstr(word_before_cursor, '\S*\s*$')
 
     if word_before_cursor =~# '^-mode\s*'
         let modes = [
