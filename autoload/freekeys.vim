@@ -348,13 +348,6 @@ fu! s:close_window() abort "{{{1
 endfu
 
 fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
-    let options = [
-        \ '-noleader ',
-        \ '-nomapcheck ',
-        \ '-nospecial ',
-        \ '-mode',
-        \ ]
-
     if a:cmdline =~# '-mode\s\+\w*$'
         let modes = [
             \ 'normal',
@@ -374,6 +367,12 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
         return join(modes, "\n")
 
     elseif empty(a:arglead) || a:arglead[0] is# '-'
+        let options = [
+            \ '-noleader ',
+            \ '-nomapcheck ',
+            \ '-nospecial ',
+            \ '-mode',
+            \ ]
         return join(options, "\n")
     endif
 
