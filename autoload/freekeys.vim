@@ -347,8 +347,10 @@ fu! s:close_window() abort "{{{1
     call win_gotoid(id_orig_window)
 endfu
 
-fu! freekeys#complete(arglead, cmdline, _pos) abort "{{{1
-    if a:cmdline =~# '-mode\s\+\w*$'
+fu! freekeys#complete(arglead, cmdline, pos) abort "{{{1
+    let word_before_cursor = matchstr(a:cmdline, '-\S\{-}\s*[^ -]*\%'.a:pos.'c')
+
+    if word_before_cursor =~# '^-mode'
         let modes = [
             \ 'normal',
             \ 'visual',
