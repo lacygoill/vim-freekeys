@@ -350,7 +350,7 @@ endfu
 fu! freekeys#complete(arglead, cmdline, pos) abort "{{{1
     let word_before_cursor = matchstr(a:cmdline, '-\S\{-}\s*[^ -]*\%'.a:pos.'c')
 
-    if word_before_cursor =~# '^-mode'
+    if word_before_cursor is# '-mode'
         let modes = [
             \ 'normal',
             \ 'visual',
