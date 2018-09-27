@@ -355,16 +355,13 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
         \ '-mode',
         \ ]
 
-    if a:arglead[0] is# '-' || empty(a:arglead) && a:cmdline !~# '-mode\s\+\w*$'
+    if a:cmdline =~# '-mode\s\+\w*$'
         " Why not filtering the options?{{{
         "
         " We don't need to, because the command invoking this completion function is
         " defined with the attribute `-complete=custom`, not `-complete=customlist`,
         " which means Vim performs a basic filtering automatically.
         " }}}
-        return join(options, "\n")
-
-    elseif a:cmdline =~# '-mode\s\+\w*$'
         let modes = [
             \ 'normal',
             \ 'visual',
@@ -372,8 +369,10 @@ fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
             \ 'insert',
             \ 'command-line',
             \ ]
-
         return join(modes, "\n")
+
+    elseif empty(a:arglead) || a:arglead[0] is# '-'
+        return join(options, "\n")
     endif
 
     return ''
