@@ -745,11 +745,11 @@ endfu
 fu! freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
     let s:options = {
-    \                 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
-    \                 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
-    \                 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
-    \                 'noleader'   : index(cmd_args, '-noleader') >= 0,
-    \               }
+        \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
+        \ 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
+        \ 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
+        \ 'noleader'   : index(cmd_args, '-noleader') >= 0,
+        \ }
 
     if empty(s:options.mode)
         let s:options.mode = 'normal'
