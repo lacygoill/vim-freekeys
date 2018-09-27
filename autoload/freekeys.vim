@@ -347,7 +347,7 @@ fu! s:close_window() abort "{{{1
     call win_gotoid(id_orig_window)
 endfu
 
-fu! freekeys#complete(arglead, cmdline, _p) abort "{{{1
+fu! freekeys#complete(arglead, cmdline, _pos) abort "{{{1
     if a:cmdline =~# '-mode\s\+\w*$'
         let modes = [
             \ 'normal',
