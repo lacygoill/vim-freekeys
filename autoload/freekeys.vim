@@ -356,14 +356,6 @@ fu! freekeys#complete(arglead, cmdline, _pos) abort "{{{1
             \ 'insert',
             \ 'command-line',
             \ ]
-        " Why not filtering the modes?{{{
-        "
-        " We don't need to.
-        "
-        " The  command invoking  this completion  function is  defined with  the
-        " attribute `-complete=custom`, not `-complete=customlist`.
-        " It means Vim performs a basic filtering automatically.
-        " }}}
         return join(modes, "\n")
 
     elseif empty(a:arglead) || a:arglead[0] is# '-'
