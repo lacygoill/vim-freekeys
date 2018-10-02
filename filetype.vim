@@ -3,6 +3,6 @@ if exists('did_load_filetypes')
 endif
 
 augroup filetypedetect
-    au! BufRead,BufNewFile  FreeKeys  set freekeys
+    au! BufRead,BufNewFile  FreeKeys  setf freekeys
 augroup END
 
