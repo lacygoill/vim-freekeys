@@ -1,8 +1,8 @@
 " TODO: {{{1
 
-" • add `c-g` as a prefix with warning
+" - add `c-g` as a prefix with warning
 "
-" • look at all the 'default_mappings' mappings, and see if some of them
+" - look at all the 'default_mappings' mappings, and see if some of them
 "   are useless, or only useful with a count.
 "   If there are, add them as free keys (with warnings).
 "   Example:  `go`, useful with a count, useless without
@@ -10,14 +10,14 @@
 "   I've removed `go` from the default keys (inside `s:default_mappings()`),
 "   but I haven't added a warning for it. To do.
 "
-" • improve help:
+" - improve help:
 "
-"           • readibility
-"           • sections by mode
-"           • integrate most of the comments which are in this file,
+"           - readibility
+"           - sections by mode
+"           - integrate most of the comments which are in this file,
 "             and in ~/mappings.md, and in our notes
 "
-" • add `op+*`, `op+#` but with warning.
+" - add `op+*`, `op+#` but with warning.
 "
 "   Although these  syntaxes are valid,  I'm not sure  one would use  them often
 "   because  `*` and  `#` are  much  more unpredictable  than `2j`  or `3k`  for
@@ -30,20 +30,20 @@
 "   Also, I think, ` `, `CR`, `BS` could be used after an op.
 "   We wouldn't lose anything. There must be synonym syntaxes. To be verified.
 "
-" • add `<+char`, `>+char` in visual mode
+" - add `<+char`, `>+char` in visual mode
 "
-" • add other control characters in normal mode
+" - add other control characters in normal mode
 "   C-k is not the only one, for example C-j is a synonym for `j`
 "
-" • add tricks in the help taken from ~/mappings.md and from our notes
+" - add tricks in the help taken from ~/mappings.md and from our notes
 "   (section mapping-lhs)
 "
-" • insert / visual / Ex / operator pending syntaxes
+" - insert / visual / Ex / operator pending syntaxes
 "
-" • after executing `:FK -nomapcheck`, if we hit `gh` twice, a Leader is added
+" - after executing `:FK -nomapcheck`, if we hit `gh` twice, a Leader is added
 "   Specifically, `CTRL-Space` becomes `CTRL-Leader`.
 "
-" • Can we use the same command (x, a, i, m, o, …) as a suffix for a normal
+" - Can we use the same command (x, a, i, m, o, …) as a suffix for a normal
 "   command, and as a prefix for an object?
 "
 "   The {lhs} in normal mode can be used as an operator or not.
@@ -104,12 +104,12 @@
 " mode. And maybe even remove `prefix + i/a` (better be safe than sorry).
 " Or not. Vim uses `zi` by default, so `prefix + i/a` should be safe to keep.
 "
-" • In the help, remove the color names, replace them with some text colored
+" - In the help, remove the color names, replace them with some text colored
 "   with the proper HG; because the names don't match what we've written.
 "   For example, the "red" mappings are not red when my colorscheme is dark,
 "   they are orange.
 "
-" • We've omitted one syntax:
+" - We've omitted one syntax:
 "
 "       command which expects an argument (like `q`, `r`, ...) + invalid argument
 "
@@ -141,12 +141,12 @@
 " If we wanted to add these, to find the syntaxes leading to meaningless
 " sequences, we would have to consider 2 cases:
 "
-"       • the special key is mapped by default to a command:
+"       - the special key is mapped by default to a command:
 "
 "                 prefix + special key
 "                 op     + special key
 "
-"       • it isn't mapped to anything:
+"       - it isn't mapped to anything:
 "
 "                 special key + anything (including nothing)
 "
@@ -890,7 +890,7 @@ fu! s:syntaxes(categories) abort "{{{1
     " These 8 syntaxes should produce all 2-key meaningless sequences.
     " For n-key meaningless sequences (n>2), there's only 1 possible syntax:
     "
-    "         • 2-key meaningless + any (n-2)-key sequence
+    "         - 2-key meaningless + any (n-2)-key sequence
 
     " CTRL is treated as a special prefix.
     " Indeed, there are very few USABLE unmapped key sequences with `CTRL-`.
