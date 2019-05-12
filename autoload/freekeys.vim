@@ -7,27 +7,27 @@
 "   If there are, add them as free keys (with warnings).
 "   Example:  `go`, useful with a count, useless without
 "
-"   I've removed `go` from the default keys (inside `s:default_mappings()`),
-"   but I haven't added a warning for it. To do.
+"     I've removed `go` from the default keys (inside `s:default_mappings()`), but
+"   I haven't added a warning for it. To do.
 "
 " - improve help:
 "
-"           - readibility
-"           - sections by mode
-"           - integrate most of the comments which are in this file,
-"             and in ~/mappings.md, and in our notes
+"      * readibility
+"      * sections by mode
+"      * integrate most of the comments which are in this file,
+"        and in our notes
 "
 " - add `op+*`, `op+#` but with warning.
 "
-"   Although these  syntaxes are valid,  I'm not sure  one would use  them often
+"     Although these  syntaxes are valid,  I'm not sure  one would use  them often
 "   because  `*` and  `#` are  much  more unpredictable  than `2j`  or `3k`  for
 "   example.  We don't systematically see  all the text between current position
 "   and the next occurrence of the current word.
 "
-"   check if there are other unpredictable `operator + motions` combinations like
+"     check if there are other unpredictable `operator + motions` combinations like
 "   `c*`, `!*`, which would be rarely used; add them with warnings
 "
-"   Also, I think, ` `, `CR`, `BS` could be used after an op.
+"     Also, I think, ` `, `CR`, `BS` could be used after an op.
 "   We wouldn't lose anything. There must be synonym syntaxes. To be verified.
 "
 " - add `<+char`, `>+char` in visual mode
@@ -43,10 +43,10 @@
 " - after executing `:FK -nomapcheck`, if we hit `gh` twice, a Leader is added
 "   Specifically, `CTRL-Space` becomes `CTRL-Leader`.
 "
-" - Can we use the same command (x, a, i, m, o, …) as a suffix for a normal
+" - Can we use the same command (x, a, i, m, o, ...) as a suffix for a normal
 "   command, and as a prefix for an object?
 "
-"   The {lhs} in normal mode can be used as an operator or not.
+"     The {lhs} in normal mode can be used as an operator or not.
 "   It can be prefixed by an operator or not.
 "   2 * 2 possibilities = 4
 "
@@ -54,17 +54,17 @@
 "        Zi "  an op    o_iw "       NO, because `Ziw` and `Ziiw` both work
 "
 "        cX "  a cmd    o_Xw "       YES, we can't type `cXw`, the command `cX`
-"                                    shadows the operator `c` + the object `Xw`
+"                                    shadows the operator `c` + the object `Xw`
 "
 "        cx "  an op    o_xw "       YES, we can't type `c`+`xw` because `cx`  shadows `c`
-"                                    and we can't type `cx`+`xw` because `cxx` shadows `cxxw`
+"                                    and we can't type `cx`+`xw` because `cxx` shadows `cxxw`
 "
-"                                    The 2 last problems are the consequence of how
-"                                    Vim process the typed keys.
-"                                    It doesn't invoke an operator until there's no
-"                                    ambiguity anymore regarding the operator.
-"                                    And as soon as it recognizes an operator without
-"                                    ambiguity, it invokes it.
+"                                    The 2 last problems are the consequence of how
+"                                    Vim process the typed keys.
+"                                    It doesn't invoke an operator until there's no
+"                                    ambiguity anymore regarding the operator.
+"                                    And as soon as it recognizes an operator without
+"                                    ambiguity, it invokes it.
 "
 " This section is to be reviewed further. In particular, I'm not sure of what
 " the rules are regarding the processing of typed keys.
@@ -113,48 +113,48 @@
 "
 "       command which expects an argument (like `q`, `r`, ...) + invalid argument
 "
-"   For example, `q C-a` is an invalid key sequence, thus free.
+"     For example, `q C-a` is an invalid key sequence, thus free.
 
 
 " The algorithm deliberately omit special keys: {{{1
 "
-"         <F1> … <F9>
-"         <BS>
-"         <Del>
-"         <Home>
-"         <End>
-"         <Left>
-"         <Right>
-"         <Down>
-"         <Up>
-"         <PageDown>
-"         <PageUp>
-"         <LeftMouse>
-"         <RightMouse>
-"         <MiddleMouse>
-"         <ScrollWheelDown>
-"         <ScrollWheelUp>
-"         <ScrollWheelLeft>
-"         <ScrollWheelRight>
-"         …
+"     <F1> ... <F9>
+"     <BS>
+"     <Del>
+"     <Home>
+"     <End>
+"     <Left>
+"     <Right>
+"     <Down>
+"     <Up>
+"     <PageDown>
+"     <PageUp>
+"     <LeftMouse>
+"     <RightMouse>
+"     <MiddleMouse>
+"     <ScrollWheelDown>
+"     <ScrollWheelUp>
+"     <ScrollWheelLeft>
+"     <ScrollWheelRight>
+"     ...
 "
 " If we wanted to add these, to find the syntaxes leading to meaningless
 " sequences, we would have to consider 2 cases:
 "
-"       - the special key is mapped by default to a command:
+"   - the special key is mapped by default to a command:
 "
-"                 prefix + special key
-"                 op     + special key
+"         prefix + special key
+"         op     + special key
 "
-"       - it isn't mapped to anything:
+"   - it isn't mapped to anything:
 "
-"                 special key + anything (including nothing)
+"         special key + anything (including nothing)
 "
 " We also omit the digits.
 " If we wanted to include them, there would be only two possible syntaxes:
 "
-"                 prefix + digit
-"                 digit  + prefix + digit
+"     prefix + digit
+"     digit  + prefix + digit
 "
 " `g8` and `8g8` are 2 default examples of these syntaxes.
 "
@@ -164,10 +164,10 @@
 " it as a prefix.
 " In normal mode, a prefix can be used to produce meaningless sequences, in 2 syntaxes:
 "
-"         pfx + char    obvious, that's why we chose a Leader key in the first place
-"         op  + pfx     NEW
+"     pfx + char    obvious, that's why we chose a Leader key in the first place
+"     op  + pfx     NEW
 "
-" So, now we can use `d Space`, `y Space`, `c Space` …
+" So, now we can use `d Space`, `y Space`, `c Space` ...
 
 fu! s:candidates(categories) abort "{{{1
     let categories = a:categories
@@ -177,13 +177,10 @@ fu! s:candidates(categories) abort "{{{1
     for [left_key_category, right_key_category] in values(syntaxes)
         for key1 in left_key_category
             for key2 in right_key_category
-
                 let candidates += [join([key1,key2], '')]
-
             endfor
         endfor
     endfor
-
     return candidates
 endfu
 
@@ -266,7 +263,7 @@ fu! s:categories() abort "{{{1
     "
     "               linewise operator + motion which stays on current line
     "
-    " … although valid, is unintuitive and useless.
+    " ... although valid, is unintuitive and useless.
     "
     " This creates new free key sequences.
     "
@@ -331,13 +328,11 @@ fu! s:categories() abort "{{{1
     " the categories.
     " Indeed, the key stored in `g:mapleader` should be considered as a prefix,
     " and nothing else.
-
     if !noleader
         for [category, keys] in items(categories)
-            call filter(keys, { i,v -> v isnot# g:mapleader })
+            call filter(keys, {i,v -> v isnot# g:mapleader})
         endfor
     endif
-
     return categories
 endfu
 
@@ -660,7 +655,7 @@ fu! s:display(free) abort "{{{1
     "         op_l + motion_s
     "         op   + leader
     "
-    " … remove them.
+    " ... remove them.
 
     sil! keepj keepp %s/\v^(.*)\n\1$/\1/
 
@@ -787,7 +782,7 @@ fu! s:prefix_plus_letter() abort "{{{1
     for prefix in ['"', '@', 'm', "'", '`']
         let prefix_plus_letter += map(  range(char2nr('a'),char2nr('z'))
         \                             + range(char2nr('A'),char2nr('Z')),
-        \                             { i,v -> prefix.nr2char(v,1) })
+        \                             {i,v -> prefix.nr2char(v,1)})
     endfor
     return prefix_plus_letter
 endfu
@@ -831,7 +826,7 @@ fu! s:similar_tags() abort "{{{1
     for idx in range(line('$'), 1, -1)
         let l:key    = substitute(getline(idx), ' ', '_', 'g')
         let taglist  = taglist('\C\V\^'. mode_tag .escape(l:key, '\'))
-        let tagnames = map(taglist, { i,v -> '    '.escape(v['name'], '/') })
+        let tagnames = map(taglist, {i,v -> '    '.escape(v['name'], '/')})
 
         if empty(tagnames)
             sil exe idx.'d_'
@@ -890,22 +885,22 @@ fu! s:syntaxes(categories) abort "{{{1
     " These 8 syntaxes should produce all 2-key meaningless sequences.
     " For n-key meaningless sequences (n>2), there's only 1 possible syntax:
     "
-    "         - 2-key meaningless + any (n-2)-key sequence
+    "    - 2-key meaningless + any (n-2)-key sequence
 
     " CTRL is treated as a special prefix.
     " Indeed, there are very few USABLE unmapped key sequences with `CTRL-`.
     "
     " Beginning with `CTRL-`, I only found 4:
     "
-    "                     CTRL-K
-    "                     CTRL-\
-    "                     CTRL-_
-    "                     CTRL-Space or CTRL-@
+    "     CTRL-K
+    "     CTRL-\
+    "     CTRL-_
+    "     CTRL-Space or CTRL-@
     "
     " Ending with `CTRL-`, I only found 2:
     "
-    "                     op     + CTRL-
-    "                     prefix + CTRL-    with some exceptions like g C-G
+    "     op     + CTRL-
+    "     prefix + CTRL-    with some exceptions like g C-G
 
     return syntaxes[mode]
 endfu
@@ -925,7 +920,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     call setpos('.', cur_pos)
 
-    let b:_fk.leader_key = filter(['shown', 'replaced'], { i,v -> v isnot# b:_fk.leader_key })[0]
+    let b:_fk.leader_key = filter(['shown', 'replaced'], {i,v -> v isnot# b:_fk.leader_key})[0]
 endfu
 
 fu! s:translate_special_key(key) abort "{{{1
@@ -939,3 +934,4 @@ fu! s:translate_special_key(key) abort "{{{1
     let l:key = substitute(l:key, 'BS', '<BS>', 'g')
     return l:key
 endfu
+
