@@ -338,7 +338,7 @@ endfu
 
 fu! s:close_window() abort "{{{1
     if reg_recording() isnot# ''
-        return feedkeys('q', 'int')[-1]
+        return feedkeys('q', 'in')[-1]
     endif
     let id_orig_window = b:_fk.id_orig_window
     close
