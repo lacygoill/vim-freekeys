@@ -1,6 +1,6 @@
 " TODO: {{{1
 
-" - add `c-g` as a prefix with warning
+" - add `c-g` as a prefix with warning; same thing for `+` and `-`
 "
 " - look at all the 'default_mappings' mappings, and see if some of them
 "   are useless, or only useful with a count.
