@@ -330,7 +330,7 @@ fu! s:categories() abort "{{{1
     " and nothing else.
     if !noleader
         for [category, keys] in items(categories)
-            call filter(keys, {i,v -> v isnot# g:mapleader})
+            call filter(keys, {_,v -> v isnot# g:mapleader})
         endfor
     endif
     return categories
@@ -785,7 +785,7 @@ fu! s:prefix_plus_letter() abort "{{{1
     for prefix in ['"', '@', 'm', "'", '`']
         let prefix_plus_letter += map(  range(char2nr('a'),char2nr('z'))
         \                             + range(char2nr('A'),char2nr('Z')),
-        \                             {i,v -> prefix.nr2char(v,1)})
+        \                             {_,v -> prefix.nr2char(v,1)})
     endfor
     return prefix_plus_letter
 endfu
@@ -829,7 +829,7 @@ fu! s:similar_tags() abort "{{{1
     for idx in range(line('$'), 1, -1)
         let l:key    = substitute(getline(idx), ' ', '_', 'g')
         let taglist  = taglist('\C\V\^'. mode_tag .escape(l:key, '\'))
-        let tagnames = map(taglist, {i,v -> '    '.escape(v['name'], '/')})
+        let tagnames = map(taglist, {_,v -> '    '.escape(v['name'], '/')})
 
         if empty(tagnames)
             sil exe idx.'d_'
@@ -923,7 +923,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 
     call setpos('.', cur_pos)
 
-    let b:_fk.leader_key = filter(['shown', 'replaced'], {i,v -> v isnot# b:_fk.leader_key})[0]
+    let b:_fk.leader_key = filter(['shown', 'replaced'], {_,v -> v isnot# b:_fk.leader_key})[0]
 endfu
 
 fu! s:translate_special_key(key) abort "{{{1
