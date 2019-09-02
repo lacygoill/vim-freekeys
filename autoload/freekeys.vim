@@ -623,7 +623,6 @@ endfu
 fu! s:display(free) abort "{{{1
     " Get the unique id of the window we're coming from.
     " Necessary to restore the focus correctly when we'll close the FK window.
-
     let id_orig_window = win_getid()
 
     let tempfile = tempname().'/FreeKeys'
@@ -640,12 +639,10 @@ fu! s:display(free) abort "{{{1
     sort
 
     " Make the space key more visible.
-
     sil! keepj keepp %s/ /Space/
 
     " Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
     " to make them more readable
-
     sil! keepj keepp %s/^Leader\zs\ze\S/ /
     sil! keepj keepp %s/\v%(CTRL-)@<!%(BS|CR|CTRL-|Leader|Space|Tab)$/ &/
     sil! keepj keepp %s/  / /
@@ -663,7 +660,6 @@ fu! s:display(free) abort "{{{1
     sil! keepj keepp %s/\s*$//
 
     call append(0, [substitute(s:options.mode, '.', '\U&', 'g').' MODE', ''])
-
     call cursor(1,1)
 
     nno  <silent><buffer><nowait>  <CR>  :<C-U>call <SID>show_help()<CR>
