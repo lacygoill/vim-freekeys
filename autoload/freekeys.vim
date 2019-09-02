@@ -627,8 +627,6 @@ fu! s:display(free) abort "{{{1
     let id_orig_window = win_getid()
 
     let tempfile = tempname().'/FreeKeys'
-    "    ┌ `:topleft`: we want the window to be on the far left
-    "    │
     exe 'to '.(&columns/6).'vnew '.tempfile
     let b:_fk = extend(s:options, {
     \                               'id_orig_window' : id_orig_window,
@@ -654,16 +652,14 @@ fu! s:display(free) abort "{{{1
 
     " If there're double sequences, like `operator + space`:
     "
-    "         Leader = Space
-    "         op_l + motion_s
-    "         op   + leader
+    "     Leader = Space
+    "     op_l + motion_s
+    "     op   + leader
     "
     " ... remove them.
-
     sil! keepj keepp %s/\v^(.*)\n\1$/\1/
 
     " Trim whitespace. There shouldn't be any, but better be safe than sorry.
-
     sil! keepj keepp %s/\s*$//
 
     call append(0, [substitute(s:options.mode, '.', '\U&', 'g').' MODE', ''])
