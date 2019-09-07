@@ -341,7 +341,7 @@ fu! s:close_window() abort "{{{1
         return feedkeys('q', 'in')[-1]
     endif
     let id_orig_window = b:_fk.id_orig_window
-    close
+    q
     call win_gotoid(id_orig_window)
 endfu
 
@@ -830,7 +830,7 @@ fu! s:similar_tags() abort "{{{1
         endif
     endfor
 
-    nno <buffer><expr><nowait><silent> q reg_recording() isnot# '' ? 'q' : ':<c-u>close!<cr>'
+    nno <buffer><expr><nowait><silent> q reg_recording() isnot# '' ? 'q' : ':<c-u>q<cr>'
 endfu
 
 fu! s:syntaxes(categories) abort "{{{1
