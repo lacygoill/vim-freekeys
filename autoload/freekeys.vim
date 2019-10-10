@@ -819,8 +819,8 @@ fu! s:similar_tags() abort "{{{1
     call setline(1, lines)
 
     for idx in range(line('$'), 1, -1)
-        let l:key    = substitute(getline(idx), ' ', '_', 'g')
-        let taglist  = taglist('\C\V\^'. mode_tag .escape(l:key, '\'))
+        let key    = substitute(getline(idx), ' ', '_', 'g')
+        let taglist  = taglist('\C\V\^'. mode_tag .escape(key, '\'))
         let tagnames = map(taglist, {_,v -> '    '.escape(v['name'], '/')})
 
         if empty(tagnames)
@@ -919,14 +919,14 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
 endfu
 
 fu! s:translate_special_key(key) abort "{{{1
-    let l:key = a:key
-    if l:key =~# 'CTRL-$'
+    let key = a:key
+    if key =~# 'CTRL-$'
         return ''
     endif
-    let l:key = substitute(l:key, 'Leader', g:mapleader, 'g')
-    let l:key = substitute(l:key, 'Tab', '<Tab>', 'g')
-    let l:key = substitute(l:key, 'CR', '<CR>', 'g')
-    let l:key = substitute(l:key, 'BS', '<BS>', 'g')
-    return l:key
+    let key = substitute(key, 'Leader', g:mapleader, 'g')
+    let key = substitute(key, 'Tab', '<Tab>', 'g')
+    let key = substitute(key, 'CR', '<CR>', 'g')
+    let key = substitute(key, 'BS', '<BS>', 'g')
+    return key
 endfu
 
