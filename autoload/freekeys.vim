@@ -169,7 +169,7 @@
 "
 " So, now we can use `d Space`, `y Space`, `c Space` ...
 
-fu! s:candidates(categories) abort "{{{1
+fu s:candidates(categories) abort "{{{1
     let categories = a:categories
     let syntaxes   = s:syntaxes(categories)
     let candidates = []
@@ -184,7 +184,7 @@ fu! s:candidates(categories) abort "{{{1
     return candidates
 endfu
 
-fu! s:categories() abort "{{{1
+fu s:categories() abort "{{{1
     let mode     = s:options.mode
     let noleader = s:options.noleader
 
@@ -203,47 +203,47 @@ fu! s:categories() abort "{{{1
     let categories.prefixes += (mode is# 'normal' ? ['U'] : [])
         \ + (!noleader ? ['Leader'] : [])
 
-    let categories.motions = [
-        \ '*',
-        \ '#',
-        \ '$',
-        \ '%',
-        \ '(',
-        \ ')',
-        \ '+',
-        \ '-',
-        \ ',',
-        \ ';',
-        \ '/',
-        \ '?',
-        \ 'B',
-        \ 'E',
-        \ 'F',
-        \ 'G',
-        \ 'H',
-        \ 'L',
-        \ 'M',
-        \ 'N',
-        \ 'T',
-        \ 'W',
-        \ '^',
-        \ '_',
-        \ 'b',
-        \ 'e',
-        \ 'f',
-        \ 'h',
-        \ 'j',
-        \ 'k',
-        \ 'l',
-        \ 'n',
-        \ 't',
-        \ 'w',
-        \ '{',
-        \ '}',
-        \ ' ',
-        \ 'BS',
-        \ 'CR',
-        \ ]
+    let categories.motions =<< trim END
+        *
+        #
+        $
+        %
+        (
+        )
+        +
+        -
+        ,
+        ;
+        /
+        ?
+        B
+        E
+        F
+        G
+        H
+        L
+        M
+        N
+        T
+        W
+        ^
+        _
+        b
+        e
+        f
+        h
+        j
+        k
+        l
+        n
+        t
+        w
+        {
+        }
+        BS
+        CR
+    END
+    let categories.motions += [' ']
 
     " The 18 following motions stay on the line most of the time.{{{
     " The last 11 can move across different lines, but very limitedly.
@@ -269,22 +269,22 @@ fu! s:categories() abort "{{{1
     "
     " "}}}
 
-    let categories.motions_limited = [
-        \ '$',
-        \ '^',
-        \ '|',
-        \ 'w',
-        \ 'B',
-        \ 'E',
-        \ 'W',
-        \ 'b',
-        \ 'e',
-        \ 'h',
-        \ 'l',
-        \ ' ',
-        \ 'BS',
-        \ 'CR',
-        \ ]
+    let categories.motions_limited =<< trim END
+        $
+        ^
+        |
+        w
+        B
+        E
+        W
+        b
+        e
+        h
+        l
+        BS
+        CR
+    END
+    let categories.motions_limited += [' ']
 
     " We don't consider Tab as a motion, because even though `C-i` jumps forward
     " in the jumplist, by default, `operator + Tab` doesn't do anything.
@@ -292,36 +292,37 @@ fu! s:categories() abort "{{{1
     "
     "         operator + Tab
 
-    let categories.commands += [
-        \ '&',
-        \ '.',
-        \ ':',
-        \ 'A',
-        \ 'C',
-        \ 'D',
-        \ 'I',
-        \ 'J',
-        \ 'K',
-        \ 'O',
-        \ 'P',
-        \ 'Q',
-        \ 'R',
-        \ 'S',
-        \ 'V',
-        \ 'X',
-        \ 'Y',
-        \ 'a',
-        \ 'i',
-        \ 'o',
-        \ 'p',
-        \ 'q',
-        \ 'r',
-        \ 's',
-        \ 'u',
-        \ 'v',
-        \ 'x',
-        \ 'Tab',
-        \ ]
+    let l =<< trim END
+        &
+        .
+        :
+        A
+        C
+        D
+        I
+        J
+        K
+        O
+        P
+        Q
+        R
+        S
+        V
+        X
+        Y
+        a
+        i
+        o
+        p
+        q
+        r
+        s
+        u
+        v
+        x
+        Tab
+    END
+    let categories.commands += l
 
     " If the `-noleader` argument wasn't provided, it means we want the algo to
     " consider the usage of a Leader key. So, we remove `g:mapleader` from all
@@ -336,7 +337,7 @@ fu! s:categories() abort "{{{1
     return categories
 endfu
 
-fu! s:close_window() abort "{{{1
+fu s:close_window() abort "{{{1
     if reg_recording() isnot# ''
         return feedkeys('q', 'in')[-1]
     endif
@@ -345,34 +346,34 @@ fu! s:close_window() abort "{{{1
     call win_gotoid(id_orig_window)
 endfu
 
-fu! freekeys#complete(arglead, cmdline, pos) abort "{{{1
+fu freekeys#complete(arglead, cmdline, pos) abort "{{{1
     let word_before_cursor = matchstr(a:cmdline, '.*\s\zs-\S.*\%'.a:pos.'c')
     let word_before_cursor = matchstr(word_before_cursor, '\S*\s*$')
 
     if word_before_cursor =~# '^-mode\s*'
-        let modes = [
-            \ 'normal',
-            \ 'visual',
-            \ 'operator-pending',
-            \ 'insert',
-            \ 'command-line',
-            \ ]
+        let modes =<< trim END
+            normal
+            visual
+            operator-pending
+            insert
+            command-line
+        END
         return join(modes, "\n")
 
     elseif empty(a:arglead) || a:arglead[0] is# '-'
-        let options = [
-            \ '-noleader ',
-            \ '-nomapcheck ',
-            \ '-nospecial ',
-            \ '-mode',
-            \ ]
+        let options =<< trim END
+            -noleader
+            -nomapcheck
+            -nospecial
+            -mode
+        END
         return join(options, "\n")
     endif
 
     return ''
 endfu
 
-fu! s:default_mappings(categories) abort "{{{1
+fu s:default_mappings(categories) abort "{{{1
     let mode             = s:options.mode
     let default_mappings = []
     let prefixes         = a:categories.prefixes
@@ -430,187 +431,187 @@ fu! s:default_mappings(categories) abort "{{{1
     \                                                        "'[", "']", "'^", "'`", "'{", "'}"],
     \                             }
 
-    let default_mappings.normal.various = [
-        \ '[*',
-        \ ']*',
-        \ '[#',
-        \ ']#',
-        \ '[''',
-        \ ']''',
-        \ '[(',
-        \ '])',
-        \ '[{',
-        \ ']}',
-        \ '[]',
-        \ '][',
-        \ '[`',
-        \ ']`',
-        \ '[/',
-        \ ']/',
-        \ '[D',
-        \ ']D',
-        \ '[I',
-        \ ']I',
-        \ '[M',
-        \ ']M',
-        \ '[P',
-        \ ']P',
-        \ '[S',
-        \ ']S',
-        \ '[c',
-        \ ']c',
-        \ '[d',
-        \ ']d',
-        \ '[f',
-        \ ']f',
-        \ '[i',
-        \ ']i',
-        \ '[m',
-        \ ']m',
-        \ '[p',
-        \ ']p',
-        \ '[s',
-        \ ']s',
-        \ '[z',
-        \ ']z',
-        \ 'g#',
-        \ 'g*',
-        \ 'g$',
-        \ 'g&',
-        \ 'g''',
-        \ 'g+',
-        \ 'g,',
-        \ 'g-',
-        \ 'g;',
-        \ 'g<',
-        \ 'g?',
-        \ 'g@',
-        \ 'gD',
-        \ 'gE',
-        \ 'gF',
-        \ 'gH',
-        \ 'gI',
-        \ 'gJ',
-        \ 'gN',
-        \ 'gP',
-        \ 'gQ',
-        \ 'gR',
-        \ 'gT',
-        \ 'gU',
-        \ 'g]',
-        \ 'g^',
-        \ 'g_',
-        \ 'g`',
-        \ 'gd',
-        \ 'ge',
-        \ 'gf',
-        \ 'gh',
-        \ 'gi',
-        \ 'gj',
-        \ 'gk',
-        \ 'gm',
-        \ 'gn',
-        \ 'gp',
-        \ 'gq',
-        \ 'gr',
-        \ 'gs',
-        \ 'gt',
-        \ 'gu',
-        \ 'gv',
-        \ 'gw',
-        \ 'g~',
-        \ 'ZQ',
-        \ 'z#',
-        \ 'z+',
-        \ 'z-',
-        \ 'z.',
-        \ 'z=',
-        \ 'zCR',
-        \ 'zA',
-        \ 'zC',
-        \ 'zD',
-        \ 'zE',
-        \ 'zF',
-        \ 'zG',
-        \ 'zH',
-        \ 'zL',
-        \ 'zM',
-        \ 'zN',
-        \ 'zO',
-        \ 'zR',
-        \ 'zW',
-        \ 'zX',
-        \ 'z^',
-        \ 'za',
-        \ 'zb',
-        \ 'zc',
-        \ 'zd',
-        \ 'ze',
-        \ 'zf',
-        \ 'zg',
-        \ 'zh',
-        \ 'zi',
-        \ 'zj',
-        \ 'zk',
-        \ 'zl',
-        \ 'zm',
-        \ 'zn',
-        \ 'zo',
-        \ 'zr',
-        \ 'zs',
-        \ 'zt',
-        \ 'zv',
-        \ 'zw',
-        \ 'zx',
-        \ ]
+    let default_mappings.normal.various =<< trim END
+        [*
+        ]*
+        [#
+        ]#
+        ['
+        ]'
+        [(
+        ])
+        [{
+        ]}
+        []
+        ][
+        [`
+        ]`
+        [/
+        ]/
+        [D
+        ]D
+        [I
+        ]I
+        [M
+        ]M
+        [P
+        ]P
+        [S
+        ]S
+        [c
+        ]c
+        [d
+        ]d
+        [f
+        ]f
+        [i
+        ]i
+        [m
+        ]m
+        [p
+        ]p
+        [s
+        ]s
+        [z
+        ]z
+        g#
+        g*
+        g$
+        g&
+        g'
+        g+
+        g,
+        g-
+        g;
+        g<
+        g?
+        g@
+        gD
+        gE
+        gF
+        gH
+        gI
+        gJ
+        gN
+        gP
+        gQ
+        gR
+        gT
+        gU
+        g]
+        g^
+        g_
+        g`
+        gd
+        ge
+        gf
+        gh
+        gi
+        gj
+        gk
+        gm
+        gn
+        gp
+        gq
+        gr
+        gs
+        gt
+        gu
+        gv
+        gw
+        g~
+        ZQ
+        z#
+        z+
+        z-
+        z.
+        z=
+        zCR
+        zA
+        zC
+        zD
+        zE
+        zF
+        zG
+        zH
+        zL
+        zM
+        zN
+        zO
+        zR
+        zW
+        zX
+        z^
+        za
+        zb
+        zc
+        zd
+        ze
+        zf
+        zg
+        zh
+        zi
+        zj
+        zk
+        zl
+        zm
+        zn
+        zo
+        zr
+        zs
+        zt
+        zv
+        zw
+        zx
+    END
 
     let default_mappings.visual = {
     \                               'prefix + letter' : s:prefix_plus_letter(),
     \                             }
 
-    let default_mappings.visual.various = [
-        \ 'a(',
-        \ 'a)',
-        \ 'a<',
-        \ 'a>',
-        \ 'aB',
-        \ 'aW',
-        \ 'a[',
-        \ 'a]',
-        \ 'a`',
-        \ 'ab',
-        \ 'ap',
-        \ 'as',
-        \ 'at',
-        \ 'aw',
-        \ 'a{',
-        \ 'a}',
-        \ 'g?',
-        \ 'gF',
-        \ 'gN',
-        \ 'g]',
-        \ 'gf',
-        \ 'gn',
-        \ 'gv',
-        \ 'i(',
-        \ 'i)',
-        \ 'i<',
-        \ 'i>',
-        \ 'iB',
-        \ 'iW',
-        \ 'i[',
-        \ 'i]',
-        \ 'i`',
-        \ 'ib',
-        \ 'ip',
-        \ 'is',
-        \ 'it',
-        \ 'iw',
-        \ 'i{',
-        \ 'i}',
-        \ "i'",
-        \ "a'",
-        \ ]
+    let default_mappings.visual.various =<< trim END
+        a(
+        a)
+        a<
+        a>
+        aB
+        aW
+        a[
+        a]
+        a`
+        ab
+        ap
+        as
+        at
+        aw
+        a{
+        a}
+        g?
+        gF
+        gN
+        g]
+        gf
+        gn
+        gv
+        i(
+        i)
+        i<
+        i>
+        iB
+        iW
+        i[
+        i]
+        i`
+        ib
+        ip
+        is
+        it
+        iw
+        i{
+        i}
+        i'
+        a'
+    END
 
     let result = []
     for a_list in values(default_mappings[mode])
@@ -620,7 +621,7 @@ fu! s:default_mappings(categories) abort "{{{1
     return result
 endfu
 
-fu! s:display(free) abort "{{{1
+fu s:display(free) abort "{{{1
     " Get the unique id of the window we're coming from.
     " Necessary to restore the focus correctly when we'll close the FK window.
     let id_orig_window = win_getid()
@@ -670,7 +671,7 @@ fu! s:display(free) abort "{{{1
     exe 'nno  <buffer><nowait><silent>  gl  :<C-U>call <SID>toggle_leader_key('.s:options.noleader.')<CR>'
 endfu
 
-fu! s:double_prefix(prefixes) abort "{{{1
+fu s:double_prefix(prefixes) abort "{{{1
     let double_prefix = []
 
     for prefix in a:prefixes
@@ -680,7 +681,7 @@ fu! s:double_prefix(prefixes) abort "{{{1
     return double_prefix
 endfu
 
-fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
+fu s:is_unmapped(candidates, default_mappings) abort "{{{1
     let candidates       = a:candidates
     let default_mappings = a:default_mappings
     let nomapcheck       = s:options.nomapcheck
@@ -732,7 +733,7 @@ fu! s:is_unmapped(candidates, default_mappings) abort "{{{1
     return candidates
 endfu
 
-fu! freekeys#main(...) abort "{{{1
+fu freekeys#main(...) abort "{{{1
     let cmd_args = split(a:1)
     let s:options = {
         \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
@@ -753,7 +754,7 @@ fu! freekeys#main(...) abort "{{{1
     call s:display(free)
 endfu
 
-fu! s:op_plus_forbidden_cmd(operators) abort "{{{1
+fu s:op_plus_forbidden_cmd(operators) abort "{{{1
     let op_plus_forbidden_cmd = []
 
     for operator in a:operators
@@ -771,7 +772,7 @@ fu! s:op_plus_forbidden_cmd(operators) abort "{{{1
     return op_plus_forbidden_cmd
 endfu
 
-fu! s:prefix_plus_letter() abort "{{{1
+fu s:prefix_plus_letter() abort "{{{1
     let prefix_plus_letter = []
 
     for prefix in ['"', '@', 'm', "'", '`']
@@ -782,7 +783,7 @@ fu! s:prefix_plus_letter() abort "{{{1
     return prefix_plus_letter
 endfu
 
-fu! s:show_help() abort "{{{1
+fu s:show_help() abort "{{{1
     " All tags from the plugin begin with the prefix `fk_` to avoid conflicts
     " with default ones. Add it to the key sequence under the cursor.
 
@@ -805,7 +806,7 @@ fu! s:show_help() abort "{{{1
     sil! exe 'help '.topic
 endfu
 
-fu! s:similar_tags() abort "{{{1
+fu s:similar_tags() abort "{{{1
     let mode     = b:_fk.mode
     let mode_tag = mode isnot# 'normal' ? mode[0].'_' : ''
     let lines    = getline(1, line('$'))
@@ -833,7 +834,7 @@ fu! s:similar_tags() abort "{{{1
     nno <buffer><expr><nowait><silent> q reg_recording() isnot# '' ? 'q' : ':<c-u>q<cr>'
 endfu
 
-fu! s:syntaxes(categories) abort "{{{1
+fu s:syntaxes(categories) abort "{{{1
     let mode       = s:options.mode
     let categories = a:categories
 
@@ -900,7 +901,7 @@ fu! s:syntaxes(categories) abort "{{{1
     return syntaxes[mode]
 endfu
 
-fu! s:toggle_leader_key(noleader) abort "{{{1
+fu s:toggle_leader_key(noleader) abort "{{{1
     if a:noleader
         return ''
     endif
@@ -918,7 +919,7 @@ fu! s:toggle_leader_key(noleader) abort "{{{1
     let b:_fk.leader_key = filter(['shown', 'replaced'], {_,v -> v isnot# b:_fk.leader_key})[0]
 endfu
 
-fu! s:translate_special_key(key) abort "{{{1
+fu s:translate_special_key(key) abort "{{{1
     let key = a:key
     if key =~# 'CTRL-$'
         return ''
