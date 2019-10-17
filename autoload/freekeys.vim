@@ -204,44 +204,44 @@ fu s:categories() abort "{{{1
         \ + (!noleader ? ['Leader'] : [])
 
     let categories.motions =<< trim END
-        *
-        #
-        $
-        %
-        (
-        )
-        +
-        -
-        ,
-        ;
-        /
-        ?
-        B
-        E
-        F
-        G
-        H
-        L
-        M
-        N
-        T
-        W
-        ^
-        _
-        b
-        e
-        f
-        h
-        j
-        k
-        l
-        n
-        t
-        w
-        {
-        }
-        BS
-        CR
+    *
+    #
+    $
+    %
+    (
+    )
+    +
+    -
+    ,
+    ;
+    /
+    ?
+    B
+    E
+    F
+    G
+    H
+    L
+    M
+    N
+    T
+    W
+    ^
+    _
+    b
+    e
+    f
+    h
+    j
+    k
+    l
+    n
+    t
+    w
+    {
+    }
+    BS
+    CR
     END
     let categories.motions += [' ']
 
@@ -270,19 +270,19 @@ fu s:categories() abort "{{{1
     " "}}}
 
     let categories.motions_limited =<< trim END
-        $
-        ^
-        |
-        w
-        B
-        E
-        W
-        b
-        e
-        h
-        l
-        BS
-        CR
+    $
+    ^
+    |
+    w
+    B
+    E
+    W
+    b
+    e
+    h
+    l
+    BS
+    CR
     END
     let categories.motions_limited += [' ']
 
@@ -293,34 +293,34 @@ fu s:categories() abort "{{{1
     "         operator + Tab
 
     let l =<< trim END
-        &
-        .
-        :
-        A
-        C
-        D
-        I
-        J
-        K
-        O
-        P
-        Q
-        R
-        S
-        V
-        X
-        Y
-        a
-        i
-        o
-        p
-        q
-        r
-        s
-        u
-        v
-        x
-        Tab
+    &
+    .
+    :
+    A
+    C
+    D
+    I
+    J
+    K
+    O
+    P
+    Q
+    R
+    S
+    V
+    X
+    Y
+    a
+    i
+    o
+    p
+    q
+    r
+    s
+    u
+    v
+    x
+    Tab
     END
     let categories.commands += l
 
@@ -352,20 +352,20 @@ fu freekeys#complete(arglead, cmdline, pos) abort "{{{1
 
     if word_before_cursor =~# '^-mode\s*'
         let modes =<< trim END
-            normal
-            visual
-            operator-pending
-            insert
-            command-line
+        normal
+        visual
+        operator-pending
+        insert
+        command-line
         END
         return join(modes, "\n")
 
     elseif empty(a:arglead) || a:arglead[0] is# '-'
         let options =<< trim END
-            -noleader
-            -nomapcheck
-            -nospecial
-            -mode
+        -noleader
+        -nomapcheck
+        -nospecial
+        -mode
         END
         return join(options, "\n")
     endif
@@ -432,137 +432,137 @@ fu s:default_mappings(categories) abort "{{{1
     \                             }
 
     let default_mappings.normal.various =<< trim END
-        [*
-        ]*
-        [#
-        ]#
-        ['
-        ]'
-        [(
-        ])
-        [{
-        ]}
-        []
-        ][
-        [`
-        ]`
-        [/
-        ]/
-        [D
-        ]D
-        [I
-        ]I
-        [M
-        ]M
-        [P
-        ]P
-        [S
-        ]S
-        [c
-        ]c
-        [d
-        ]d
-        [f
-        ]f
-        [i
-        ]i
-        [m
-        ]m
-        [p
-        ]p
-        [s
-        ]s
-        [z
-        ]z
-        g#
-        g*
-        g$
-        g&
-        g'
-        g+
-        g,
-        g-
-        g;
-        g<
-        g?
-        g@
-        gD
-        gE
-        gF
-        gH
-        gI
-        gJ
-        gN
-        gP
-        gQ
-        gR
-        gT
-        gU
-        g]
-        g^
-        g_
-        g`
-        gd
-        ge
-        gf
-        gh
-        gi
-        gj
-        gk
-        gm
-        gn
-        gp
-        gq
-        gr
-        gs
-        gt
-        gu
-        gv
-        gw
-        g~
-        ZQ
-        z#
-        z+
-        z-
-        z.
-        z=
-        zCR
-        zA
-        zC
-        zD
-        zE
-        zF
-        zG
-        zH
-        zL
-        zM
-        zN
-        zO
-        zR
-        zW
-        zX
-        z^
-        za
-        zb
-        zc
-        zd
-        ze
-        zf
-        zg
-        zh
-        zi
-        zj
-        zk
-        zl
-        zm
-        zn
-        zo
-        zr
-        zs
-        zt
-        zv
-        zw
-        zx
+    [*
+    ]*
+    [#
+    ]#
+    ['
+    ]'
+    [(
+    ])
+    [{
+    ]}
+    []
+    ][
+    [`
+    ]`
+    [/
+    ]/
+    [D
+    ]D
+    [I
+    ]I
+    [M
+    ]M
+    [P
+    ]P
+    [S
+    ]S
+    [c
+    ]c
+    [d
+    ]d
+    [f
+    ]f
+    [i
+    ]i
+    [m
+    ]m
+    [p
+    ]p
+    [s
+    ]s
+    [z
+    ]z
+    g#
+    g*
+    g$
+    g&
+    g'
+    g+
+    g,
+    g-
+    g;
+    g<
+    g?
+    g@
+    gD
+    gE
+    gF
+    gH
+    gI
+    gJ
+    gN
+    gP
+    gQ
+    gR
+    gT
+    gU
+    g]
+    g^
+    g_
+    g`
+    gd
+    ge
+    gf
+    gh
+    gi
+    gj
+    gk
+    gm
+    gn
+    gp
+    gq
+    gr
+    gs
+    gt
+    gu
+    gv
+    gw
+    g~
+    ZQ
+    z#
+    z+
+    z-
+    z.
+    z=
+    zCR
+    zA
+    zC
+    zD
+    zE
+    zF
+    zG
+    zH
+    zL
+    zM
+    zN
+    zO
+    zR
+    zW
+    zX
+    z^
+    za
+    zb
+    zc
+    zd
+    ze
+    zf
+    zg
+    zh
+    zi
+    zj
+    zk
+    zl
+    zm
+    zn
+    zo
+    zr
+    zs
+    zt
+    zv
+    zw
+    zx
     END
 
     let default_mappings.visual = {
@@ -570,47 +570,47 @@ fu s:default_mappings(categories) abort "{{{1
     \                             }
 
     let default_mappings.visual.various =<< trim END
-        a(
-        a)
-        a<
-        a>
-        aB
-        aW
-        a[
-        a]
-        a`
-        ab
-        ap
-        as
-        at
-        aw
-        a{
-        a}
-        g?
-        gF
-        gN
-        g]
-        gf
-        gn
-        gv
-        i(
-        i)
-        i<
-        i>
-        iB
-        iW
-        i[
-        i]
-        i`
-        ib
-        ip
-        is
-        it
-        iw
-        i{
-        i}
-        i'
-        a'
+    a(
+    a)
+    a<
+    a>
+    aB
+    aW
+    a[
+    a]
+    a`
+    ab
+    ap
+    as
+    at
+    aw
+    a{
+    a}
+    g?
+    gF
+    gN
+    g]
+    gf
+    gn
+    gv
+    i(
+    i)
+    i<
+    i>
+    iB
+    iW
+    i[
+    i]
+    i`
+    ib
+    ip
+    is
+    it
+    iw
+    i{
+    i}
+    i'
+    a'
     END
 
     let result = []
@@ -663,10 +663,10 @@ fu s:display(free) abort "{{{1
     call append(0, [substitute(s:options.mode, '.', '\U&', 'g').' MODE', ''])
     call cursor(1,1)
 
-    nno  <silent><buffer><nowait>  <CR>  :<C-U>call <SID>show_help()<CR>
-    nno  <silent><buffer><nowait>  q     :<C-U>call <SID>close_window()<CR>
-    nno  <silent><buffer><nowait>  g?    :<C-U>help freekeys-mappings<CR>
-    nno  <silent><buffer><nowait>  gc    :<C-U>call <SID>similar_tags()<CR>
+    nno <silent><buffer><nowait> <CR> :<C-U>call <SID>show_help()<CR>
+    nno <silent><buffer><nowait> q    :<C-U>call <SID>close_window()<CR>
+    nno <silent><buffer><nowait> g?   :<C-U>help freekeys-mappings<CR>
+    nno <silent><buffer><nowait> gc   :<C-U>call <SID>similar_tags()<CR>
 
     exe 'nno  <buffer><nowait><silent>  gl  :<C-U>call <SID>toggle_leader_key('.s:options.noleader.')<CR>'
 endfu
@@ -914,7 +914,7 @@ fu s:toggle_leader_key(noleader) abort "{{{1
         sil! exe 'keepj keepp %s/'.substitute(g:mapleader, ' ', 'Space', '').'/Leader/'.(&gd ? '' : 'g')
     endif
 
-    call setpos('.', cur_pos)
+    call setpos('.', pos)
 
     let b:_fk.leader_key = filter(['shown', 'replaced'], {_,v -> v isnot# b:_fk.leader_key})[0]
 endfu
