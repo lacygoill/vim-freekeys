@@ -10,3 +10,6 @@ nno <unique><silent> -k :<c-u>call freekeys#main('')<cr>
 "                     Mnemonic: Keys
 
 nno <unique><silent> -K :<c-u>call freekeys#main('-nomapcheck')<cr>
+
+au User MyFlags call statusline#hoist('buffer', '', 0, {'ft': 'freekeys'})
+au User MyFlags call statusline#hoist('window', '%-5l ', 0, {'ft': 'freekeys'})
