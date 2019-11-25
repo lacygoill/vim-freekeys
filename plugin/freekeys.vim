@@ -11,5 +11,8 @@ nno <unique><silent> -k :<c-u>call freekeys#main('')<cr>
 
 nno <unique><silent> -K :<c-u>call freekeys#main('-nomapcheck')<cr>
 
-au User MyFlags call statusline#hoist('buffer', '', 0, {'ft': 'freekeys'})
-au User MyFlags call statusline#hoist('window', '%-5l ', 0, {'ft': 'freekeys'})
+augroup my_freekeys
+    au!
+    au FileType freekeys call lg#set_stl('freekeys', '%=%-5l ')
+augroup END
+
