@@ -13,6 +13,6 @@ nno <unique><silent> -K :<c-u>call freekeys#main('-nomapcheck')<cr>
 
 augroup my_freekeys
     au!
-    au FileType freekeys call lg#set_stl('freekeys', '%=%-5l ')
+    au FileType freekeys call lg#set_stl('%y%=%l/%L', '%y')
 augroup END
 
