@@ -44,7 +44,7 @@ let s:WARNING_REGEXES = {
 " How to pass the mode from the `autoload/` file to this syntax file?
 " We can't use this:
 "
-"         tabnew +let\ b:_fk=… freekeys
+"     tabnew +let\ b:_fk=… freekeys
 "
 " … because it seems the `let` command is executed after the syntax file is
 " sourced.
