@@ -6,9 +6,9 @@ hi fk_operator ctermfg=black ctermbg=173    guifg=#000000 guibg=#d78700
 hi fk_command  ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
 hi fk_motion   ctermfg=black ctermbg=green  guifg=#000000 guibg=#00d700
 
-syn match fk_operator '\v[!=<>cdy]'
-syn match fk_command  '\v[~@&qQrRYuUiIoOpPaAsSDJK:xXCvVm.]|Tab'
-syn match fk_motion   '\v[#$%()*+,-/0;?BEFGHLMNTW^_befhjklntw{|}]'
+syn match fk_operator '[!=<>cdy]'
+syn match fk_command  '[~@&qQrRYuUiIoOpPaAsSDJK:xXCvVm.]\|Tab'
+syn match fk_motion   '[#$%()*+,-/0;?BEFGHLMNTW^_befhjklntw{|}]'
 
 syn keyword fk_command Tab
 syn keyword fk_motion  Space BS CR
@@ -17,28 +17,29 @@ syn keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
 
 " We can't use `CTRL-` as a keyword because sometimes it fails:
 "
-"         CTRL-_
-"         CTRL-K
-"         Z CTRL-
+"     CTRL-_
+"     CTRL-K
+"     Z CTRL-
 
-syn match Normal     '\vCTRL-.|CTRL-$|Leader'
+syn match Normal 'CTRL-.\|CTRL-$\|Leader'
 
 hi link fk_warning WarningMsg
 
 let s:WARNING_REGEXES = {
-                        \ 'normal'           : { 'op+g'      : '[!=<>cdy]g',
-                        \                        'do dp zu'  : '%(do|dp|zu)',
-                        \                        'op+ctrl-v' : '%(c|d|y) CTRL-',
-                        \                        'U Bar'     : '%(U|\|).*',
-                        \                        'ctrl-char' : 'CTRL-%([\@]|Space)',
-                        \                        'g[]+ctrl'  : '[g[\]] CTRL.*',
-                        \                        '[] "'      : '[[\]]"',
-                        \                        },
-                        \ 'visual'           : {},
-                        \ 'insert'           : {},
-                        \ 'command-line'     : {},
-                        \ 'operator-pending' : {},
-                        \ }
+    \ 'normal' : {
+    \     'op+g' : '[!=<>cdy]g',
+    \     'do dp zu' : '\%(do\|dp\|zu\)',
+    \     'op+ctrl-v' : '\%(c\|d\|y\) CTRL-',
+    \     'U Bar' : '\%(U\||\).*',
+    \     'ctrl-char' : 'CTRL-\%([\@]\|Space\)',
+    \     'g[]+ctrl' : '[g[\]] CTRL.*',
+    \     '[] "' : '[[\]]"',
+    \ },
+    \ 'visual' : {},
+    \ 'insert' : {},
+    \ 'command-line' : {},
+    \ 'operator-pending' : {},
+    \ }
 
 " FIXME:
 " How to pass the mode from the `autoload/` file to this syntax file?
@@ -50,7 +51,7 @@ let s:WARNING_REGEXES = {
 " sourced.
 
 for regex in values(s:WARNING_REGEXES['normal'])
-    exe 'syn match fk_warning '.string('\v^'.regex.'$')
+    exe 'syn match fk_warning '..string('^'..regex..'$')
 endfor
 
 let b:current_syntax = 'freekeys'

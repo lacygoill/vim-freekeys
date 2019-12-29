@@ -199,7 +199,7 @@
 fu freekeys#main(...) abort "{{{2
     let cmd_args = split(a:1)
     let s:options = {
-        \ 'mode'       : matchstr(a:1, '\v-mode\s+\zs%(\w|-)+'),
+        \ 'mode'       : matchstr(a:1, '-mode\s\+\zs\%(\w\|-\)\+'),
         \ 'nospecial'  : index(cmd_args, '-nospecial') >= 0,
         \ 'nomapcheck' : index(cmd_args, '-nomapcheck') >= 0,
         \ 'noleader'   : index(cmd_args, '-noleader') >= 0,
@@ -729,13 +729,13 @@ fu s:display(free) abort "{{{1
     sort
 
     " Make the space key more visible.
-    sil! keepj keepp %s/ /Space/
+    sil keepj keepp %s/ /Space/e
 
     " Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
     " to make them more readable
-    sil! keepj keepp %s/^Leader\zs\ze\S/ /
-    sil! keepj keepp %s/\v%(CTRL-)@5<!%(BS|CR|CTRL-|Leader|Space|Tab)$/ &/
-    sil! keepj keepp %s/  / /
+    sil keepj keepp %s/^Leader\zs\ze\S/ /e
+    sil keepj keepp %s/\%(CTRL-\)\@5<!\%(BS\|CR\|CTRL-\|Leader\|Space\|Tab\)$/ &/e
+    sil keepj keepp %s/  / /e
 
     " If there're double sequences, like `operator + space`:
     "
@@ -744,10 +744,10 @@ fu s:display(free) abort "{{{1
     "     op   + leader
     "
     " ... remove them.
-    sil! keepj keepp %s/\v^(.*)\n\1$/\1/
+    sil keepj keepp %s/^\(.*\)\n\1$/\1/e
 
     " Trim whitespace. There shouldn't be any, but better be safe than sorry.
-    sil! keepj keepp %s/\s*$//
+    sil keepj keepp %s/\s*$//e
 
     call append(0, [substitute(s:options.mode, '.', '\U&', 'g')..' MODE', ''])
     call cursor(1,1)
@@ -886,13 +886,13 @@ fu s:show_help() abort "{{{1
     let topic = substitute(topic, ' ', '_', 'g')
 
     let substitutions = {
-    \                     'U'         : ['U\zs.*'      , ''],
-    \                     'Bar'       : ['\zs|.*'      , 'Bar'],
-    \                     '[] ctrl-'  : ['[[\]]_CTRL-' , 'fk_[]_CTRL-'],
-    \                     '[] "'      : ['[[\]]"'      , 'fk_[]_double_quote'],
-    \                     'op ctrl-'  : ['[cdy]_CTRL-' , 'fk_operator_and_CTRL-V'],
-    \                     'op prefix' : ['[!<>=cdy]g'  , 'fk_operator_and_prefix_g'],
-    \                   }
+        \ 'U'         : ['U\zs.*'      , ''],
+        \ 'Bar'       : ['\zs|.*'      , 'Bar'],
+        \ '[] ctrl-'  : ['[[\]]_CTRL-' , 'fk_[]_CTRL-'],
+        \ '[] "'      : ['[[\]]"'      , 'fk_[]_double_quote'],
+        \ 'op ctrl-'  : ['[cdy]_CTRL-' , 'fk_operator_and_CTRL-V'],
+        \ 'op prefix' : ['[!<>=cdy]g'  , 'fk_operator_and_prefix_g'],
+        \ }
 
     for [pat, rep] in values(substitutions)
         let topic = substitute(topic, '^\C\Vfk_\m'..pat..'$', rep, '')
@@ -924,8 +924,8 @@ fu s:similar_tags() abort "{{{1
     call setline(1, lines)
 
     for idx in range(line('$'), 1, -1)
-        let key    = substitute(getline(idx), ' ', '_', 'g')
-        let taglist  = taglist('\C\V\^'..mode_tag..escape(key, '\'))
+        let key = substitute(getline(idx), ' ', '_', 'g')
+        let taglist = taglist('\C\V\^'..mode_tag..escape(key, '\'))
         let tagnames = map(taglist, {_,v -> '    '..escape(v['name'], '/')})
 
         if empty(tagnames)
@@ -946,9 +946,9 @@ fu s:toggle_leader_key(noleader) abort "{{{1
     let cur_pos = getcurpos()
 
     if b:_fk.leader_key is# 'shown'
-        sil! exe 'keepj keepp %s/Leader/'..substitute(g:mapleader, ' ', 'Space', '')..'/'..(&gd ? '' : 'g')
+        sil exe 'keepj keepp %s/Leader/'..substitute(g:mapleader, ' ', 'Space', '')..'/e'..(&gd ? '' : 'g')
     else
-        sil! exe 'keepj keepp %s/'..substitute(g:mapleader, ' ', 'Space', '')..'/Leader/'..(&gd ? '' : 'g')
+        sil exe 'keepj keepp %s/'..substitute(g:mapleader, ' ', 'Space', '')..'/Leader/e'..(&gd ? '' : 'g')
     endif
 
     call setpos('.', pos)
