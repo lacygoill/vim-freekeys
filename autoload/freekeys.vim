@@ -925,7 +925,7 @@ fu s:similar_tags() abort "{{{1
 
     for idx in range(line('$'), 1, -1)
         let key = substitute(getline(idx), ' ', '_', 'g')
-        let taglist = taglist('\C\V\^'..mode_tag..escape(key, '\'))
+        let taglist = taglist('^\C\V'..mode_tag..escape(key, '\'))
         let tagnames = map(taglist, {_,v -> '    '..escape(v['name'], '/')})
 
         if empty(tagnames)
