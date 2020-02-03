@@ -245,7 +245,7 @@ fu freekeys#complete(arglead, cmdline, pos) abort "{{{2
 endfu
 "}}}1
 fu s:categories() abort "{{{1
-    let mode     = s:options.mode
+    let mode = s:options.mode
     let noleader = s:options.noleader
 
     let categories = {
@@ -412,10 +412,10 @@ fu s:candidates(categories) abort "{{{1
 endfu
 
 fu s:default_mappings(categories) abort "{{{1
-    let mode             = s:options.mode
+    let mode = s:options.mode
     let default_mappings = []
-    let prefixes         = a:categories.prefixes
-    let operators        = a:categories.operators
+    let prefixes = a:categories.prefixes
+    let operators = a:categories.operators
 
     " NOTE:{{{
     "
@@ -662,11 +662,11 @@ fu s:default_mappings(categories) abort "{{{1
 endfu
 
 fu s:is_unmapped(candidates, default_mappings) abort "{{{1
-    let candidates       = a:candidates
+    let candidates = a:candidates
     let default_mappings = a:default_mappings
-    let nomapcheck       = s:options.nomapcheck
-    let nospecial        = s:options.nospecial
-    let mode             = s:options.mode
+    let nomapcheck = s:options.nomapcheck
+    let nospecial = s:options.nospecial
+    let mode = s:options.mode
 
     " `"`, `@`, `m`, `'`, ```, `[` and `]` are special motions, commands,{{{
     " because contrary to the other ones, they wait for an argument.
@@ -761,7 +761,7 @@ fu s:display(free) abort "{{{1
 endfu
 
 fu s:syntaxes(categories) abort "{{{1
-    let mode       = s:options.mode
+    let mode = s:options.mode
     let categories = a:categories
 
     let prefixes           = categories.prefixes
@@ -774,10 +774,10 @@ fu s:syntaxes(categories) abort "{{{1
     let chars              = prefixes+motions+commands+operators
 
     let syntaxes = {
-    \                'insert'          : { 'ctrl + char'   : [['CTRL-'],  chars]},
-    \                'command-line'    : { 'ctrl + char'   : [['CTRL-'],  chars]},
-    \                'operator-pending': { 'adverb + char' : [['i', 'a'], chars]},
-    \              }
+        \ 'insert' : {'ctrl + char' : [['CTRL-'],  chars]},
+        \ 'command-line' : {'ctrl + char' : [['CTRL-'],  chars]},
+        \ 'operator-pending' : {'adverb + char' : [['i', 'a'], chars]},
+        \ }
 
     " In visual mode, we don't put `i`, `a` inside the commands category
     " because of the convention which uses them as prefix to build
@@ -911,9 +911,9 @@ fu s:close_window() abort "{{{1
 endfu
 
 fu s:similar_tags() abort "{{{1
-    let mode     = b:_fk.mode
+    let mode = b:_fk.mode
     let mode_tag = mode isnot# 'normal' ? mode[0]..'_' : ''
-    let lines    = getline(1, line('$'))
+    let lines = getline(1, line('$'))
 
     call remove(lines, index(lines, 'g:'))
 
