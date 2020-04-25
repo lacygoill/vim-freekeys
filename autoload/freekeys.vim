@@ -140,6 +140,24 @@
 "     command which expects an argument (like `q`, `r`, ...) + invalid argument
 "
 " For example, `q C-a` is an invalid key sequence, thus free.
+"
+" ---
+"
+" `:FreeKeys` ignores free sequences beginning with `m`, `'` and `@`.
+" This is because it thinks it would introduce a timeout with some of our custom
+" mappings.
+" In reality, there would no timeout, because `m`, `'` and `@` mappings are special:
+" they ask for an argument.
+" Check whether we have other similar special mappings causing `:Freekeys` to ignore
+" whole families of mappings:
+"
+"     verb filter /^.$/ map
+"     g/last set from/d_
+"     g/^<plug>/d_
+"
+" How to handle the issue?
+" Maybe we  should take  the habit of  executing `:Freekeys  -nomapcheck` (we've
+" added a `-K` mapping for that).
 "}}}
 " The algorithm deliberately omits special keys: {{{
 "
