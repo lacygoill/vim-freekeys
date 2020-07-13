@@ -742,7 +742,7 @@ fu s:display(free) abort "{{{1
     setl bh=delete bt=nofile nobl noswf nowrap wfw
 
     sil 0put =a:free
-    sil $d_
+    sil keepj $d_
     sort
 
     " Make the space key more visible.
@@ -946,7 +946,7 @@ fu s:similar_tags() abort "{{{1
         let tagnames = map(taglist, {_,v -> '    '..escape(v['name'], '/')})
 
         if empty(tagnames)
-            sil exe idx..'d_'
+            sil exe 'keepj '..idx..'d_'
         else
             sil exe 'keepj keepp '..idx..'s/$/\=[""]+tagnames'
         endif
