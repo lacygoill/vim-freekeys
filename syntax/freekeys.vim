@@ -51,7 +51,7 @@ let s:WARNING_REGEXES = {
 " sourced.
 
 for regex in values(s:WARNING_REGEXES['normal'])
-    exe 'syn match fk_warning '..string('^'..regex..'$')
+    exe 'syn match fk_warning ' .. string('^' .. regex .. '$')
 endfor
 
 let b:current_syntax = 'freekeys'
