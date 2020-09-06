@@ -717,8 +717,8 @@ fu s:is_unmapped(candidates, default_mappings) abort "{{{1
     endif
 
     if !nomapcheck
-        let condition_to_be_free ..= '&& mapcheck(s:translate_special_key(key), '
-            \ .. string(mode[0]) .. ')->empty()'
+        let condition_to_be_free ..= '&& s:translate_special_key(key)'
+            \ ..'->mapcheck(' .. string(mode[0]) .. ')->empty()'
     endif
 
     for key in candidates
