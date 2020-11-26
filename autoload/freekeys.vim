@@ -107,17 +107,17 @@
 "
 "     set showcmd
 "
-"     nno ab :<c-u>set opfunc=FuncA<cr>g@
+"     nno ab <cmd>set opfunc=FuncA<cr>g@
 "     fu FuncA(_)
 "         echo 'ab'
 "     endfu
-"     ono cdef :norm V<cr>
+"     ono cdef <cmd>norm V<cr>
 "
-"     nno abcd :<c-u>set opfunc=FuncB<cr>g@
+"     nno abcd <cmd>set opfunc=FuncB<cr>g@
 "     fu FuncB(_)
 "         echo 'abcd'
 "     endfu
-"     ono ef :norm V<cr>
+"     ono ef <cmd>norm V<cr>
 "
 " ---
 "
@@ -214,13 +214,13 @@
 "}}}
 
 " Interface {{{1
-fu freekeys#main(...) abort "{{{2
-    let cmd_args = split(a:1)
+fu freekeys#main(args = '') abort "{{{2
+    let args = split(a:args)
     let s:options = {
-        \ 'mode': matchstr(a:1, '-mode\s\+\zs\%(\w\|-\)\+'),
-        \ 'nospecial': index(cmd_args, '-nospecial') >= 0,
-        \ 'nomapcheck': index(cmd_args, '-nomapcheck') >= 0,
-        \ 'noleader': index(cmd_args, '-noleader') >= 0,
+        \ 'mode': matchstr(a:args, '-mode\s\+\zs\%(\w\|-\)\+'),
+        \ 'nospecial': index(args, '-nospecial') >= 0,
+        \ 'nomapcheck': index(args, '-nomapcheck') >= 0,
+        \ 'noleader': index(args, '-noleader') >= 0,
         \ }
 
     if empty(s:options.mode)
@@ -770,12 +770,12 @@ fu s:display(free) abort "{{{1
     call append(0, [substitute(s:options.mode, '.', '\U&', 'g') .. ' MODE', ''])
     call cursor(1, 1)
 
-    nno <silent><buffer><nowait> <cr> :<c-u>call <sid>show_help()<cr>
-    nno <silent><buffer><nowait> q :<c-u>call <sid>close_window()<cr>
-    nno <silent><buffer><nowait> g? :<c-u>help freekeys-mappings<cr>
-    nno <silent><buffer><nowait> gc :<c-u>call <sid>similar_tags()<cr>
+    nno <buffer><nowait> <cr> <cmd>call <sid>show_help()<cr>
+    nno <buffer><nowait> q <cmd>call <sid>close_window()<cr>
+    nno <buffer><nowait> g? <cmd>help freekeys-mappings<cr>
+    nno <buffer><nowait> gc <cmd>call <sid>similar_tags()<cr>
 
-    exe 'nno <buffer><nowait><silent> gl :<c-u>call <sid>toggle_leader_key(' .. s:options.noleader .. ')<cr>'
+    exe 'nno <buffer><nowait> gl <cmd>call <sid>toggle_leader_key(' .. s:options.noleader .. ')<cr>'
 endfu
 
 fu s:syntaxes(categories) abort "{{{1
