@@ -953,7 +953,7 @@ fu s:similar_tags() abort "{{{1
         endif
     endfor
 
-    nno <buffer><expr><nowait><silent> q reg_recording() != '' ? 'q' : ':<c-u>q<cr>'
+    nno <buffer><expr><nowait> q reg_recording() != '' ? 'q' : '<cmd>q<cr>'
 endfu
 
 fu s:toggle_leader_key(noleader) abort "{{{1
