@@ -1,13 +1,13 @@
-if exists('g:loaded_freekeys')
-    finish
-endif
-let g:loaded_freekeys = 1
+vim9 noclear
 
-com -bar -nargs=? -complete=custom,freekeys#complete FreeKeys call freekeys#main(<q-args>)
+if exists('loaded') | finish | endif
+var loaded = true
+
+com -bar -nargs=? -complete=custom,freekeys#complete FreeKeys freekeys#main(<q-args>)
 
 nno <unique> -k <cmd>call freekeys#main()<cr>
-"             ^
-"             Mnemonic: Keys
+#             ^
+#             Mnemonic: Keys
 
 nno <unique> -K <cmd>call freekeys#main('-nomapcheck')<cr>
 

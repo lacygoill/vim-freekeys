@@ -58,11 +58,6 @@ Buffer-local (filetype=freekeys) ~
  --------+----------------------------------------------------
  g?      | Show this help
          |
- gc      | Get the tags beginning with the same key sequences
-         | Useful to check whether the keys are really free
-         | It's slow. Take some time
-         | Not reliable (lots of false positive)
-         |
  gl      | Toggle the visibility of the Leader key
          |
  q       | Quit; return to the original file

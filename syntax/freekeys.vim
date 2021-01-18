@@ -1,3 +1,5 @@
+vim9
+
 if exists('b:current_syntax')
     finish
 endif
@@ -15,43 +17,43 @@ syn keyword fk_motion  Space BS CR
 
 syn keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
 
-" We can't use `CTRL-` as a keyword because sometimes it fails:
-"
-"     CTRL-_
-"     CTRL-K
-"     Z CTRL-
+# We can't use `CTRL-` as a keyword because sometimes it fails:
+#
+#     CTRL-_
+#     CTRL-K
+#     Z CTRL-
 
 syn match Normal 'CTRL-.\|CTRL-$\|Leader'
 
 hi link fk_warning WarningMsg
 
-let s:WARNING_REGEXES = {
-    \ 'normal' : {
-    \     'op+g' : '[!=<>cdy]g',
-    \     'do dp zu' : '\%(do\|dp\|zu\)',
-    \     'op+ctrl-v' : '\%(c\|d\|y\) CTRL-',
-    \     'U Bar' : '\%(U\||\).*',
-    \     'ctrl-char' : 'CTRL-\%([\@]\|Space\)',
-    \     'g[]+ctrl' : '[g[\]] CTRL.*',
-    \     '[] "' : '[[\]]"',
-    \ },
-    \ 'visual' : {},
-    \ 'insert' : {},
-    \ 'command-line' : {},
-    \ 'operator-pending' : {},
-    \ }
+const WARNING_REGEXES: dict<dict<string>> = {
+    normal: {
+        'op+g': '[!=<>cdy]g',
+        'do dp zu': '\%(do\|dp\|zu\)',
+        'op+ctrl-v': '\%(c\|d\|y\) CTRL-',
+        'U Bar': '\%(U\||\).*',
+        'ctrl-char': 'CTRL-\%([\@]\|Space\)',
+        'g[]+ctrl': '[g[\]] CTRL.*',
+        '[] "': '[[\]]"',
+    },
+    visual: {},
+    insert: {},
+    command-line: {},
+    operator-pending: {},
+    }
 
-" FIXME:
-" How to pass the mode from the `autoload/` file to this syntax file?
-" We can't use this:
-"
-"     tabnew +let\ b:_fk=… freekeys
-"
-" … because it seems the `let` command is executed after the syntax file is
-" sourced.
+# FIXME:
+# How to pass the mode from the `autoload/` file to this syntax file?
+# We can't use this:
+#
+#     tabnew +let\ b:_fk=... freekeys
+#
+# ... because it  seems the `let` command  is executed after the  syntax file is
+# sourced.
 
-for regex in values(s:WARNING_REGEXES['normal'])
+for regex in values(WARNING_REGEXES['normal'])
     exe 'syn match fk_warning ' .. string('^' .. regex .. '$')
 endfor
 
-let b:current_syntax = 'freekeys'
+b:current_syntax = 'freekeys'
