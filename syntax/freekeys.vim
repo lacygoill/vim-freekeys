@@ -1,4 +1,4 @@
-vim9
+vim9script
 
 if exists('b:current_syntax')
     finish
