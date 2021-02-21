@@ -422,7 +422,7 @@ def Categories(): dict<list<string>> #{{{2
     # and nothing else.
     if !noleader
         for [category, keys] in items(categories)
-            filter(keys, (_, v) => v != g:mapleader)
+            filter(keys, (_, v: string): bool => v != g:mapleader)
         endfor
     endif
     return categories
@@ -723,7 +723,7 @@ def IsUnmapped( #{{{2
 
     # If  a sequence  shadows another  one, or  it overrides  a default  action,
     # remove it.
-    return filter(candidates, (_, key) =>
+    return filter(candidates, (_, key: string): bool =>
         index(default_mappings, key) == -1
         && (
             !nospecial && nomapcheck
@@ -861,7 +861,7 @@ def PrefixPlusLetter(): list<string> #{{{2
     for prefix in ['"', '@', 'm', "'", '`']
         prefix_plus_letter += (range(char2nr('a'), char2nr('z'))
             + range(char2nr('A'), char2nr('Z')))
-            ->mapnew((_, v) => prefix .. nr2char(v))
+            ->mapnew((_, v: number): string => prefix .. nr2char(v))
     endfor
     return prefix_plus_letter
 enddef
@@ -956,6 +956,7 @@ def ToggleLeaderKey(noleader: bool) #{{{2
 
     setpos('.', curpos)
 
-    b:_fk.leader_key = filter(['shown', 'replaced'], (_, v) => v != b:_fk.leader_key)[0]
+    b:_fk.leader_key = ['shown', 'replaced']
+        ->filter((_, v: string): bool => v != b:_fk.leader_key)[0]
 enddef
 
