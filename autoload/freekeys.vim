@@ -430,7 +430,7 @@ enddef
 
 def Candidates(categories: dict<list<string>>): list<string> #{{{2
     var syntaxes: dict<list<list<string>>> = Syntaxes(categories)
-    var candidates: list<string> = []
+    var candidates: list<string>
 
     for [left_key_category, right_key_category] in values(syntaxes)
         for key1 in left_key_category
@@ -683,7 +683,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
         a'
     END
 
-    var result: list<string> = []
+    var result: list<string>
     for a_list in values(default_mappings[mode])
         result += a_list
     endfor
@@ -856,7 +856,7 @@ def Syntaxes(categories: dict<list<string>>): dict<list<list<string>>> #{{{2
 enddef
 
 def PrefixPlusLetter(): list<string> #{{{2
-    var prefix_plus_letter: list<string> = []
+    var prefix_plus_letter: list<string>
 
     for prefix in ['"', '@', 'm', "'", '`']
         prefix_plus_letter += (range(char2nr('a'), char2nr('z'))
@@ -867,7 +867,7 @@ def PrefixPlusLetter(): list<string> #{{{2
 enddef
 
 def DoublePrefix(prefixes: list<string>): list<string> #{{{2
-    var double_prefix: list<string> = []
+    var double_prefix: list<string>
 
     for prefix in prefixes
         double_prefix += [prefix .. prefix]
@@ -877,7 +877,7 @@ def DoublePrefix(prefixes: list<string>): list<string> #{{{2
 enddef
 
 def OpPlusForbiddenCmd(operators: list<string>): list<string> #{{{2
-    var op_plus_forbidden_cmd: list<string> = []
+    var op_plus_forbidden_cmd: list<string>
 
     for operator in operators
         for command in ['a', 'i']
