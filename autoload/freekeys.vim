@@ -422,7 +422,7 @@ def Categories(): dict<list<string>> #{{{2
     # and nothing else.
     if !noleader
         for [category, keys] in items(categories)
-            filter(keys, (_, v: string): bool => v != g:mapleader)
+            keys->filter((_, v: string): bool => v != g:mapleader)
         endfor
     endif
     return categories
@@ -723,24 +723,24 @@ def IsUnmapped( #{{{2
 
     # If  a sequence  shadows another  one, or  it overrides  a default  action,
     # remove it.
-    return filter(candidates, (_, key: string): bool =>
-        index(default_mappings, key) == -1
-        && (
-            !nospecial && nomapcheck
-            ||
-            nospecial && nomapcheck && key !~ '[[:punct:]]'
-            ||
-            !nospecial && !nomapcheck
-                && TranslateSpecialKey(key)
-                ->mapcheck(mode[0])
-                ->empty()
-            ||
-            nospecial && !nomapcheck && key !~ '[[:punct:]]'
-                && TranslateSpecialKey(key)
-                ->mapcheck(mode[0])
-                ->empty()
-           )
-        )
+    return candidates
+        ->filter((_, key: string): bool =>
+            index(default_mappings, key) == -1
+            && (
+                !nospecial && nomapcheck
+                ||
+                nospecial && nomapcheck && key !~ '[[:punct:]]'
+                ||
+                !nospecial && !nomapcheck
+                    && TranslateSpecialKey(key)
+                    ->mapcheck(mode[0])
+                    ->empty()
+                ||
+                nospecial && !nomapcheck && key !~ '[[:punct:]]'
+                    && TranslateSpecialKey(key)
+                    ->mapcheck(mode[0])
+                    ->empty()
+               ))
 enddef
 
 def Display(free: list<string>) #{{{2
@@ -779,7 +779,7 @@ def Display(free: list<string>) #{{{2
     # Trim whitespace.  There shouldn't be any, but better be safe than sorry.
     sil keepj keepp :%s/\s*$//e
 
-    append(0, [substitute(options.mode, '.', '\U&', 'g') .. ' MODE', ''])
+    append(0, [options.mode->substitute('.', '\U&', 'g') .. ' MODE', ''])
     cursor(1, 1)
 
     nno <buffer><nowait> <cr> <cmd>call <sid>ShowHelp()<cr>
@@ -859,9 +859,10 @@ def PrefixPlusLetter(): list<string> #{{{2
     var prefix_plus_letter: list<string>
 
     for prefix in ['"', '@', 'm', "'", '`']
-        prefix_plus_letter += (range(char2nr('a'), char2nr('z'))
-            + range(char2nr('A'), char2nr('Z')))
-            ->mapnew((_, v: number): string => prefix .. nr2char(v))
+        prefix_plus_letter += (
+                range(char2nr('a'), char2nr('z'))
+              + range(char2nr('A'), char2nr('Z'))
+              )->mapnew((_, v: number): string => prefix .. nr2char(v))
     endfor
     return prefix_plus_letter
 enddef
@@ -898,7 +899,8 @@ def TranslateSpecialKey(key: string): string #{{{2
     if key =~ 'CTRL-$'
         return ''
     endif
-    return substitute(key, 'Leader', g:mapleader, 'g')
+    return key
+        ->substitute('Leader', g:mapleader, 'g')
         ->substitute('Tab', '<Tab>', 'g')
         ->substitute('CR', '<CR>', 'g')
         ->substitute('BS', '<BS>', 'g')
@@ -923,7 +925,7 @@ def ShowHelp() #{{{2
         }
 
     for [pat, rep] in values(substitutions)
-        topic = substitute(topic, '^\C\Vfk_\m' .. pat .. '$', rep, '')
+        topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
     endfor
 
     sil! exe 'help ' .. topic
@@ -948,10 +950,10 @@ def ToggleLeaderKey(noleader: bool) #{{{2
 
     if b:_fk.leader_key == 'shown'
         sil exe 'keepj keepp :%s/Leader/'
-            .. substitute(g:mapleader, ' ', 'Space', '') .. '/e'
+            .. g:mapleader->substitute(' ', 'Space', '') .. '/e'
     else
         sil exe 'keepj keepp :%s/'
-            .. substitute(g:mapleader, ' ', 'Space', '') .. '/Leader/e'
+            .. g:mapleader->substitute(' ', 'Space', '') .. '/Leader/e'
     endif
 
     setpos('.', curpos)
