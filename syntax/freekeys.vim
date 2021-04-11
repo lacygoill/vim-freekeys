@@ -41,7 +41,7 @@ const WARNING_REGEXES: dict<dict<string>> = {
     insert: {},
     command-line: {},
     operator-pending: {},
-    }
+}
 
 # FIXME:
 # How to pass the mode from the `autoload/` file to this syntax file?

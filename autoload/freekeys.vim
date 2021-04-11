@@ -226,7 +226,7 @@ def freekeys#main(args = '') #{{{2
         nospecial: index(splitted_args, '-nospecial') >= 0,
         nomapcheck: index(splitted_args, '-nomapcheck') >= 0,
         noleader: index(splitted_args, '-noleader') >= 0,
-        }
+    }
 
     if empty(options.mode)
         options.mode = 'normal'
@@ -246,7 +246,7 @@ def freekeys#complete( #{{{2
     arglead: string,
     cmdline: string,
     pos: number
-    ): string
+): string
 
     var pat: string = '.*\s\zs-.*\%' .. (pos + 1) .. 'c'
     var from_dash_to_cursor: string = matchstr(cmdline, pat)
@@ -259,7 +259,7 @@ def freekeys#complete( #{{{2
             insert
             command-line
         END
-        return join(modes, "\n")
+        return modes->join("\n")
 
     elseif empty(arglead) || arglead[0] == '-'
         var cmdline_options: list<string> =<< trim END
@@ -268,7 +268,7 @@ def freekeys#complete( #{{{2
             -nospecial
             -mode
         END
-        return join(cmdline_options, "\n")
+        return cmdline_options->join("\n")
     endif
 
     return ''
@@ -284,16 +284,14 @@ def Categories(): dict<list<string>> #{{{2
         commands: !&tildeop ? ['~'] : [],
         operators: ['!', '<', '=', '>', 'c', 'd', 'y'] + (&tildeop ? ['~'] : []),
         operators_linewise: ['!', '<', '=', '>'],
-        }
+    }
 
     # we add `U` as a prefix in normal mode
     # `u` and `C-r` could be used to handle undo operations
     #
     # we also add `Leader` as a prefix, unless the `-noleader` argument was
     # passed to `:FK`
-    extend(categories.prefixes,
-        (mode == 'normal' ? ['U'] : []) + (!noleader ? ['Leader'] : [])
-        )
+    categories.prefixes += (mode == 'normal' ? ['U'] : []) + (!noleader ? ['Leader'] : [])
 
     categories.motions =<< trim END
         *
@@ -335,7 +333,7 @@ def Categories(): dict<list<string>> #{{{2
         BS
         CR
     END
-    extend(categories.motions, [' '])
+    categories.motions += [' ']
 
     # The 14 following motions stay on the line most of the time.{{{
     # The last 11 can move across different lines, but very limitedly.
@@ -375,7 +373,7 @@ def Categories(): dict<list<string>> #{{{2
         BS
         CR
     END
-    extend(categories.motions_limited, [' '])
+    categories.motions_limited += [' ']
 
     # We don't consider Tab as a motion, because even though `C-i` jumps forward
     # in the jumplist, by default, `operator + Tab` doesn't do anything.
@@ -413,7 +411,7 @@ def Categories(): dict<list<string>> #{{{2
         x
         Tab
     END
-    extend(categories.commands, l)
+    categories.commands += l
 
     # If the `-noleader` argument wasn't provided,  it means we want the algo to
     # consider the usage of a Leader  key.  So, we remove `g:mapleader` from all
@@ -435,7 +433,7 @@ def Candidates(categories: dict<list<string>>): list<string> #{{{2
     for [left_key_category, right_key_category] in values(syntaxes)
         for key1 in left_key_category
             for key2 in right_key_category
-                candidates += [join([key1, key2], '')]
+                candidates += [[key1, key2]->join('')]
             endfor
         endfor
     endfor
@@ -482,7 +480,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
         command-line: {},
         insert: {},
         operator-pending: {},
-        }
+    }
 
     default_mappings.normal = {
         'prefix + letter': PrefixPlusLetter(),
@@ -501,7 +499,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
 
         'single quote': ['''"', "'.", "'(", "')", "'<", "'>",
                          "'[", "']", "'^", "'`", "'{", "'}"],
-        }
+    }
 
     default_mappings.normal.various =<< trim END
         [*
@@ -694,7 +692,8 @@ enddef
 def IsUnmapped( #{{{2
     candidates: list<string>,
     default_mappings: list<string>
-    ): list<string>
+): list<string>
+
     var nomapcheck: bool = options.nomapcheck
     var nospecial: bool = options.nospecial
     var mode: string = options.mode
@@ -805,7 +804,7 @@ def Syntaxes(categories: dict<list<string>>): dict<list<list<string>>> #{{{2
         insert: {'ctrl + char': [['CTRL-'], chars]},
         command-line: {'ctrl + char': [['CTRL-'], chars]},
         operator-pending: {'adverb + char': [['i', 'a'], chars]},
-        }
+    }
 
     # In visual mode, we don't put `i`, `a` inside the commands category
     # because of the convention which uses them as prefix to build
@@ -816,7 +815,7 @@ def Syntaxes(categories: dict<list<string>>): dict<list<list<string>>> #{{{2
           'pfx + CTRL': [prefixes, ['CTRL-']],
           'CTRL + char': [['CTRL-'], chars],
           'cmd + char': [['&', '.', 'Q', 'Tab'], chars],
-        }
+    }
 
     # Most of the meaningless sequences need at least 2 keys.
     # But one of them need at least 3 keys:    digit + prefix + digit
@@ -830,7 +829,7 @@ def Syntaxes(categories: dict<list<string>>): dict<list<list<string>>> #{{{2
           'CTRL + char':     [['CTRL-'], ['K', 'Space', '\', '_', '@']],
           'op + CTRL':       [operators, ['CTRL-']],
           'pfx + CTRL':      [prefixes, ['CTRL-']],
-        }
+    }
 
     # These 8 syntaxes should produce all 2-key meaningless sequences.
     # For n-key meaningless sequences (n>2), there's only 1 possible syntax:
@@ -922,7 +921,7 @@ def ShowHelp() #{{{2
         '[] "':      ['[[\]]"', 'fk_[]_double_quote'],
         'op ctrl-':  ['[cdy]_CTRL-', 'fk_operator_and_CTRL-V'],
         'op prefix': ['[!<>=cdy]g', 'fk_operator_and_prefix_g'],
-        }
+    }
 
     for [pat, rep] in values(substitutions)
         topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
