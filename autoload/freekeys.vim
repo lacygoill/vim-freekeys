@@ -222,10 +222,10 @@ var loaded = true
 def freekeys#main(args = '') #{{{2
     var splitted_args: list<string> = split(args)
     options = {
-        mode: matchstr(args, '-mode\s\+\zs\%(\w\|-\)\+'),
-        nospecial: index(splitted_args, '-nospecial') >= 0,
-        nomapcheck: index(splitted_args, '-nomapcheck') >= 0,
-        noleader: index(splitted_args, '-noleader') >= 0,
+        mode: args->matchstr('-mode\s\+\zs\%(\w\|-\)\+'),
+        nospecial: splitted_args->index('-nospecial') >= 0,
+        nomapcheck: splitted_args->index('-nomapcheck') >= 0,
+        noleader: splitted_args->index('-noleader') >= 0,
     }
 
     if empty(options.mode)
@@ -249,7 +249,7 @@ def freekeys#complete( #{{{2
 ): string
 
     var pat: string = '.*\s\zs-.*\%' .. (pos + 1) .. 'c'
-    var from_dash_to_cursor: string = matchstr(cmdline, pat)
+    var from_dash_to_cursor: string = cmdline->matchstr(pat)
 
     if from_dash_to_cursor =~ '^-mode\s*'
         var modes: list<string> =<< trim END
@@ -927,7 +927,7 @@ def ShowHelp() #{{{2
         topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
     endfor
 
-    sil! exe 'help ' .. topic
+    exe 'sil! help ' .. topic
 enddef
 
 def CloseWindow() #{{{2
@@ -948,10 +948,10 @@ def ToggleLeaderKey(noleader: bool) #{{{2
     var curpos: list<number> = getcurpos()
 
     if b:_fk.leader_key == 'shown'
-        sil exe 'keepj keepp :%s/Leader/'
+        exe 'sil keepj keepp :%s/Leader/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/e'
     else
-        sil exe 'keepj keepp :%s/'
+        exe 'sil keepj keepp :%s/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/Leader/e'
     endif
 
