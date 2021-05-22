@@ -460,7 +460,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
     # What do `@_` and `@~`?
     # They don't raise the error:
     #
-    #     E354: Invalid register name:~
+    #     E354: Invalid register name:˜
     #
     # ---
     #
