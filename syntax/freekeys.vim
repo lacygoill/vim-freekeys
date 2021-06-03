@@ -25,7 +25,7 @@ syn keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
 
 syn match Normal 'CTRL-.\|CTRL-$\|Leader'
 
-hi link fk_warning WarningMsg
+hi def link fk_warning WarningMsg
 
 const WARNING_REGEXES: dict<dict<string>> = {
     normal: {
