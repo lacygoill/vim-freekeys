@@ -112,13 +112,13 @@ var loaded = true
 #
 #     set showcmd
 #
-#     nno ab <cmd>set opfunc=FuncA<cr>g@
+#     nno ab <cmd>set operatorfunc=FuncA<cr>g@
 #     fu FuncA(_)
 #         echo 'ab'
 #     endfu
 #     ono cdef <cmd>norm V<cr>
 #
-#     nno abcd <cmd>set opfunc=FuncB<cr>g@
+#     nno abcd <cmd>set operatorfunc=FuncB<cr>g@
 #     fu FuncB(_)
 #         echo 'abcd'
 #     endfu
@@ -752,9 +752,14 @@ def Display(free: list<string>) #{{{2
     b:_fk = extend(options,
         {id_orig_window: id_orig_window, leader_key: 'shown'})
 
-    setl bh=delete bt=nofile nobl noswf nowrap wfw
+    &l:bufhidden = 'delete'
+    &l:buftype = 'nofile'
+    &l:buflisted = false
+    &l:swapfile = false
+    &l:wrap = false
+    &l:winfixwidth = true
 
-    setline(1, free)
+    free->setline(1)
     sort
 
     # Make the space key more visible.
@@ -778,7 +783,8 @@ def Display(free: list<string>) #{{{2
     # Trim whitespace.  There shouldn't be any, but better be safe than sorry.
     sil keepj keepp :%s/\s*$//e
 
-    append(0, [options.mode->substitute('.', '\U&', 'g') .. ' MODE', ''])
+    [options.mode->substitute('.', '\U&', 'g') .. ' MODE', '']
+        ->append(0)
     cursor(1, 1)
 
     nno <buffer><nowait> <cr> <cmd>call <sid>ShowHelp()<cr>
