@@ -748,7 +748,7 @@ def Display(free: list<string>) #{{{2
     var id_orig_window: number = win_getid()
 
     var tempfile: string = tempname() .. '/FreeKeys'
-    exe 'to :' .. (&columns / 6) .. 'vnew ' .. tempfile
+    exe 'to :' .. (&columns / 6) .. ' vnew ' .. tempfile
     b:_fk = extend(options,
         {id_orig_window: id_orig_window, leader_key: 'shown'})
 
@@ -763,13 +763,13 @@ def Display(free: list<string>) #{{{2
     sort
 
     # Make the space key more visible.
-    sil keepj keepp :%s/ /Space/e
+    sil keepj keepp :% s/ /Space/e
 
     # Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
     # to make them more readable
-    sil keepj keepp :%s/^Leader\zs\ze\S/ /e
-    sil keepj keepp :%s/\%(CTRL-\)\@5<!\%(BS\|CR\|CTRL-\|Leader\|Space\|Tab\)$/ &/e
-    sil keepj keepp :%s/  / /e
+    sil keepj keepp :% s/^Leader\zs\ze\S/ /e
+    sil keepj keepp :% s/\%(CTRL-\)\@5<!\%(BS\|CR\|CTRL-\|Leader\|Space\|Tab\)$/ &/e
+    sil keepj keepp :% s/  / /e
 
     # If there're double sequences, like `operator + space`:
     #
@@ -778,10 +778,10 @@ def Display(free: list<string>) #{{{2
     #     op   + leader
     #
     # ... remove them.
-    sil keepj keepp :%s/^\(.*\)\n\1$/\1/e
+    sil keepj keepp :% s/^\(.*\)\n\1$/\1/e
 
     # Trim whitespace.  There shouldn't be any, but better be safe than sorry.
-    sil keepj keepp :%s/\s*$//e
+    sil keepj keepp :% s/\s*$//e
 
     [options.mode->substitute('.', '\U&', 'g') .. ' MODE', '']
         ->append(0)
@@ -954,10 +954,10 @@ def ToggleLeaderKey(noleader: bool) #{{{2
     var curpos: list<number> = getcurpos()
 
     if b:_fk.leader_key == 'shown'
-        exe 'sil keepj keepp :%s/Leader/'
+        exe 'sil keepj keepp :% s/Leader/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/e'
     else
-        exe 'sil keepj keepp :%s/'
+        exe 'sil keepj keepp :% s/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/Leader/e'
     endif
 
