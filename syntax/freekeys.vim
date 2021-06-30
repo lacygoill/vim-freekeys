@@ -4,18 +4,18 @@ if exists('b:current_syntax')
     finish
 endif
 
-hi fk_operator ctermfg=black ctermbg=173    guifg=#000000 guibg=#d78700
-hi fk_command  ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
-hi fk_motion   ctermfg=black ctermbg=green  guifg=#000000 guibg=#00d700
+highlight fk_operator ctermfg=black ctermbg=173    guifg=#000000 guibg=#d78700
+highlight fk_command  ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
+highlight fk_motion   ctermfg=black ctermbg=green  guifg=#000000 guibg=#00d700
 
-syn match fk_operator '[!=<>cdy]'
-syn match fk_command  '[~@&qQrRYuUiIoOpPaAsSDJK:xXCvVm.]\|Tab'
-syn match fk_motion   '[#$%()*+,-/0;?BEFGHLMNTW^_befhjklntw{|}]'
+syntax match fk_operator '[!=<>cdy]'
+syntax match fk_command  '[~@&qQrRYuUiIoOpPaAsSDJK:xXCvVm.]\|Tab'
+syntax match fk_motion   '[#$%()*+,-/0;?BEFGHLMNTW^_befhjklntw{|}]'
 
-syn keyword fk_command Tab
-syn keyword fk_motion  Space BS CR
+syntax keyword fk_command Tab
+syntax keyword fk_motion  Space BS CR
 
-syn keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
+syntax keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
 
 # We can't use `CTRL-` as a keyword because sometimes it fails:
 #
@@ -23,9 +23,9 @@ syn keyword Normal NORMAL VISUAL INSERT OPERATOR PENDING COMMAND LINE MODE
 #     CTRL-K
 #     Z CTRL-
 
-syn match Normal 'CTRL-.\|CTRL-$\|Leader'
+syntax match Normal 'CTRL-.\|CTRL-$\|Leader'
 
-hi def link fk_warning WarningMsg
+highlight def link fk_warning WarningMsg
 
 const WARNING_REGEXES: dict<dict<string>> = {
     normal: {
@@ -53,7 +53,7 @@ const WARNING_REGEXES: dict<dict<string>> = {
 # sourced.
 
 for regex in values(WARNING_REGEXES['normal'])
-    exe 'syn match fk_warning ' .. string('^' .. regex .. '$')
+    execute 'syntax match fk_warning ' .. string('^' .. regex .. '$')
 endfor
 
 b:current_syntax = 'freekeys'

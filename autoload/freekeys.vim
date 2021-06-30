@@ -5,7 +5,7 @@ var loaded = true
 
 # TODO: {{{
 #
-# Add `c-g` as a prefix with warning; same thing for `+` and `-`
+# Add `C-g` as a prefix with warning; same thing for `+` and `-`
 #
 # ---
 #
@@ -112,17 +112,17 @@ var loaded = true
 #
 #     set showcmd
 #
-#     nno ab <cmd>set operatorfunc=FuncA<cr>g@
-#     fu FuncA(_)
+#     nnoremap ab <Cmd>set operatorfunc=FuncA<CR>g@
+#     function FuncA(_)
 #         echo 'ab'
-#     endfu
-#     ono cdef <cmd>norm V<cr>
+#     endfunction
+#     onoremap cdef <Cmd>normal V<CR>
 #
-#     nno abcd <cmd>set operatorfunc=FuncB<cr>g@
-#     fu FuncB(_)
+#     nnoremap abcd <Cmd>set operatorfunc=FuncB<CR>g@
+#     function FuncB(_)
 #         echo 'abcd'
-#     endfu
-#     ono ef <cmd>norm V<cr>
+#     endfunction
+#     onoremap ef <Cmd>normal V<CR>
 #
 # ---
 #
@@ -156,9 +156,9 @@ var loaded = true
 # Check whether we have other similar special mappings causing `:Freekeys` to ignore
 # whole families of mappings:
 #
-#     verb filter /^.$/ map
-#     g/last set from/d_
-#     g/^<plug>/d_
+#     verbose filter /^.$/ map
+#     global/last set from/delete _
+#     global/^<Plug>/delete _
 #
 # How to handle the issue?
 # Maybe we  should take  the habit of  executing `:Freekeys  -nomapcheck` (we've
@@ -748,7 +748,7 @@ def Display(free: list<string>) #{{{2
     var id_orig_window: number = win_getid()
 
     var tempfile: string = tempname() .. '/FreeKeys'
-    exe 'to :' .. (&columns / 6) .. ' vnew ' .. tempfile
+    execute 'topleft :' .. (&columns / 6) .. ' vnew ' .. tempfile
     b:_fk = extend(options,
         {id_orig_window: id_orig_window, leader_key: 'shown'})
 
@@ -763,13 +763,13 @@ def Display(free: list<string>) #{{{2
     sort
 
     # Make the space key more visible.
-    sil keepj keepp :% s/ /Space/e
+    silent keepjumps keeppatterns :% substitute/ /Space/e
 
     # Add spaces around special keys:   BS, CR, CTRL-, Leader, Space, Tab
     # to make them more readable
-    sil keepj keepp :% s/^Leader\zs\ze\S/ /e
-    sil keepj keepp :% s/\%(CTRL-\)\@5<!\%(BS\|CR\|CTRL-\|Leader\|Space\|Tab\)$/ &/e
-    sil keepj keepp :% s/  / /e
+    silent keepjumps keeppatterns :% substitute/^Leader\zs\ze\S/ /e
+    silent keepjumps keeppatterns :% substitute/\%(CTRL-\)\@5<!\%(BS\|CR\|CTRL-\|Leader\|Space\|Tab\)$/ &/e
+    silent keepjumps keeppatterns :% substitute/  / /e
 
     # If there're double sequences, like `operator + space`:
     #
@@ -778,20 +778,20 @@ def Display(free: list<string>) #{{{2
     #     op   + leader
     #
     # ... remove them.
-    sil keepj keepp :% s/^\(.*\)\n\1$/\1/e
+    silent keepjumps keeppatterns :% substitute/^\(.*\)\n\1$/\1/e
 
     # Trim whitespace.  There shouldn't be any, but better be safe than sorry.
-    sil keepj keepp :% s/\s*$//e
+    silent keepjumps keeppatterns :% substitute/\s*$//e
 
     [options.mode->substitute('.', '\U&', 'g') .. ' MODE', '']
         ->append(0)
     cursor(1, 1)
 
-    nno <buffer><nowait> <cr> <cmd>call <sid>ShowHelp()<cr>
-    nno <buffer><nowait> q <cmd>call <sid>CloseWindow()<cr>
-    nno <buffer><nowait> g? <cmd>help freekeys-mappings<cr>
+    nnoremap <buffer><nowait> <CR> <Cmd>call <SID>ShowHelp()<CR>
+    nnoremap <buffer><nowait> q <Cmd>call <SID>CloseWindow()<CR>
+    nnoremap <buffer><nowait> g? <Cmd>help freekeys-mappings<CR>
 
-    exe 'nno <buffer><nowait> gl <cmd>call <sid>ToggleLeaderKey(v:' .. options.noleader .. ')<cr>'
+    execute 'nnoremap <buffer><nowait> gl <Cmd>call <SID>ToggleLeaderKey(v:' .. options.noleader .. ')<CR>'
 enddef
 
 def Syntaxes(categories: dict<list<string>>): dict<list<list<string>>> #{{{2
@@ -933,7 +933,7 @@ def ShowHelp() #{{{2
         topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
     endfor
 
-    exe 'sil! help ' .. topic
+    execute 'silent! help ' .. topic
 enddef
 
 def CloseWindow() #{{{2
@@ -942,7 +942,7 @@ def CloseWindow() #{{{2
         return
     endif
     var id_orig_window: number = b:_fk.id_orig_window
-    q
+    quit
     win_gotoid(id_orig_window)
 enddef
 
@@ -954,10 +954,10 @@ def ToggleLeaderKey(noleader: bool) #{{{2
     var curpos: list<number> = getcurpos()
 
     if b:_fk.leader_key == 'shown'
-        exe 'sil keepj keepp :% s/Leader/'
+        execute 'silent keepjumps keeppatterns :% substitute/Leader/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/e'
     else
-        exe 'sil keepj keepp :% s/'
+        execute 'silent keepjumps keeppatterns :% substitute/'
             .. g:mapleader->substitute(' ', 'Space', '') .. '/Leader/e'
     endif
 
