@@ -1,8 +1,5 @@
 vim9script noclear
 
-if exists('loaded') | finish | endif
-var loaded = true
-
 # TODO: {{{
 #
 # Add `C-g` as a prefix with warning; same thing for `+` and `-`
@@ -113,16 +110,20 @@ var loaded = true
 #     set showcmd
 #
 #     nnoremap ab <Cmd>set operatorfunc=FuncA<CR>g@
-#     function FuncA(_)
+#     def FuncA(_)
 #         echo 'ab'
-#     endfunction
+#     enddef
 #     onoremap cdef <Cmd>normal V<CR>
 #
 #     nnoremap abcd <Cmd>set operatorfunc=FuncB<CR>g@
-#     function FuncB(_)
+#     def FuncB(_)
 #         echo 'abcd'
-#     endfunction
+#     enddef
 #     onoremap ef <Cmd>normal V<CR>
+#
+# If you press `ab` then wait 1s, it's parsed as the operator calling `FuncA()`.
+# If you press `abcd` without more than 1s between each keypress, it's parsed as
+# the operator calling `FuncB()`.
 #
 # ---
 #
@@ -419,7 +420,7 @@ def Categories(): dict<list<string>> #{{{2
     # Indeed, the key stored in `g:mapleader`  should be considered as a prefix,
     # and nothing else.
     if !noleader
-        for [category, keys] in items(categories)
+        for [category, keys] in categories->items()
             keys->filter((_, v: string): bool => v != g:mapleader)
         endfor
     endif
@@ -430,7 +431,7 @@ def Candidates(categories: dict<list<string>>): list<string> #{{{2
     var syntaxes: dict<list<list<string>>> = Syntaxes(categories)
     var candidates: list<string>
 
-    for [left_key_category, right_key_category] in values(syntaxes)
+    for [left_key_category, right_key_category] in syntaxes->values()
         for key1 in left_key_category
             for key2 in right_key_category
                 candidates += [[key1, key2]->join('')]
@@ -682,7 +683,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
     END
 
     var result: list<string>
-    for a_list in values(default_mappings[mode])
+    for a_list in default_mappings[mode]->values()
         result += a_list
     endfor
 
@@ -716,9 +717,8 @@ def IsUnmapped( #{{{2
     #
     #         prefix + letter
     #
-    # So, it's easier to REMOVE MAPPED sequences, than to ADD UNMAPPED sequences.
-    #
-    # "}}}
+    # So, it's easier to *remove mapped* sequences, than to *add unmapped* sequences.
+    #}}}
 
     # If  a sequence  shadows another  one, or  it overrides  a default  action,
     # remove it.
@@ -929,7 +929,7 @@ def ShowHelp() #{{{2
         'op prefix': ['[!<>=cdy]g', 'fk_operator_and_prefix_g'],
     }
 
-    for [pat, rep] in values(substitutions)
+    for [pat, rep] in substitutions->values()
         topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
     endfor
 

@@ -52,7 +52,7 @@ const WARNING_REGEXES: dict<dict<string>> = {
 # ... because it  seems the `let` command  is executed after the  syntax file is
 # sourced.
 
-for regex in values(WARNING_REGEXES['normal'])
+for regex in WARNING_REGEXES['normal']->values()
     execute 'syntax match fk_warning ' .. string('^' .. regex .. '$')
 endfor
 
