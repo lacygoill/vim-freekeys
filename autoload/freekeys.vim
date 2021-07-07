@@ -420,7 +420,7 @@ def Categories(): dict<list<string>> #{{{2
     # Indeed, the key stored in `g:mapleader`  should be considered as a prefix,
     # and nothing else.
     if !noleader
-        for [category, keys] in categories->items()
+        for [category: string, keys: list<string>] in categories->items()
             keys->filter((_, v: string): bool => v != g:mapleader)
         endfor
     endif
@@ -431,9 +431,9 @@ def Candidates(categories: dict<list<string>>): list<string> #{{{2
     var syntaxes: dict<list<list<string>>> = Syntaxes(categories)
     var candidates: list<string>
 
-    for [left_key_category, right_key_category] in syntaxes->values()
-        for key1 in left_key_category
-            for key2 in right_key_category
+    for [left_key_category: list<string>, right_key_category: list<string>] in syntaxes->values()
+        for key1: string in left_key_category
+            for key2: string in right_key_category
                 candidates += [[key1, key2]->join('')]
             endfor
         endfor
@@ -683,7 +683,7 @@ def DefaultMappings(categories: dict<list<string>>): list<string> #{{{2
     END
 
     var result: list<string>
-    for a_list in default_mappings[mode]->values()
+    for a_list: list<string> in default_mappings[mode]->values()
         result += a_list
     endfor
 
@@ -863,7 +863,7 @@ enddef
 def PrefixPlusLetter(): list<string> #{{{2
     var prefix_plus_letter: list<string>
 
-    for prefix in ['"', '@', 'm', "'", '`']
+    for prefix: string in ['"', '@', 'm', "'", '`']
         prefix_plus_letter += (
                 range(char2nr('a'), char2nr('z'))
               + range(char2nr('A'), char2nr('Z'))
@@ -875,7 +875,7 @@ enddef
 def DoublePrefix(prefixes: list<string>): list<string> #{{{2
     var double_prefix: list<string>
 
-    for prefix in prefixes
+    for prefix: string in prefixes
         double_prefix += [prefix .. prefix]
     endfor
 
@@ -885,14 +885,14 @@ enddef
 def OpPlusForbiddenCmd(operators: list<string>): list<string> #{{{2
     var op_plus_forbidden_cmd: list<string>
 
-    for operator in operators
-        for command in ['a', 'i']
+    for operator: string in operators
+        for command: string in ['a', 'i']
             op_plus_forbidden_cmd += [operator .. command]
         endfor
     endfor
 
-    for operator in ['c', 'd', 'y'] + (&tildeop ? ['~'] : [])
-        for command in ['v', 'V']
+    for operator: string in ['c', 'd', 'y'] + (&tildeop ? ['~'] : [])
+        for command: string in ['v', 'V']
             op_plus_forbidden_cmd += [operator .. command]
         endfor
     endfor
@@ -929,7 +929,7 @@ def ShowHelp() #{{{2
         'op prefix': ['[!<>=cdy]g', 'fk_operator_and_prefix_g'],
     }
 
-    for [pat, rep] in substitutions->values()
+    for [pat: string, rep: string] in substitutions->values()
         topic = topic->substitute('^\Cfk_' .. pat .. '$', rep, '')
     endfor
 
